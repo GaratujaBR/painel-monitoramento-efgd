@@ -80,7 +80,7 @@
 ## 📊 Resumo Quantitativo
 - **Princípios:** 6
 - **Objetivos:** 16
-- **Iniciativas:** 93 (distribuídas entre os objetivos)
+- **Iniciativas:** 60+ (distribuídas entre os objetivos)
 
 ---
 

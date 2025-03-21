@@ -15,7 +15,7 @@ This is a monitoring dashboard and data input application for Brazil's Estratég
 - Secure authentication with MFA and role-based access control
 - Data input forms for recording initiative progress
 - Visual dashboard for monitoring key performance indicators
-- Integration with SharePoint for data synchronization
+- Integration with Google Sheets for data synchronization
 - Notifications for deadlines and updates
 - User management with role-based permissions
 

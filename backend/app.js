@@ -1,49 +1,47 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const dotenv = require('dotenv');
+require('isomorphic-fetch');
 
-// Load environment variables
-dotenv.config();
-
-// Initialize express app
 const app = express();
 
 // Middleware
-app.use(helmet()); // Security headers
-app.use(cors()); // Enable CORS
-app.use(morgan('dev')); // Logging
-app.use(express.json()); // Parse JSON bodies
+app.use(cors());
+app.use(express.json());
 
-// Routes
+// Welcome route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to EFGD Monitoring Dashboard API' });
+  res.json({ message: 'Bem-vindo ao Painel de Monitoramento EFGD API' });
 });
 
-// Import routes
-const authRoutes = require('./routes/auth');
-const progressRoutes = require('./routes/progress');
-const dashboardRoutes = require('./routes/dashboard');
-
-// Use routes
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/progress', progressRoutes);
-app.use('/api/v1/dashboard', dashboardRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : {}
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Servidor em execução',
+    environment: process.env.NODE_ENV
   });
 });
 
-// Set port and start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Import and use routes
+const initiativesRouter = require('./routes/initiatives');
+app.use('/api/initiatives', initiativesRouter);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({
+    error: 'Erro interno do servidor',
+    message: err.message
+  });
 });
 
-module.exports = app; 
+// Start server
+const port = process.env.PORT || 3003;
+app.listen(port, () => {
+  console.log(`Servidor iniciado na porta ${port}`);
+  console.log(`Ambiente: ${process.env.NODE_ENV}`);
+  console.log(`Google Sheets ID: ${process.env.GOOGLE_SHEETS_ID}`);
+});
+
+module.exports = app;
