@@ -1,3 +1,10 @@
+/**
+ * PONTO CRÍTICO: Endpoints de API para iniciativas
+ * 
+ * Estes endpoints fornecem dados para o frontend e devem manter a estrutura de resposta
+ * consistente. Os endpoints de principles, objectives e areas são especialmente importantes
+ * para o funcionamento correto dos filtros no frontend.
+ */
 const express = require('express');
 const router = express.Router();
 const GoogleSheetsService = require('../services/googlesheets.service');

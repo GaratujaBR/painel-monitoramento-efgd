@@ -25,7 +25,9 @@ app.get('/health', (req, res) => {
 
 // Import and use routes
 const initiativesRouter = require('./routes/initiatives');
+const dashboardRouter = require('./routes/dashboard');
 app.use('/api/initiatives', initiativesRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

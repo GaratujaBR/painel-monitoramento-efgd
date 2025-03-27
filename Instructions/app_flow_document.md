@@ -1,29 +1,74 @@
-# App Flow Document
+# Documento de Fluxo da Aplicação EFGD Atualizado
 
-## Introduction
+## Introdução
 
-This application serves a dual purpose: it offers civil servants a secure platform to input progress data on the initiatives of Brazil's Estratégia Federal de Governo Digital (EFGD) while also presenting a dynamic monitoring dashboard that displays key metrics. The primary goal is to ensure that all progress updates are accurately recorded, securely transmitted, and visually represented so that managers, policy analysts, and other stakeholders can readily assess how government initiatives are moving forward. The app is built in adherence to official government design manuals and security standards, ensuring a consistent, user-friendly experience across both mobile and desktop devices.
+Esta aplicação tem como propósito principal oferecer uma plataforma de monitoramento dinâmico para a Estratégia Federal de Governo Digital (EFGD) do Brasil. O sistema apresenta dashboards interativos que exibem métricas-chave sobre o progresso das iniciativas governamentais, permitindo que gestores, analistas de políticas e outros stakeholders avaliem facilmente o andamento das ações. A aplicação segue os padrões oficiais de design e segurança do governo, garantindo uma experiência consistente e amigável tanto em dispositivos móveis quanto em desktops.
 
-## Onboarding and Sign-In/Sign-Up
+## Autenticação e Acesso
 
-When a new user accesses the application, they first encounter a professionally designed landing or splash screen that introduces the system. From here, users are guided to a sign-up process where they can create an account using their email or, possibly, government-provided credentials integrated with Azure Active Directory. The process involves multi-factor authentication to verify the user's identity and ensure data security. In cases where a user may have forgotten their password, an easy-to-use password recovery mechanism is provided that securely sends instructions via email. This ensures that both managers and data inputters always have secure and seamless access to the application.
+Diferentemente da versão anterior que utilizava integração com o Azure Active Directory, o novo sistema implementará autenticação via Google. Este método foi escolhido para simplificar o processo de login enquanto mantém a segurança necessária. Paralelamente, será desenvolvido um sistema de controle e registro de logins que limitará o acesso apenas a servidores efetivos autorizados. O processo de autenticação permanece com foco na segurança e na verificação da identidade do usuário, garantindo que apenas pessoas autorizadas tenham acesso aos dados sensíveis da EFGD.
 
-## Main Dashboard or Home Page
+## MVP - Painel Principal (Página "Geral")
 
-Upon successful sign-in, the user is directed to the main dashboard which acts as the central hub of the application. The dashboard immediately presents a personalized view, displaying a summary of assigned initiatives and relevant tasks. Users will find an intuitive navigation menu that includes options for viewing past progress updates, accessing detailed data input forms, and viewing graphical representations of key performance indicators such as initiative progress, timelines, outputs, and satisfaction ratings. Additional visible elements include notifications on upcoming deadlines and changes to initiatives, ensuring that every user remains informed throughout the project lifecycle.
+Após o login bem-sucedido, o usuário é direcionado à página principal denominada "Geral", que serve como hub central da aplicação. Este painel apresenta uma visão abrangente da EFGD com os seguintes elementos:
 
-## Detailed Feature Flows and Page Transitions
+1. **Gráfico de Pizza do Status Geral**: Exibe o status global da Estratégia, categorizado em três estados:
+   - No Cronograma (azul)
+   - Em Atraso (vermelho)
+   - Concluídas (verde)
+   *Nota: Esta representação atualiza a versão anterior que utilizava apenas dois status (Em Execução e Concluída) com cores diferentes.*
 
-After logging in, the user encounters a list of initiatives that are specifically assigned to them, in line with the role-based access control system. Once an initiative is selected, the user is taken to a structured data entry form that adheres to government design standards. Here, the user enters specific progress data including percentages of completion, milestones achieved, challenges encountered, and any supporting documents that validate the progress. The form is designed intuitively so that the user naturally follows through from initiative selection to data entry. After inputting the necessary information, the user reviews a summary page where the details are clearly laid out for verification. Once confirmed, the update is submitted, and a confirmation message reassures the user that the information has been successfully recorded. Additionally, an automated notification feature operates in parallel, alerting users about important deadlines and modifications to initiatives, ensuring a continuous communication loop. Batch integrations pull the submitted data into a SharePoint table, from which the dashboard aggregates and updates key metrics at designated intervals. There is also an administrative module where managers can oversee all submissions, modify permissions, and track authorization status of each update, ensuring that all actions in the app are traceable and compliant with governmental protocols.
+2. **Gráfico de Barras por Princípio**: Apresenta barras sobrepostas que mostram a distribuição de iniciativas pelos seis princípios da EFGD, segmentadas pelos três status (No Cronograma, Em Atraso, Concluídas).
 
-## Settings and Account Management
+3. **Gráfico de Barras por Objetivo**: Visualiza a distribuição de iniciativas pelos objetivos, também segmentadas pelos três status.
 
-Apart from the daily workflow of data input and dashboard monitoring, users have dedicated sections for managing their account settings. Here, users can update personal information, adjust notification preferences, and, if required, change their password through secure channels. For managers, there is an administrative interface that allows the modification of user roles and permissions, ensuring that each user’s access level is kept appropriate to their responsibilities. After making changes, users can easily return to the main application without disruption, as the settings interface seamlessly integrates back into the overall flow.
+4. **Boxes de Métricas**: Três caixas proeminentes exibindo:
+   - Número total de iniciativas No Cronograma
+   - Número total de iniciativas Em Atraso
+   - Número total de iniciativas Concluídas
 
-## Error States and Alternate Paths
+5. **Box Informativo**: Uma seção textual explicativa sobre a EFGD, contextualizando a estratégia e seus objetivos para os usuários.
 
-The application is designed to handle error states gracefully. If a user inputs invalid data or faces issues such as lost connectivity, the system displays clear and concise error messages indicating the nature of the problem. For example, if mandatory information is missing during the progress update process, the user is redirected to the data entry form with error prompts highlighting the areas that require attention. In the case of connectivity issues or failed submissions, the system provides fallback options that allow users to retry the submission. Strict validation and regular API checks ensure that errors are minimized and that users are guided back to a stable state without losing any data they have already entered.
+## Estrutura de Páginas Adicionais
 
-## Conclusion and Overall App Journey
+Além da página principal "Geral", o MVP incluirá as seguintes páginas:
 
-From the initial sign-up to the day-to-day operation of inputting progress data, the user journey is designed for simplicity, clarity, and security. After the initial onboarding process, users are welcomed into a well-organized dashboard that immediately presents all critical initiatives in a format that adheres to government standards. The transition between selecting an initiative, inputting relevant data, reviewing, and finally submitting is streamlined to ensure every step is connected and intuitive. Administrators have the capacity to manage roles and permissions, ensuring compliance across the board. With side-by-side notifications that reinforce deadlines and progress, the entire application fosters a feedback loop that is key to monitoring the execution of the EFGD. The journey ends with real-time (or batched) dashboard updates that empower decision-makers with concise, traceable, and secure information, ensuring that the public sector continues to evolve in line with modern digital government practices.
+1. **Página de Iniciativas**: Contém a listagem textual de todas as iniciativas com sistema de filtros para facilitar a visualização e busca. Os usuários poderão filtrar por princípio, objetivo, status, e potencialmente outras categorias relevantes.
+
+2. **Páginas de Princípios (6)**: Uma página dedicada para cada um dos seis princípios da EFGD:
+   - I - Governo Centrado no Cidadão e Inclusivo
+   - II - Governo Integrado e Colaborativo
+   - III - Governo Inteligente e Inovador
+   - IV - Governo Confiável e Seguro
+   - V - Governo Transparente, Aberto e Participativo
+   - VI - Governo Eficiente e Sustentável
+
+   Cada página de princípio apresentará:
+   - Gráficos detalhados mostrando a evolução dos objetivos relacionados
+   - Visualização do progresso das iniciativas específicas daquele princípio
+   - Métricas relevantes específicas para cada princípio
+
+## Navegação
+
+A aplicação contará com uma barra lateral (sidebar) que oferecerá navegação intuitiva para todas as oito páginas da aplicação:
+- Página Geral (Dashboard principal)
+- Página de Iniciativas (com filtros)
+- Seis páginas individuais de Princípios
+
+A navegação será projetada para ser intuitiva e responder às necessidades dos usuários, mantendo a consistência visual e funcional em toda a aplicação.
+
+## Considerações Futuras (Pós-MVP)
+
+Após o lançamento do MVP, as seguintes funcionalidades poderão ser consideradas para desenvolvimento:
+
+1. **Sistema Avançado de Gerenciamento de Usuários**: Expansão do controle de acesso com diferentes níveis de permissão.
+
+2. **Módulo de Entrada de Dados**: Interface para que servidores designados possam inserir atualizações de progresso das iniciativas.
+
+3. **Notificações e Alertas**: Sistema para informar sobre prazos próximos e mudanças no status das iniciativas.
+
+4. **Integração com Outras Plataformas**: Conectividade com outros sistemas governamentais relevantes.
+
+5. **Módulo de Relatórios Personalizados**: Funcionalidade para gerar relatórios específicos conforme necessidades dos gestores.
+
+O MVP foca na entrega do valor central - visualização eficaz do progresso da EFGD - enquanto estabelece as bases para expansões futuras que enriquecerão a experiência do usuário e a utilidade da aplicação para o governo digital brasileiro.

@@ -1,110 +1,133 @@
-# Project Requirements Document (PRD)
+# Project Requirements Document (PRD) - Dashboard MVP
 
 ## 1. Project Overview
 
-This project is for a dashboard and data input app designed to help civil servants involved with Brazil's Estratégia Federal de Governo Digital (EFGD). The EFGD is a framework that modernizes government operations and public services by promoting transparency, efficiency, inclusion, and innovation. The app lets managers and field data inputters record real-time progress on various digital government initiatives, while a monitoring dashboard visualizes key performance metrics, making it easier for all stakeholders to track the evolution of the strategy.
+Este projeto consiste em um dashboard de monitoramento para a Estratégia Federal de Governo Digital (EFGD) do Brasil. A EFGD é um framework que moderniza as operações governamentais e serviços públicos, promovendo transparência, eficiência, inclusão e inovação. O MVP do dashboard visualizará métricas-chave de desempenho, facilitando o acompanhamento da evolução da estratégia por gestores, analistas e stakeholders.
 
-The main goal is to provide an easy-to-use, secure, and consistent digital solution that supports the execution and oversight of the EFGD. By streamlining data collection and displaying mission-critical information in a clear graphical format, the project aims to enhance decision making, ensure accountability, and drive timely action. Success will be measured by improved data accuracy, adherence to security standards and government branding, and the overall usability of both the mobile and desktop experiences.
+O objetivo principal é fornecer uma solução digital de fácil utilização que apresente informações críticas em formato gráfico claro, aprimorando a tomada de decisões e garantindo transparência na execução da EFGD. O sucesso será medido pela clareza na visualização dos dados, aderência aos padrões de design governamentais e usabilidade geral da experiência tanto em dispositivos móveis quanto em desktops.
 
 ## 2. In-Scope vs. Out-of-Scope
 
 **In-Scope:**
 
-*   A responsive app optimized for both mobile devices and desktops.
-*   Secure user authentication with multi-factor authentication (MFA) and integration with Azure Active Directory for role-based access control.
-*   A user-friendly data input interface where civil servants can select initiatives, input progress data (completion percentages, milestones, challenges, attachments), and review updates before submission.
-*   A monitoring dashboard that aggregates data from a SharePoint table and displays key metrics—including initiative progress, timelines, outputs, and satisfaction ratings—via graphical representations.
-*   Integration with government design manuals for consistent branding and dashboard design.
-*   Notification feature to alert users about deadlines, initiative updates, or changes to policies.
-*   Batch updates from the app to the dashboard, with data integration from SharePoint.
-*   Administrative oversight capabilities that allow managers to edit roles, permissions, and review historic user submissions.
+* Um dashboard responsivo otimizado para dispositivos móveis e desktops.
+* Autenticação de usuários segura com integração Google (em substituição ao Azure AD).
+* Um dashboard de monitoramento que exibe métricas-chave através de representações gráficas, incluindo:
+  * Gráfico de pizza mostrando o status geral da EFGD (No Cronograma, Em Atraso, Concluídas).
+  * Gráfico de barras sobrepostas mostrando status por Princípio.
+  * Gráfico de barras sobrepostas mostrando status por Objetivo.
+  * Boxes informativos com contagem de iniciativas por status.
+  * Box explicativo sobre a EFGD.
+* Navegação intuitiva entre páginas através de uma barra lateral.
+* Página dedicada à listagem de iniciativas com filtros para melhor visualização.
+* Seis páginas individuais, uma para cada Princípio da EFGD.
+* Integração com manuais de design governamentais para consistência visual.
 
-**Out-of-Scope:**
+**Out-of-Scope para o MVP:**
 
-*   A full-fledged messaging system between users (only notifications are required).
-*   Offline functionality is desirable but not essential in the first phase.
-*   Advanced analytical tools or predictive analytics beyond basic descriptive metrics.
-*   Extensive customization or third-party integrations outside the SharePoint API and existing government systems.
+* Interface de entrada de dados para servidores registrarem progresso (implementação futura).
+* Sistema de notificações para alertar usuários sobre prazos ou atualizações.
+* Funcionalidades administrativas avançadas de gerenciamento de usuários.
+* Integração com SharePoint para atualização de dados (implementação futura).
+* Sistema de mensagens entre usuários.
+* Funcionalidade offline.
+* Ferramentas analíticas avançadas ou análises preditivas.
+* Customizações extensivas ou integrações com sistemas externos.
 
 ## 3. User Flow
 
-A typical user journey starts when a civil servant launches the app on their mobile device or desktop. They are greeted with a splash screen followed by a secure login screen that uses multi-factor authentication. Once logged in, the user lands on a personalized dashboard designed according to government branding guidelines. Here, they find a list of assigned initiatives and select the project they are responsible for.
+A jornada típica do usuário começa quando um servidor civil acessa a aplicação em seu dispositivo móvel ou desktop. Eles são recebidos com uma tela de login que utiliza autenticação via Google. Uma vez autenticados, os usuários são direcionados para o dashboard principal (página "Geral"), projetado de acordo com as diretrizes de design governamentais.
 
-After selecting an initiative, the user is navigated to a dedicated data entry form. This screen prompts them to input progress updates such as completion percentages, milestones achieved, and challenges encountered, with the option to attach supporting documents. The user then reviews the input data on a summary screen and submits the update. A confirmation message is displayed to verify successful submission. Meanwhile, notifications keep the user informed of critical alerts like upcoming deadlines and any changes to initiative parameters.
+Na página principal, os usuários visualizam imediatamente os gráficos e métricas que mostram o status geral da EFGD. Utilizando a barra lateral de navegação, podem acessar a página de iniciativas, que lista todas as iniciativas com opções de filtro, ou navegar para uma das seis páginas de Princípios para visualizar métricas específicas de cada área.
 
 ## 4. Core Features
 
-*   **User Authentication & Role Management:**\
-    • Secure login with multi-factor authentication (MFA).\
-    • Role-based access control (RBAC) differentiating managers and data inputers.\
-    • Managers can edit permissions, roles, and view all data submissions.
-*   **Data Input Interface:**\
-    • Initiative selection from a tailored list of ongoing projects assigned to the user.\
-    • Structured form for recording progress (completion percentages, milestones, challenges, and attachments).\
-    • Summary page for review before submitting the data.
-*   **Monitoring Dashboard:**\
-    • Graphical display of initiative progress, timelines, output indicators, and satisfaction ratings.\
-    • Batch updates from SharePoint data to ensure consistent metric refresh.\
-    • Consistent layout and design following the government design manual.
-*   **Notifications:**\
-    • Alerts for deadlines, initiative updates, and changes in project parameters.\
-    • Real-time notifications (although dashboard updates are batched).
-*   **Integration with Government Systems:**\
-    • Data synchronization with a central SharePoint table updated by managers and the data input app.
+* **Autenticação de Usuários:**
+  * Login seguro via Google.
+  * Sistema de controle para limitar acesso apenas a servidores autorizados.
+
+* **Dashboard de Monitoramento (Página "Geral"):**
+  * Gráfico de pizza mostrando distribuição de status das iniciativas (No Cronograma, Em Atraso, Concluídas).
+  * Gráfico de barras sobrepostas mostrando a distribuição por Princípio.
+  * Gráfico de barras sobrepostas mostrando a distribuição por Objetivo.
+  * Três boxes informativos com contagens de iniciativas por status.
+  * Box explicativo sobre a EFGD.
+
+* **Página de Iniciativas:**
+  * Listagem completa das iniciativas da EFGD.
+  * Sistema de filtros para facilitar a visualização (por Princípio, Objetivo, status).
+  * Visualização de informações detalhadas sobre cada iniciativa.
+
+* **Páginas de Princípios (6):**
+  * Visualizações detalhadas para cada um dos seis princípios da EFGD.
+  * Gráficos mostrando a evolução dos objetivos relacionados ao princípio.
+  * Visualização do progresso das iniciativas específicas do princípio.
+
+* **Navegação:**
+  * Barra lateral (sidebar) com links para todas as oito páginas da aplicação.
+  * Design intuitivo e consistente em toda a aplicação.
 
 ## 5. Tech Stack & Tools
 
-*   **Frontend:**\
-    • Framework: React (ensuring a responsive and dynamic user interface).\
-    • Mobile/Desktop Compatibility: The UI design will prioritize usability on both platforms per government design guidelines.
-*   **Backend:**\
-    • Server: Node.js with Express for REST API endpoints.\
-    • Database: NoSQL (for flexible data models) and Firebase for potential real-time functionalities.\
-    • Integration: SharePoint API for accessing and updating the central SharePoint table.
-*   **Security & Authentication:**\
-    • Azure Active Directory for implementing Role-Based Access Controls (RBAC).\
-    • Multi-Factor Authentication (MFA) to secure all user credentials.
-*   **Development Tools & AI Assistance:**\
-    • ChatGPT (OpenAI’s GPT-4 model) and Claude AI (Anthropic’s Sonnet 3.5 model) for advanced code generation and assistance.\
-    • Cursor for an AI-powered coding IDE, Deepseek for additional language model assistance, and Replit for online collaboration and coding.
+* **Frontend:**
+  * Framework: React (garantindo uma interface de usuário responsiva e dinâmica).
+  * Data Formulator (Microsoft) para criação de visualizações de dados personalizadas.
+  * Compatibilidade Mobile/Desktop: O design da UI priorizará usabilidade em ambas plataformas, seguindo diretrizes governamentais.
+
+* **Backend:**
+  * Inicialmente simplificado, focado apenas na autenticação e acesso a dados estáticos.
+  * Preparação para expansão futura com Node.js/Express quando necessário.
+
+* **Segurança & Autenticação:**
+  * Autenticação via Google.
+  * Sistema de registro e controle de logins para limitar acesso a servidores autorizados.
+
+* **Desenvolvimento & Ferramentas:**
+  * Gerenciamento de dados inicial com armazenamento estático (JSON).
+  * GitHub para controle de versão e colaboração.
 
 ## 6. Non-Functional Requirements
 
-*   **Performance:**\
-    • The app should load within a few seconds on both mobile and desktop devices.\
-    • Dashboard updates will be batched at set intervals to balance load and responsiveness.
-*   **Security:**\
-    • All sensitive data must be encrypted both at rest and in transit.\
-    • Regular security audits and vulnerability checks should be conducted to meet Brazil’s LGPD guidelines.
-*   **Usability & Accessibility:**\
-    • The user interface must be intuitive and comply with government design manuals, ensuring that both tech-savvy and less experienced users can navigate the system with ease.
-*   **Compliance:**\
-    • Must adhere to Brazil’s data protection regulations (LGPD) and relevant government design standards.
+* **Performance:**
+  * A aplicação deve carregar em poucos segundos em dispositivos móveis e desktops.
+  * As visualizações de dados devem ser renderizadas de forma eficiente sem atrasos perceptíveis.
+
+* **Segurança:**
+  * Autenticação segura via Google.
+  * Proteção contra acessos não autorizados.
+
+* **Usabilidade & Acessibilidade:**
+  * Interface intuitiva que segue manuais de design governamentais.
+  * Navegação clara e consistente entre todas as páginas.
+  * Responsividade completa para diferentes tamanhos de tela.
+
+* **Compliance:**
+  * Aderência às regulamentações de proteção de dados do Brasil (LGPD).
+  * Conformidade com padrões visuais governamentais.
 
 ## 7. Constraints & Assumptions
 
-*   The solution depends on the availability and stability of GPT-4 O1 and Claude AI models for code generation and assistance.
-*   It is assumed that the SharePoint table will serve as the central data repository and is maintained accurately by managers.
-*   Offline functionality is a nice-to-have but is not critical for the first version.
-*   The design and branding must strictly follow existing government manuals, which may limit customization.
-*   The batched update mechanism is assumed to be acceptable for the dashboard, considering that real-time updates are not essential.
+* O MVP utilizará dados estáticos para visualização, preparando a estrutura para integração futura com fontes de dados dinâmicas.
+* Assume-se que a autenticação via Google será suficiente para a fase inicial, com aprimoramentos de segurança planejados para futuras iterações.
+* O design e a identidade visual devem seguir estritamente os manuais governamentais existentes.
+* A fase de MVP focará exclusivamente na visualização de dados, deixando a funcionalidade de entrada de dados para implementações futuras.
 
 ## 8. Known Issues & Potential Pitfalls
 
-*   **Integration with SharePoint:**\
-    • The reliance on SharePoint as a data source could introduce complications if the API experiences rate limits or downtime.\
-    • To mitigate, implement caching mechanisms and handle API errors gracefully.
-*   **Security Challenges:**\
-    • Handling sensitive government data means that any security vulnerability could be critical.\
-    • Regular security audits and adherence to encryption standards should be enforced, plus a clear incident response plan must be in place.
-*   **User Interface Consistency:**\
-    • Strict adherence to government design manuals might restrict flexible design improvements.\
-    • Develop a design prototype early on to ensure feasibility and seek early feedback from stakeholders.
-*   **Batch Data Updates:**\
-    • The decision to update dashboard data in batches may lead to slightly outdated information between update cycles.\
-    • Clearly communicate the update intervals to all users and consider a short refresh frequency to balance performance and data timeliness.
-*   **Role & Permissions Management:**\
-    • Misconfigurations in RBAC could lead to unauthorized data access or editing.\
-    • Incorporate thorough testing and regular monitoring of permission settings throughout development.
+* **Limitações de Dados Estáticos:**
+  * O uso de dados estáticos no MVP pode limitar a capacidade de mostrar informações em tempo real.
+  * Para mitigar, estruturar os dados de forma que facilite a transição para fontes dinâmicas no futuro.
 
-This document is intended to serve as the central source of truth for the entire project development. It provides clear, detailed guidelines that the AI model and subsequent technical documentation must follow to ensure there is no ambiguity in the design, implementation, or project objectives.
+* **Consistência Visual:**
+  * A aderência estrita a manuais de design governamentais pode restringir melhorias flexíveis no design.
+  * Desenvolver um protótipo de design antecipadamente para garantir viabilidade e obter feedback dos stakeholders.
+
+* **Escalabilidade:**
+  * Garantir que a arquitetura seja planejada para acomodar funcionalidades futuras como entrada de dados e integrações.
+  * Implementar práticas de código limpo e modular desde o início.
+
+* **Autenticação:**
+  * A mudança para autenticação Google (em vez de Azure AD) pode necessitar ajustes para garantir o nível adequado de segurança para dados governamentais.
+  * Implementar camadas adicionais de verificação conforme necessário.
+
+Este documento serve como fonte central de informações para o desenvolvimento do MVP do dashboard da EFGD. Ele fornece diretrizes claras e detalhadas que devem ser seguidas para garantir que não haja ambiguidade no design, implementação ou objetivos do projeto.

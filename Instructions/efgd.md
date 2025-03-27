@@ -1,5 +1,9 @@
 Após analisar os documentos fornecidos, identifiquei que a Portaria SGD/MGI Nº 6.618, de 25 de setembro de 2024, detalha as 93 iniciativas da Estratégia Federal de Governo Digital para o período de 2024 a 2027. Vou listar todas as 93 iniciativas organizadas pelos 16 objetivos:
 
+
+## Princípio I – Governo centrado no cidadão e inclusivo
+Promove uma experiência agradável, simples e ágil, garantindo o acesso e benefício a todos, independentemente de sua situação.
+
 ### Objetivo 1 - Prover serviços públicos digitais personalizados, simples, de forma proativa e centrados no cidadão (10 iniciativas)
 1. Iniciativa 1.1: Transformar 95% dos serviços digitalizáveis até 2026
 2. Iniciativa 1.2: Oferecer meio de avaliação de satisfação padronizado para 80 serviços digitais mais utilizados até 2026
@@ -20,6 +24,9 @@ Após analisar os documentos fornecidos, identifiquei que a Portaria SGD/MGI Nº
 15. Iniciativa 2.5: Promover modelo de negócio de sustentação das plataformas de acessibilidade até 2025
 16. Iniciativa 2.6: Disponibilizar modelo de referência para atendimento presencial até 2025
 17. Iniciativa 2.7: Estabelecer 50 pontos de atendimento para apoio ao cidadão até 2026
+
+## Princípio II – Governo integrado e colaborativo
+Atua de forma coordenada e sinérgica, buscando interoperabilidade de dados e integração entre entes federativos.
 
 ### Objetivo 3 - Aperfeiçoar a governança de dados e a interoperabilidade (8 iniciativas)
 18. Iniciativa 3.1: Publicar a Política de Governança de Dados até 2024
@@ -42,6 +49,9 @@ Após analisar os documentos fornecidos, identifiquei que a Portaria SGD/MGI Nº
 31. Iniciativa 5.3: Pactuar acordo com 30 entes federativos para o Programa Nacional de Processo Eletrônico até 2027
 32. Iniciativa 5.4: Integrar todos estados à Rede Nacional de Dados em Saúde (RNDS) até 2027
 33. Iniciativa 5.5: Integrar 50% das Unidades Básicas de Saúde à RNDS até 2027
+
+## Princípio III – Governo inteligente e inovador
+Utiliza tecnologia e dados para otimização, com postura proativa e aberta a novas ideias.
 
 ### Objetivo 6 - Fomentar o uso inteligente de dados pelos órgãos do governo (9 iniciativas)
 34. Iniciativa 6.1: Personalizar a comunicação digital em 50 serviços públicos até 2026
@@ -70,6 +80,9 @@ Após analisar os documentos fornecidos, identifiquei que a Portaria SGD/MGI Nº
 53. Iniciativa 8.5: Capacitar 1.000 pessoas em governança e abertura de dados até 2027
 54. Iniciativa 8.6: Implementar programa de capacitação em acessibilidade digital para 60% dos órgãos até 2026
 
+## Princípio IV – Governo confiável e seguro
+Constrói e mantém a confiança pública, garantindo segurança e proteção de direitos e dados.
+
 ### Objetivo 9 - Elevar a maturidade e a resiliência em privacidade e segurança da informação (5 iniciativas)
 55. Iniciativa 9.1: Incrementar o índice de segurança da informação (iSeg) em 0,20 até 2027
 56. Iniciativa 9.2: Incrementar o índice de privacidade (iPriv) em 0,20 até 2027
@@ -92,6 +105,9 @@ Após analisar os documentos fornecidos, identifiquei que a Portaria SGD/MGI Nº
 69. Iniciativa 11.5: Realizar 20 milhões de assinaturas mensais via GOV.BR até 2026
 70. Iniciativa 11.6: Transformar 5 tipos de documentos em atributos da Carteira de Identidade Nacional até 2026
 
+## Princípio V – Governo transparente, aberto e participativo
+Comprometido com participação social e transparência pública.
+
 ### Objetivo 12 - Fortalecer a cultura de governo aberto e transparente (5 iniciativas)
 71. Iniciativa 12.1: Criar a Plataforma Nacional de Dados da Educação (PlatEduc) até 2026
 72. Iniciativa 12.2: Implementar catálogo único de dados do Governo federal até 2024
@@ -103,6 +119,9 @@ Após analisar os documentos fornecidos, identifiquei que a Portaria SGD/MGI Nº
 76. Iniciativa 13.1: Ter 3 milhões de cidadãos na plataforma Brasil Participativo até 2027
 77. Iniciativa 13.2: Oferecer o Brasil Participativo como SAAS para entes federativos até 2025
 78. Iniciativa 13.3: Integrar o Brasil Participativo nas jornadas de serviços do GOV.BR até 2025
+
+## Princípio VI – Governo eficiente e sustentável
+Otimiza processos com uso de tecnologias e serviços compartilhados, promovendo sustentabilidade.
 
 ### Objetivo 14 - Otimizar a oferta de infraestrutura compartilhada de TIC (7 iniciativas)
 79. Iniciativa 14.1: Garantir que 60% da demanda por softwares esteja nos Catálogos de Soluções de TIC até 2026

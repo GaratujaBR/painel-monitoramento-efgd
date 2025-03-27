@@ -1,6 +1,6 @@
 const { google } = require('googleapis');
 const NodeCache = require('node-cache');
-const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 
 class GoogleSheetsService {
   constructor() {
@@ -9,18 +9,19 @@ class GoogleSheetsService {
     this.retryAttempts = 3;
     this.retryDelay = 1000; // 1 second
     this.initialized = false;
+    this.sheetName = 'Iniciativas';
   }
 
   async initialize() {
     if (this.initialized) {
-      return;
+      return true;
     }
 
     try {
-      // Use direct path to credentials file
-      const credentialsPath = 'c:/Users/gabri/Desktop/MGI/Painel de Monitoramento/backend/painel-de-monitoramento-efgd-b064b0a5d751.json';
+      // Use path to credentials file relative to the current directory
+      const path = require('path');
+      const credentialsPath = path.resolve(__dirname, '../painel-de-monitoramento-efgd-b064b0a5d751.json');
       const spreadsheetId = process.env.GOOGLE_SHEETS_ID || '1lxfHZcf_C2TL05nkELhvHMXJYttRDwHLRkNESxmWbPQ';
-      const sheetName = process.env.GOOGLE_SHEETS_TAB_NAME || 'Iniciativas';
 
       if (!spreadsheetId) {
         throw new Error('ID da planilha não configurado. Verifique a variável de ambiente GOOGLE_SHEETS_ID.');
@@ -33,20 +34,13 @@ class GoogleSheetsService {
       });
 
       const authClient = await auth.getClient();
-      
-      this.sheets = google.sheets({
-        version: 'v4',
-        auth: authClient
-      });
-
+      this.sheets = google.sheets({ version: 'v4', auth: authClient });
       this.spreadsheetId = spreadsheetId;
-      this.sheetName = sheetName;
       this.initialized = true;
 
-      console.log('Cliente Google Sheets inicializado com sucesso', {
-        timestamp: new Date(),
+      console.log('Serviço Google Sheets inicializado com sucesso:', {
         spreadsheetId,
-        sheetName,
+        timestamp: new Date(),
         environment: process.env.NODE_ENV
       });
 
@@ -55,34 +49,31 @@ class GoogleSheetsService {
 
       return true;
     } catch (error) {
-      console.error('Erro fatal ao inicializar cliente Google Sheets:', {
+      console.error('Erro ao inicializar serviço Google Sheets:', {
         message: error.message,
-        timestamp: new Date(),
-        stack: error.stack
+        stack: error.stack,
+        timestamp: new Date()
       });
-      throw new Error('Falha crítica na inicialização do serviço Google Sheets. Entre em contato com o suporte técnico.');
+      throw error;
     }
   }
 
   async withRetry(operation, attempts = this.retryAttempts) {
     let lastError;
-    
-    for (let i = 0; i < attempts; i++) {
+    for (let attempt = 1; attempt <= attempts; attempt++) {
       try {
         return await operation();
       } catch (error) {
         lastError = error;
-        console.warn(`Tentativa ${i + 1}/${attempts} falhou:`, {
+        console.warn(`Tentativa ${attempt}/${attempts} falhou:`, {
           message: error.message,
-          timestamp: new Date()
+          willRetry: attempt < attempts
         });
-        
-        if (i < attempts - 1) {
-          await new Promise(resolve => setTimeout(resolve, this.retryDelay * Math.pow(2, i)));
+        if (attempt < attempts) {
+          await new Promise(resolve => setTimeout(resolve, this.retryDelay));
         }
       }
     }
-    
     throw lastError;
   }
 
@@ -98,7 +89,6 @@ class GoogleSheetsService {
       if (cached) {
         return cached;
       }
-
       const response = await this.withRetry(async () => {
         return await this.sheets.spreadsheets.values.get({
           spreadsheetId: this.spreadsheetId,
@@ -123,99 +113,188 @@ class GoogleSheetsService {
         timestamp: new Date(),
         lastSync: this.lastSync
       });
-      throw new Error('Falha ao acessar planilha do Google Sheets. Tente novamente em alguns minutos.');
+      throw error;
     }
   }
 
+  /**
+   * Transforma os dados brutos da planilha para o formato esperado pelo frontend
+   * 
+   * Esta função é responsável por:
+   * 1. Extrair os dados relevantes das colunas
+   * 2. A normalização de status (NAO_INICIADA, NO_CRONOGRAMA, etc.)
+   * 
+   * @param {Array} values - Valores brutos da planilha
+   * @returns {Array} - Dados formatados para o frontend
+   */
   transformSpreadsheetData(values) {
     if (!Array.isArray(values) || values.length < 2) {
       throw new Error('Formato inválido da planilha. Verifique se a estrutura está correta.');
     }
 
-    // Skip header row
     const [headers, ...rows] = values;
+    
+    console.log('Cabeçalhos da planilha:', headers);
+    
+    const findColumnIndex = (keywords) => {
+      return headers.findIndex(header => {
+        if (!header) return false;
+        const headerLower = header.toString().toLowerCase().trim();
+        return keywords.some(keyword => headerLower.includes(keyword));
+      });
+    };
+
+    // Encontrar índices das colunas
+    const objectiveIndex = findColumnIndex(['objetivo', 'iniciativa']);
+    const areaIndex = findColumnIndex(['área', 'area', 'departamento', 'diretoria']);
+    const statusIndex = findColumnIndex(['status', 'situação', 'situacao']);
+    const prazoIndex = findColumnIndex(['prazo', 'ano', 'conclusão', 'conclusao']);
+    const performanceIndex = findColumnIndex(['performance', 'desempenho']);
+    const principleIndex = findColumnIndex(['princípio', 'principio', 'princípios', 'principios', 'princ']);
+    const princPioIndex = headers.findIndex(header => 
+      header && header.toString().toUpperCase().includes('PRINC') && header.toString().includes('(')
+    );
+    const objectiveIdIndex = headers.findIndex(h => h === 'objectiveId');
+    const principleIdIndex = headers.findIndex(h => h === 'principleId');
+    
+    console.log("[DIAGNÓSTICO] Índices de colunas encontrados:", {
+      objectiveIndex,
+      objectiveIdIndex,
+      principleIndex,
+      principleIdIndex,
+      princPioIndex,
+      areaIndex,
+      statusIndex,
+      prazoIndex,
+      performanceIndex
+    });
     
     return rows.map((row, rowIndex) => {
       const initiative = {
-        id: '',
+        id: `id-${rowIndex + 1}`,
         name: '',
         principleId: '',
         objectiveId: '',
+        principle: '',
+        objective: '',
         areaId: '',
         completionYear: '',
         status: 'NAO_INICIADA',
-        progress: 0
+        progress: 0,
+        performance: '',
+        responsiblePerson: '',
+        lastUpdate: '',
+        observations: ''
       };
       
+      // Processar objectiveId e principleId
+      if (objectiveIdIndex !== -1 && row[objectiveIdIndex]) {
+        initiative.objectiveId = row[objectiveIdIndex].toString();
+      }
+      
+      if (principleIdIndex !== -1 && row[principleIdIndex]) {
+        initiative.principleId = row[principleIdIndex].toString();
+      }
+      
+      // Processar textos de objetivo e princípio
+      if (objectiveIndex !== -1 && row[objectiveIndex]) {
+        initiative.objective = row[objectiveIndex];
+        initiative.name = row[objectiveIndex];
+      }
+      
+      if (principleIndex !== -1 && row[principleIndex]) {
+        initiative.principle = row[principleIndex];
+      } else if (princPioIndex !== -1 && row[princPioIndex]) {
+        initiative.principle = row[princPioIndex];
+      }
+      
+      // Processar status
+      if (statusIndex !== -1 && row[statusIndex]) {
+        initiative.status = this.normalizeStatus(row[statusIndex]);
+      }
+      
+      // Processar outras colunas
       headers.forEach((header, index) => {
+        if (!header) return;
+        const headerLower = header.toString().toLowerCase().trim();
         const value = row[index];
+        
+        if (!value) return;
+        
         try {
-          switch(header.toLowerCase()) {
-            case 'id':
-              initiative.id = value || `id-${rowIndex + 1}`;
+          switch(true) {
+            case objectiveIndex === index:
+            case principleIndex === index:
+            case princPioIndex === index:
+            case objectiveIdIndex === index:
+            case principleIdIndex === index:
               break;
-            case 'iniciativa':
-            case 'iniciativas':
-              initiative.name = value || '';
+              
+            case headerLower.includes('área') || headerLower.includes('area') || headerLower.includes('departamento'):
+              initiative.areaId = value;
               break;
-            case 'área':
-            case 'area':
-              initiative.areaId = value || '';
-              break;
-            case 'status':
-              initiative.status = this.normalizeStatus(value) || '';
-              break;
-            case 'prazo':
-            case 'ano prazo para conclusão':
-            case 'ano':
-              initiative.completionYear = value || '';
-              break;
-            case 'progresso':
-            case 'progresso (%)':
-              initiative.progress = parseInt(value, 10) || 0;
-              if (initiative.progress < 0 || initiative.progress > 100) {
-                initiative.progress = 0;
-                console.warn(`Progresso inválido na linha ${rowIndex + 2}, definido como 0`);
+              
+            case headerLower.includes('status'):
+              // Usar status apenas para iniciativas concluídas
+              if (value.toString().toLowerCase().includes('conclu')) {
+                initiative.status = 'CONCLUIDA';
               }
               break;
-            case 'objetivo':
-            case 'objetivos':
-              initiative.objectiveId = value || '';
+              
+            case headerLower.includes('prazo') || headerLower.includes('ano') || headerLower.includes('conclusão'):
+              initiative.completionYear = value;
               break;
-            case 'princípio':
-            case 'principio':
-            case 'princípios':
-            case 'principios':
-              initiative.principleId = value || '';
+              
+            case headerLower.includes('progresso') || headerLower.includes('percentual'):
+              const progressMatch = value.toString().match(/(\d+)/);
+              initiative.progress = progressMatch ? parseInt(progressMatch[1], 10) : 0;
+              if (initiative.progress < 0 || initiative.progress > 100) {
+                initiative.progress = 0;
+              }
+              break;
+              
+            case headerLower.includes('performance') || headerLower.includes('desempenho'):
+              initiative.performance = value;
+              // Determinar status baseado na performance
+              if (value.toString().toLowerCase().includes('atrasada')) {
+                initiative.status = 'ATRASADA';
+              } else if (value.toString().toLowerCase().includes('no cronograma')) {
+                initiative.status = 'NO_CRONOGRAMA';
+              }
+              break;
+              
+            case headerLower.includes('responsável') || headerLower.includes('responsavel'):
+              initiative.responsiblePerson = value;
+              break;
+              
+            case headerLower.includes('atualização') || headerLower.includes('atualizacao') || headerLower.includes('data'):
+              initiative.lastUpdate = value;
+              break;
+              
+            case headerLower.includes('observações') || headerLower.includes('observacoes') || headerLower.includes('obs'):
+              initiative.observations = value;
               break;
           }
         } catch (error) {
-          console.error('Erro ao processar campo:', {
-            header,
-            value,
-            rowIndex: rowIndex + 2,
-            error: error.message
-          });
-          // Continue processing instead of throwing error
-          console.warn(`Erro ignorado para continuar processamento: ${error.message}`);
+          console.error(`Erro ao processar campo ${header}:`, error);
         }
       });
-
+      
       return initiative;
-    }).filter(initiative => initiative.name); // Filter out rows without a title
+    }).filter(initiative => initiative.name && initiative.name.trim() !== '');
   }
 
   // Normalize status values to match our standard format
   normalizeStatus(status) {
     if (!status) return 'NAO_INICIADA';
     
-    const statusLower = status.toLowerCase().trim();
+    const statusLower = status.toString().toLowerCase().trim();
     
     if (statusLower.includes('não iniciada') || statusLower.includes('nao iniciada') || statusLower === 'não iniciado' || statusLower === 'nao iniciado') {
       return 'NAO_INICIADA';
     }
     
-    if (statusLower.includes('cronograma') || statusLower === 'no prazo' || statusLower === 'em andamento') {
+    if (statusLower.includes('cronograma') || statusLower === 'no prazo' || statusLower === 'em andamento' || statusLower.includes('execução') || statusLower.includes('execucao')) {
       return 'NO_CRONOGRAMA';
     }
     
@@ -227,7 +306,7 @@ class GoogleSheetsService {
       return 'CONCLUIDA';
     }
     
-    return status.toUpperCase();
+    return 'NAO_INICIADA';
   }
 
   startChangePolling() {
@@ -347,6 +426,157 @@ class GoogleSheetsService {
 
   async setupWebhook() {
     throw new Error('Webhooks não são suportados pelo serviço Google Sheets');
+  }
+
+  async getPrinciples() {
+    if (!this.initialized) {
+      await this.initialize();
+    }
+
+    try {
+      const cacheKey = 'principles_data';
+      const cached = this.cache.get(cacheKey);
+      
+      if (cached) {
+        return cached;
+      }
+
+      // Extrair princípios das iniciativas
+      const initiatives = await this.getSpreadsheetData();
+      
+      // Criar um mapa para armazenar princípios únicos
+      const principlesMap = new Map();
+      
+      initiatives.forEach(initiative => {
+        if (initiative.principleId && initiative.principleId.trim() !== '') {
+          // Extrair o ID do princípio (assumindo formato "I - Nome do Princípio")
+          const match = initiative.principleId.match(/^([IVX]+)\s*-\s*(.+)$/);
+          
+          if (match) {
+            const id = match[1].trim(); // "I", "II", etc.
+            const name = initiative.principleId.trim(); // Nome completo com o numeral
+            
+            if (!principlesMap.has(id)) {
+              principlesMap.set(id, { id, name });
+            }
+          } else {
+            // Se não seguir o formato esperado, usar o valor completo como ID e nome
+            const id = initiative.principleId.trim();
+            if (!principlesMap.has(id)) {
+              principlesMap.set(id, { id, name: id });
+            }
+          }
+        }
+      });
+      
+      // Converter o mapa em array e ordenar por ID
+      const principles = Array.from(principlesMap.values())
+        .sort((a, b) => {
+          // Converter numerais romanos para números para ordenação
+          const romanToNum = (roman) => {
+            const romanNumerals = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+            let result = 0;
+            for (let i = 0; i < roman.length; i++) {
+              const current = romanNumerals[roman[i]];
+              const next = romanNumerals[roman[i + 1]];
+              if (next && current < next) {
+                result -= current;
+              } else {
+                result += current;
+              }
+            }
+            return result;
+          };
+          
+          try {
+            return romanToNum(a.id) - romanToNum(b.id);
+          } catch (e) {
+            return a.id.localeCompare(b.id);
+          }
+        });
+
+      console.log(`Encontrados ${principles.length} princípios a partir das iniciativas`);
+      this.cache.set(cacheKey, principles);
+      return principles;
+    } catch (error) {
+      console.error('Erro ao extrair princípios das iniciativas:', error);
+      return [];
+    }
+  }
+
+  async getObjectives() {
+    if (!this.initialized) {
+      await this.initialize();
+    }
+
+    try {
+      const cacheKey = 'objectives_data';
+      const cached = this.cache.get(cacheKey);
+      
+      if (cached) {
+        return cached;
+      }
+
+      // Extrair objetivos das iniciativas
+      const initiatives = await this.getSpreadsheetData();
+      const principles = await this.getPrinciples();
+      
+      // Criar um mapa para armazenar objetivos únicos
+      const objectivesMap = new Map();
+      
+      initiatives.forEach(initiative => {
+        if (initiative.objectiveId && initiative.objectiveId.trim() !== '') {
+          // Extrair o ID do objetivo (assumindo formato "01 - Nome do Objetivo")
+          const match = initiative.objectiveId.match(/^(\d+)\s*-\s*(.+)$/);
+          
+          if (match) {
+            const id = match[1].trim(); // "01", "02", etc.
+            const name = initiative.objectiveId.trim(); // Nome completo com o numeral
+            
+            // Determinar o principleId para este objetivo
+            let principleId = '';
+            if (initiative.principleId) {
+              const principleMatch = initiative.principleId.match(/^([IVX]+)\s*-\s*(.+)$/);
+              if (principleMatch) {
+                principleId = principleMatch[1].trim();
+              } else {
+                principleId = initiative.principleId.trim();
+              }
+            }
+            
+            if (!objectivesMap.has(id)) {
+              objectivesMap.set(id, { id, name, principleId });
+            }
+          } else {
+            // Se não seguir o formato esperado, usar o valor completo como ID e nome
+            const id = initiative.objectiveId.trim();
+            if (!objectivesMap.has(id)) {
+              objectivesMap.set(id, { 
+                id, 
+                name: id, 
+                principleId: initiative.principleId || '' 
+              });
+            }
+          }
+        }
+      });
+      
+      // Converter o mapa em array e ordenar por ID
+      const objectives = Array.from(objectivesMap.values())
+        .sort((a, b) => {
+          // Ordenar numericamente
+          const numA = parseInt(a.id, 10) || 0;
+          const numB = parseInt(b.id, 10) || 0;
+          return numA - numB;
+        });
+
+      console.log(`Encontrados ${objectives.length} objetivos a partir das iniciativas`);
+      this.cache.set(cacheKey, objectives);
+      return objectives;
+    } catch (error) {
+      console.error('Erro ao extrair objetivos das iniciativas:', error);
+      return [];
+    }
   }
 }
 
