@@ -1,4 +1,4 @@
-# EFGD Dashboard - Backend Setup
+# Painel de Monitoramento EFGD - Configuração do Backend
 
 ## Configuração de Ambiente
 

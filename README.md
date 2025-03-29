@@ -1,44 +1,44 @@
-# EFGD Monitoring Dashboard
+# Painel de Monitoramento EFGD
 
-## Project Overview
-This is a monitoring dashboard and data input application for Brazil's Estratégia Federal de Governo Digital (EFGD) - the Federal Strategy of Digital Government. The system serves two main purposes:
+## Visão Geral do Projeto
+Este é um painel de monitoramento e aplicação de entrada de dados para a Estratégia Federal de Governo Digital (EFGD) do Brasil. O sistema serve a dois propósitos principais:
 
-1. **Data Input Application**: Allows civil servants to record real-time progress on various digital government initiatives
-2. **Monitoring Dashboard**: Visualizes key performance metrics to help stakeholders track the evolution of the strategy
+1. **Aplicação de Entrada de Dados**: Permite que servidores públicos registrem o progresso em tempo real de várias iniciativas de governo digital
+2. **Painel de Monitoramento**: Visualiza métricas-chave de desempenho para ajudar as partes interessadas a acompanhar a evolução da estratégia
 
-## Project Structure
-- `/frontend` - React-based user interface
-- `/backend` - Node.js/Express server and API endpoints
-- `/.windsurf` - Project task documentation and progress tracking
+## Estrutura do Projeto
+- `/frontend` - Interface de usuário baseada em React
+- `/backend` - Servidor Node.js/Express e endpoints de API
+- `/.windsurf` - Documentação de tarefas do projeto e acompanhamento de progresso
 
-## Features
-- Secure authentication with MFA and role-based access control
-- Data input forms for recording initiative progress
-- Visual dashboard for monitoring key performance indicators
-- Integration with Google Sheets for data synchronization
-- Notifications for deadlines and updates
-- User management with role-based permissions
+## Funcionalidades
+- Autenticação segura com MFA e controle de acesso baseado em perfis
+- Formulários de entrada de dados para registro do progresso das iniciativas
+- Painel visual para monitoramento de indicadores-chave de desempenho
+- Integração com Google Sheets para sincronização de dados
+- Notificações para prazos e atualizações
+- Gerenciamento de usuários com permissões baseadas em perfis
 
-## Technology Stack
+## Stack Tecnológica
 - **Frontend**: React
 - **Backend**: Node.js, Express
-- **Database**: NoSQL
-- **Authentication**: Azure Active Directory
-- **Hosting**: Microsoft Azure
+- **Banco de Dados**: NoSQL
+- **Autenticação**: Azure Active Directory
+- **Hospedagem**: Microsoft Azure
 
-## Visual Identity
-The project follows specific government visual identity guidelines:
-- **Typography**: Verdana font throughout
-- **Color scheme**: Yellow (#FFD000), Blue (#183EFF), Green (#00D000), Red (#FF0000)
-- **Layout standards**: 1280×720 aspect ratio
+## Identidade Visual
+O projeto segue diretrizes específicas de identidade visual do governo:
+- **Tipografia**: Fonte Verdana em todo o sistema
+- **Esquema de cores**: Amarelo (#FFD000), Azul (#183EFF), Verde (#00D000), Vermelho (#FF0000)
+- **Padrões de layout**: Proporção de aspecto 1280×720
 
-## Getting Started
-Instructions for setting up the development environment:
+## Como Começar
+Instruções para configurar o ambiente de desenvolvimento:
 
-1. Clone the repository
-2. Navigate to the frontend directory: `cd frontend`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm start`
+1. Clone o repositório
+2. Navegue até o diretório frontend: `cd frontend`
+3. Instale as dependências: `npm install`
+4. Inicie o servidor de desenvolvimento: `npm start`
 
-## Project Status
-This project is currently in active development.
+## Status do Projeto
+Este projeto está atualmente em desenvolvimento ativo.
