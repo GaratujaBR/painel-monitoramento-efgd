@@ -1,0 +1,575 @@
+/* Initiatives.css - Estilos para componentes de gerenciamento de iniciativas */
+
+/* Estilos para a página de iniciativas */
+
+.page-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  font-family: Verdana, sans-serif;
+}
+
+.content-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+  height: 720px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-size: 26px;
+  color: #183EFF;
+  font-weight: bold;
+  margin: 0;
+}
+
+.page-content {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.page-sidebar {
+  width: 280px;
+  padding: 20px;
+  border-right: 1px solid #e7e7e7;
+  background: white;
+  overflow-y: auto;
+}
+
+.page-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.initiatives-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.initiatives-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #183EFF;
+}
+
+/* Estilos para os filtros */
+.filters-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-family: Verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-select:hover {
+  border-color: #183EFF;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #183EFF;
+  box-shadow: 0 0 0 2px rgba(24, 62, 255, 0.1);
+}
+
+.filter-select option {
+  font-family: Verdana, sans-serif;
+  padding: 8px;
+}
+
+/* Responsividade para filtros */
+@media (max-width: 1280px) {
+  .filters-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .filters-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .filters-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grid de iniciativas */
+.initiative-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Card de iniciativa */
+.initiative-card {
+  background: white;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.initiative-card:hover {
+  border-color: #183EFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.initiative-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.initiative-code {
+  background: #e7e7e7;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #183EFF;
+}
+
+.initiative-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0 0 16px 0;
+}
+
+.initiative-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.initiative-name,
+.initiative-principle,
+.initiative-objective {
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+.initiative-name strong,
+.initiative-principle strong,
+.initiative-objective strong {
+  color: #183EFF;
+  margin-bottom: 4px;
+}
+
+/* Status icons */
+.status-icon {
+  font-size: 18px;
+}
+
+.status-icon.completed {
+  color: #00D000;
+}
+
+.status-icon.on-track {
+  color: #183EFF;
+}
+
+.status-icon.at-risk {
+  color: #FF0000;
+}
+
+/* Priority badges */
+.priority-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.priority-badge.high {
+  background-color: #FFE6E6;
+  color: #FF0000;
+}
+
+.priority-badge.medium {
+  background-color: #FFF5E6;
+  color: #FFD000;
+}
+
+.priority-badge.low {
+  background-color: #E6FFE6;
+  color: #00D000;
+}
+
+/* Progress bar */
+.progress-container {
+  width: 100%;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e7e7e7;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #183EFF;
+  border-radius: 4px;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #585C5D;
+}
+
+/* Estados de carregamento e erro */
+.loading,
+.error,
+.no-initiatives {
+  text-align: center;
+  padding: 40px;
+  color: #585C5D;
+}
+
+.error {
+  color: #FF0000;
+}
+
+/* Tabela de iniciativas */
+.initiatives-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  font-family: Verdana, sans-serif;
+}
+
+.table-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  margin-top: 20px;
+}
+
+.initiatives-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.initiatives-table th {
+  background-color: #f5f5f5;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.initiatives-table th:hover {
+  background-color: #e8e8e8;
+}
+
+.initiatives-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.initiatives-table tr:last-child td {
+  border-bottom: none;
+}
+
+.initiatives-table tr:hover {
+  background-color: #f8f9ff;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  min-width: 120px;
+  background-color: transparent;
+  border: 2px solid;
+}
+
+.status-badge[data-status="NAO_INICIADA"] {
+  color: #444444;
+  border-color: #444444;
+  background-color: rgba(68, 68, 68, 0.1);
+}
+
+.status-badge[data-status="NO_CRONOGRAMA"] {
+  color: #00D000;
+  border-color: #00D000;
+  background-color: rgba(0, 208, 0, 0.1);
+}
+
+.status-badge[data-status="ATRASADA"] {
+  color: #FF0000;
+  border-color: #FF0000;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.status-badge[data-status="CONCLUIDA"] {
+  color: #00b505;
+  border-color: #00b505;
+  background-color: rgba(0, 181, 5, 0.1);
+}
+
+.status-badge[data-status="EM_EXECUCAO"] {
+  color: #1d36b6;
+  border-color: #1d36b6;
+  background-color: rgba(29, 54, 182, 0.1);
+}
+
+/* Performance Badge */
+.performance-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  min-width: 120px;
+  background-color: transparent;
+  border: 2px solid;
+}
+
+.performance-badge[data-performance="No Cronograma"] {
+  color: #203ce2;
+  border-color: #203ce2;
+  background-color: rgba(32, 60, 226, 0.1);
+}
+
+.performance-badge[data-performance="Atrasada"] {
+  color: #920a0a;
+  border-color: #920a0a;
+  background-color: rgba(146, 10, 10, 0.1);
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 8px;
+  background: linear-gradient(90deg, #183EFF 0%, #00D000 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Loading e Error states */
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.error {
+  color: #FF0000;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .initiatives-table {
+    font-size: 14px;
+  }
+
+  .initiatives-table th,
+  .initiatives-table td {
+    padding: 10px 12px;
+  }
+
+  .status-badge {
+    min-width: 100px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    margin-top: 16px;
+    border-radius: 6px;
+  }
+
+  .initiatives-table th {
+    white-space: nowrap;
+  }
+
+  .status-badge {
+    min-width: 90px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .initiatives-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .initiatives-table th,
+  .initiatives-table td {
+    padding: 8px 12px;
+  }
+
+  .filters-container {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .initiatives-container {
+    margin: 0 auto;
+    padding: 10px;
+  }
+
+  .page-content {
+    flex-direction: column;
+  }
+
+  .page-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  .initiative-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilos para cabeçalhos ordenáveis */
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 24px !important;
+  transition: background-color 0.2s;
+}
+
+.sortable-header:hover {
+  background-color: #e8e8e8;
+}
+
+.sort-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 14px;
+  opacity: 0.5;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.sort-icon.active {
+  opacity: 1;
+  color: #183EFF;
+}
+
+.sortable-header:hover .sort-icon {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .sort-icon {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sortable-header {
+    padding-right: 20px !important;
+  }
+
+  .sort-icon {
+    right: 4px;
+  }
+}
