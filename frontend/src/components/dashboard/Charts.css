@@ -427,6 +427,81 @@
   
   .recharts-container {
     max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .chart-container {
+    overflow-x: auto;
+    padding-bottom: 15px;
+  }
+  
+  .chart-wrapper {
+    min-width: 500px;
+  }
+  
+  /* Ajustes para os gráficos de status por princípio e objetivo */
+  .principle-status-chart,
+  .objective-status-chart {
+    overflow-x: auto;
+  }
+  
+  .principle-status-chart canvas,
+  .objective-status-chart canvas {
+    min-width: 500px;
+    height: auto !important;
+  }
+  
+  /* Melhorar tooltips em dispositivos móveis */
+  .custom-tooltip {
+    max-width: 250px;
+    font-size: 12px;
+    padding: 8px;
+  }
+  
+  .tooltip-title {
+    font-size: 13px;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+  .donut-chart-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .donut-total {
+    font-size: calc(var(--font-size-data-label) * 0.9);
+  }
+  
+  .chart-wrapper {
+    min-width: 400px;
+  }
+  
+  .timeline-initiative-name {
+    width: 100px;
+    font-size: calc(var(--font-size-footnote) * 0.9);
+  }
+  
+  .timeline-marker-date {
+    font-size: calc(var(--font-size-footnote) * 0.9);
+  }
+  
+  .custom-tooltip {
+    max-width: 200px;
+    font-size: 11px;
+    padding: 6px;
+  }
+  
+  .tooltip-title {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  
+  /* Ajustes para os gráficos de status por princípio e objetivo */
+  .principle-status-chart canvas,
+  .objective-status-chart canvas {
+    min-width: 400px;
   }
 }
 

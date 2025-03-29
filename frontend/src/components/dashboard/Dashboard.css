@@ -527,7 +527,7 @@
   margin-bottom: 8px;
 }
 
-/* Responsive adjustments */
+/* Media Queries para melhorar a responsividade */
 @media (max-width: 1024px) {
   .dashboard-container {
     padding: var(--spacing-md);
@@ -539,6 +539,11 @@
   
   .dashboard-intro h1 {
     font-size: calc(var(--font-size-main-title) * 0.8);
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
   }
 }
 
@@ -561,16 +566,97 @@
     font-size: calc(var(--font-size-main-title) * 0.6);
   }
   
-  .dashboard-chart-row {
-    flex-direction: column;
-  }
-  
-  .milestone-stats {
+  .dashboard-grid {
     grid-template-columns: 1fr;
   }
   
+  .dashboard-section {
+    padding: var(--spacing-md);
+  }
+  
+  .chart-container {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .chart-container canvas {
+    min-width: 500px;
+  }
+  
+  .dashboard-last-update {
+    position: static;
+    margin-top: var(--spacing-md);
+    text-align: left;
+  }
+  
+  .dashboard-description {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .performance-container,
+  .execution-container {
+    flex-direction: column;
+  }
+  
+  .performance-right,
+  .execution-left {
+    margin-top: var(--spacing-md);
+  }
+  
+  .performance-right .metric-box,
+  .execution-left .metric-box {
+    min-height: 100px;
+  }
+  
+  /* Inverter a ordem para mobile na seção de execução */
+  .execution-container {
+    flex-direction: column-reverse;
+  }
+}
+
+/* Novas regras para telas muito pequenas (smartphones) */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: var(--spacing-sm);
+  }
+  
+  .dashboard-section {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .dashboard-header {
+    padding: var(--spacing-md);
+  }
+  
+  .dashboard-intro h1 {
+    font-size: calc(var(--font-size-main-title) * 0.5);
+  }
+  
   .metric-value {
-    font-size: calc(var(--font-size-kpi) * 0.5);
+    font-size: calc(var(--font-size-kpi) * 0.6);
+  }
+  
+  .metric-label {
+    font-size: calc(var(--font-size-small) * 0.9);
+  }
+  
+  .chart-container canvas {
+    min-width: 400px;
+  }
+  
+  .status-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .status-card-title {
+    font-size: var(--font-size-small);
+  }
+  
+  .status-card-value {
+    font-size: calc(var(--font-size-h2) * 0.8);
   }
 }
 

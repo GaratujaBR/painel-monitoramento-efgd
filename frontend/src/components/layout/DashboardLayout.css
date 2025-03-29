@@ -28,12 +28,40 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .dashboard-content.sidebar-open {
-    margin-left: 0;
+    margin-left: 240px;
   }
   
   .dashboard-content.sidebar-closed {
+    margin-left: 50px;
+  }
+  
+  .dashboard-main {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  
+  .dashboard-content.sidebar-open,
+  .dashboard-content.sidebar-closed {
     margin-left: 0;
+    margin-bottom: 50px; /* Espaço para o sidebar colapsado na parte inferior */
+  }
+  
+  .dashboard-main {
+    padding: 15px 10px;
+    overflow-x: hidden;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+  .dashboard-main {
+    padding: 10px 8px;
   }
 }
