@@ -12,8 +12,16 @@ console.log("Iniciando servidor com configurações:", {
 
 const app = express();
 
+// Configuração do CORS para permitir apenas o domínio do Netlify
+const corsOptions = {
+  origin: ['https://monitoramento-interno-efgd.netlify.app', 'http://localhost:3000'],
+  optionsSuccessStatus: 200,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Middleware para logar todas as requisições
