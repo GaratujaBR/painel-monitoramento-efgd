@@ -1,0 +1,102 @@
+/* Variáveis CSS para o Painel de Monitoramento EFGD */
+
+:root {
+  /* Cores Primárias (conforme manual de identidade visual) */
+  --color-yellow: #FFD000;
+  --color-blue: #183EFF;
+  --color-green: #00D000;
+  --color-red: #FF0000;
+
+  /* Cores Base para Elementos UI */
+  --color-black: #000000;
+  --color-dark-gray: #585C5D;
+  --color-medium-gray: #999999;
+  --color-light-gray: #e7e7e7;
+  --color-white: #FFFFFF;
+
+  /* Tamanhos de Fonte (ajustados para melhor visualização) */
+  --font-size-main-title: 32pt; /* 42.67px - reduzido de 44pt */
+  --font-size-section-heading: 20pt; /* 26.67px - reduzido de 26pt */
+  --font-size-regular: 14pt; /* 18.67px - mantido */
+  --font-size-small: 12pt; /* 16px - mantido */
+  --font-size-footnote: 8pt; /* 10.67px - mantido */
+  --font-size-data-label: 14pt; /* 18.67px - reduzido de 16pt */
+  --font-size-kpi: 48pt; /* 64px - reduzido significativamente de 100pt */
+
+  /* Espaçamento */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+
+  /* Bordas e Sombras */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --box-shadow-default: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --box-shadow-elevated: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  /* Transições */
+  --transition-default: all 0.3s ease;
+
+  /* Layout */
+  --sidebar-width: 280px;
+  --sidebar-width-collapsed: 60px;
+  --header-height: 70px;
+  --footer-height: 100px;
+  --dashboard-width: 1280px; /* Proporção 16:9 para 720px de altura */
+}
+
+/* Classes de utilidade para cores */
+.color-primary {
+  color: var(--color-blue);
+}
+
+.color-success {
+  color: var(--color-green);
+}
+
+.color-warning {
+  color: var(--color-yellow);
+}
+
+.color-danger {
+  color: var(--color-red);
+}
+
+.color-text {
+  color: var(--color-black);
+}
+
+.color-text-secondary {
+  color: var(--color-dark-gray);
+}
+
+.color-text-tertiary {
+  color: var(--color-medium-gray);
+}
+
+/* Classes de utilidade para fundos */
+.bg-primary {
+  background-color: var(--color-blue);
+}
+
+.bg-success {
+  background-color: var(--color-green);
+}
+
+.bg-warning {
+  background-color: var(--color-yellow);
+}
+
+.bg-danger {
+  background-color: var(--color-red);
+}
+
+.bg-light {
+  background-color: var(--color-light-gray);
+}
+
+.bg-white {
+  background-color: var(--color-white);
+}

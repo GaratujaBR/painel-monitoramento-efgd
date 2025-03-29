@@ -1,0 +1,186 @@
+/* Header Styles */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 120px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #e7e7e7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 20px;
+}
+
+.sidebar-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #585C5D;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para o novo título EFGD */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+.titulo-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.linha-1 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin: 0;
+  color: #333;
+  display: block;
+  line-height: 1.2;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: -5px;
+}
+
+.federal {
+  color: #0066cc;
+  font-weight: 700;
+}
+
+.linha-2 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.1;
+  color: #333;
+  background: linear-gradient(90deg, #ffcc00 0%, #ffcc00 100%);
+  background-size: 100% 30%;
+  background-position: 0 85%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: -2px;
+}
+
+.header-title {
+  font-size: 26px;
+  color: #585C5D;
+  margin: 0;
+  font-weight: normal;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-date {
+  color: #999999;
+  font-size: 14px;
+  margin-right: 30px;
+  text-transform: capitalize;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.notification-button {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-right: 20px;
+  width: 24px;
+  height: 24px;
+}
+
+.notification-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-color: #999999;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z'/%3E%3C/svg%3E");
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #FF0000;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #183EFF;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.user-name {
+  color: #585C5D;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-date {
+    display: none;
+  }
+  
+  .header-title {
+    font-size: 18px;
+  }
+  
+  .user-name {
+    display: none;
+  }
+}
