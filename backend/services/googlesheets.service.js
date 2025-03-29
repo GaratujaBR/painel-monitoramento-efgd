@@ -20,12 +20,22 @@ class GoogleSheetsService {
     try {
       // Use path to credentials file relative to the current directory
       const path = require('path');
+      const fs = require('fs');
       const credentialsPath = path.resolve(__dirname, '../painel-de-monitoramento-efgd-b064b0a5d751.json');
+      
+      // Verificar se o arquivo de credenciais existe
+      if (!fs.existsSync(credentialsPath)) {
+        console.error(`Arquivo de credenciais não encontrado em: ${credentialsPath}`);
+        throw new Error('Arquivo de credenciais do Google Sheets não encontrado');
+      }
+      
       const spreadsheetId = process.env.GOOGLE_SHEETS_ID || '1lxfHZcf_C2TL05nkELhvHMXJYttRDwHLRkNESxmWbPQ';
 
       if (!spreadsheetId) {
         throw new Error('ID da planilha não configurado. Verifique a variável de ambiente GOOGLE_SHEETS_ID.');
       }
+      
+      console.log("Arquivo de credenciais encontrado, tentando inicializar com spreadsheetId:", spreadsheetId);
 
       // Initialize Google Sheets API client with service account
       const auth = new google.auth.GoogleAuth({
@@ -208,9 +218,10 @@ class GoogleSheetsService {
         initiative.principle = row[princPioIndex];
       }
       
-      // Processar status
+      // Processar status - Leitura primária da coluna STATUS
       if (statusIndex !== -1 && row[statusIndex]) {
         initiative.status = this.normalizeStatus(row[statusIndex]);
+        console.log(`[DEBUG] Status lido da coluna STATUS: ${row[statusIndex]} -> normalizado para: ${initiative.status}`);
       }
       
       // Processar outras colunas
@@ -234,12 +245,8 @@ class GoogleSheetsService {
               initiative.areaId = value;
               break;
               
-            case headerLower.includes('status'):
-              // Usar status apenas para iniciativas concluídas
-              if (value.toString().toLowerCase().includes('conclu')) {
-                initiative.status = 'CONCLUIDA';
-              }
-              break;
+            // Removida a lógica que sobrescreve o status com base na coluna 'status'
+            // Agora o status é determinado exclusivamente pelo statusIndex acima
               
             case headerLower.includes('prazo') || headerLower.includes('ano') || headerLower.includes('conclusão'):
               initiative.completionYear = value;
@@ -255,12 +262,8 @@ class GoogleSheetsService {
               
             case headerLower.includes('performance') || headerLower.includes('desempenho'):
               initiative.performance = value;
-              // Determinar status baseado na performance
-              if (value.toString().toLowerCase().includes('atrasada')) {
-                initiative.status = 'ATRASADA';
-              } else if (value.toString().toLowerCase().includes('no cronograma')) {
-                initiative.status = 'NO_CRONOGRAMA';
-              }
+              // Removida a lógica que sobrescreve o status com base na performance
+              // Agora o status é determinado exclusivamente pelo statusIndex acima
               break;
               
             case headerLower.includes('responsável') || headerLower.includes('responsavel'):
@@ -289,23 +292,56 @@ class GoogleSheetsService {
     if (!status) return 'NAO_INICIADA';
     
     const statusLower = status.toString().toLowerCase().trim();
+    console.log(`[DEBUG] Normalizando status: "${statusLower}"`);
     
-    if (statusLower.includes('não iniciada') || statusLower.includes('nao iniciada') || statusLower === 'não iniciado' || statusLower === 'nao iniciado') {
-      return 'NAO_INICIADA';
-    }
-    
-    if (statusLower.includes('cronograma') || statusLower === 'no prazo' || statusLower === 'em andamento' || statusLower.includes('execução') || statusLower.includes('execucao')) {
-      return 'NO_CRONOGRAMA';
-    }
-    
-    if (statusLower.includes('atrasada') || statusLower === 'atrasado' || statusLower === 'em atraso') {
-      return 'ATRASADA';
-    }
-    
-    if (statusLower.includes('concluída') || statusLower.includes('concluida') || statusLower === 'concluído' || statusLower === 'concluido' || statusLower === 'finalizada' || statusLower === 'finalizado') {
+    // Concluída - verificar primeiro para evitar falsos positivos com "em execução"
+    if (statusLower.includes('concluída') || 
+        statusLower.includes('concluida') || 
+        statusLower === 'concluído' || 
+        statusLower === 'concluido' || 
+        statusLower === 'finalizada' || 
+        statusLower === 'finalizado' ||
+        statusLower === 'concluída' ||
+        statusLower === 'concluida') {
+      console.log(`[DEBUG] Status normalizado para CONCLUIDA`);
       return 'CONCLUIDA';
     }
     
+    // Não iniciada
+    if (statusLower.includes('não iniciada') || 
+        statusLower.includes('nao iniciada') || 
+        statusLower === 'não iniciado' || 
+        statusLower === 'nao iniciado') {
+      console.log(`[DEBUG] Status normalizado para NAO_INICIADA`);
+      return 'NAO_INICIADA';
+    }
+    
+    // Em execução
+    if (statusLower.includes('execução') || 
+        statusLower.includes('execucao') ||
+        statusLower === 'em execução' ||
+        statusLower === 'em execucao' ||
+        statusLower === 'em andamento') {
+      console.log(`[DEBUG] Status normalizado para EM_EXECUCAO`);
+      return 'EM_EXECUCAO';
+    }
+    
+    // No cronograma
+    if (statusLower.includes('cronograma') || 
+        statusLower === 'no prazo') {
+      console.log(`[DEBUG] Status normalizado para NO_CRONOGRAMA`);
+      return 'NO_CRONOGRAMA';
+    }
+    
+    // Atrasada
+    if (statusLower.includes('atrasada') || 
+        statusLower === 'atrasado' || 
+        statusLower === 'em atraso') {
+      console.log(`[DEBUG] Status normalizado para ATRASADA`);
+      return 'ATRASADA';
+    }
+    
+    console.log(`[DEBUG] Status não reconhecido, usando padrão NAO_INICIADA`);
     return 'NAO_INICIADA';
   }
 

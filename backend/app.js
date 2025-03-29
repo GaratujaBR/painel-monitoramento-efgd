@@ -3,11 +3,24 @@ const express = require('express');
 const cors = require('cors');
 require('isomorphic-fetch');
 
+// Adicionar logs de inicialização
+console.log("Iniciando servidor com configurações:", {
+  port: process.env.PORT || 3003,
+  environment: process.env.NODE_ENV,
+  googleSheetsId: process.env.GOOGLE_SHEETS_ID ? "Configurado" : "Não configurado"
+});
+
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Middleware para logar todas as requisições
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
 
 // Welcome route
 app.get('/', (req, res) => {

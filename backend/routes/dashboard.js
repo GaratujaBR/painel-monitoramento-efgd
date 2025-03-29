@@ -19,8 +19,11 @@ if (!dataService.initialized) {
 router.get('/', async (req, res, next) => {
   try {
     console.log('Iniciando busca de dados do dashboard...');
+    console.log('Status de inicialização do serviço:', dataService.initialized ? 'Inicializado' : 'Não inicializado');
     
     // Get initiatives data from Google Sheets
+    console.log('Buscando dados do Google Sheets...');
+    
     const [initiatives, principles, objectives] = await Promise.all([
       dataService.getSpreadsheetData(),
       dataService.getPrinciples(),
@@ -106,6 +109,46 @@ router.get('/', async (req, res, next) => {
       return counts;
     }, {});
     
+    // Count initiatives by performance
+    const normalizePerformance = (performance) => {
+      if (!performance) return 'DESCONHECIDO';
+      
+      const performanceLower = performance.toString().toLowerCase().trim();
+      
+      if (performanceLower.includes('atrasada') || performanceLower === 'atrasado' || performanceLower === 'em atraso') {
+        return 'ATRASADA';
+      }
+      
+      if (performanceLower.includes('cronograma') || performanceLower === 'no prazo') {
+        return 'NO_CRONOGRAMA';
+      }
+      
+      return 'DESCONHECIDO';
+    };
+    
+    const performanceCounts = initiatives.reduce((counts, initiative) => {
+      const performance = normalizePerformance(initiative.performance);
+      counts[performance] = (counts[performance] || 0) + 1;
+      return counts;
+    }, {});
+    
+    // Log status and performance counts for debugging
+    console.log('Status counts:', statusCounts);
+    console.log('Iniciativas CONCLUIDA:', statusCounts['CONCLUIDA'] || 0);
+    console.log('Iniciativas NO_CRONOGRAMA:', statusCounts['NO_CRONOGRAMA'] || 0);
+    console.log('Iniciativas ATRASADA:', statusCounts['ATRASADA'] || 0);
+    console.log('Iniciativas NAO_INICIADA:', statusCounts['NAO_INICIADA'] || 0);
+    
+    console.log('Performance counts:', performanceCounts);
+    console.log('Iniciativas NO_CRONOGRAMA (performance):', performanceCounts['NO_CRONOGRAMA'] || 0);
+    console.log('Iniciativas ATRASADA (performance):', performanceCounts['ATRASADA'] || 0);
+    
+    // Log a sample of initiatives with their status
+    console.log('Amostra de iniciativas com status:');
+    initiatives.slice(0, 5).forEach((initiative, index) => {
+      console.log(`Iniciativa ${index + 1}: "${initiative.name.substring(0, 30)}..." - Status: ${initiative.status}`);
+    });
+    
     // Calculate average progress
     const averageProgress = initiatives.length > 0 
       ? Math.round(initiatives.reduce((sum, i) => sum + i.progress, 0) / initiatives.length) 
@@ -135,6 +178,7 @@ router.get('/', async (req, res, next) => {
       metrics: {
         totalInitiatives,
         statusCounts,
+        performanceCounts, // Add performanceCounts to the response
         averageProgress,
         initiativesByYear
       }

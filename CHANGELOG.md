@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.0] - 2025-03-29
+### Adicionado
+- Implementação da visualização de iniciativas concluídas no gráfico de Objetivos
+- Novas cores e legendas no gráfico ObjectiveStatusChart seguindo padrões do governo
+- Logs detalhados de ajustes de contagem no console para diagnóstico
+
+### Modificado
+- Aprimoramento do tooltip para mostrar porcentagens e contagem de concluídas
+- Ajuste na lógica de contagem para evitar duplicação entre status e performance
+
 ## [0.9.0] - 2025-03-24
 ### Adicionado
 - Implementação completa do gráfico de status por princípio
