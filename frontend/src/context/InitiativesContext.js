@@ -11,8 +11,13 @@
  */
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
-// API URL
-const API_URL = 'http://localhost:3003';
+// API URL - Configuração mais flexível para funcionar em diferentes ambientes
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3003';
+
+// Log da URL da API para diagnóstico
+console.log('API_URL configurada:', API_URL);
+console.log('Ambiente:', process.env.NODE_ENV);
+console.log('Variáveis de ambiente disponíveis:', process.env.REACT_APP_API_URL || 'Não definida');
 
 // Criação do contexto de iniciativas
 const InitiativesContext = createContext();
@@ -55,19 +60,40 @@ export const InitiativesProvider = ({ children }) => {
     setError(null);
     
     try {
-      const response = await fetch(`${API_URL}/api/initiatives`);
+      const apiUrl = `${API_URL}/api/initiatives`;
+      console.log('Iniciando fetch de iniciativas em:', apiUrl);
+      console.log('User Agent:', navigator.userAgent);
+      console.log('Plataforma:', navigator.platform);
+      console.log('Largura da tela:', window.innerWidth);
+      
+      const response = await fetch(apiUrl);
+      
+      console.log('Status da resposta:', response.status);
+      console.log('Headers da resposta:', [...response.headers.entries()]);
       
       if (!response.ok) {
         throw new Error(`Erro ao carregar dados: ${response.status}`);
       }
       
       const data = await response.json();
+      console.log('Dados recebidos:', data.length, 'iniciativas');
       
       // Os dados já vêm no formato esperado pelo frontend
       setInitiatives(data);
       setLoading(false);
     } catch (err) {
-      console.error('Erro ao buscar iniciativas:', err);
+      console.error('Erro ao buscar iniciativas - Detalhes completos:', {
+        message: err.message,
+        name: err.name,
+        stack: err.stack,
+        type: err.constructor.name
+      });
+      
+      // Verificar se é um erro de CORS
+      if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
+        console.error('Possível erro de CORS ou conexão de rede');
+      }
+      
       setError(`Erro ao carregar iniciativas: ${err.message}`);
       setLoading(false);
     }
@@ -76,14 +102,24 @@ export const InitiativesProvider = ({ children }) => {
   // Função para buscar princípios da API
   const fetchPrinciples = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/api/initiatives/principles`);
+      const apiUrl = `${API_URL}/api/initiatives/principles`;
+      console.log('Iniciando fetch de princípios em:', apiUrl);
+      
+      const response = await fetch(apiUrl);
+      
       if (!response.ok) {
         throw new Error(`Erro ao carregar princípios: ${response.status}`);
       }
+      
       const data = await response.json();
+      console.log('Princípios recebidos:', data.length);
       setPrinciples(data);
     } catch (err) {
-      console.error('Erro ao buscar princípios:', err);
+      console.error('Erro ao buscar princípios - Detalhes:', {
+        message: err.message,
+        name: err.name,
+        stack: err.stack
+      });
       // Não definimos erro global para não bloquear a interface
     }
   }, []);
@@ -91,28 +127,48 @@ export const InitiativesProvider = ({ children }) => {
   // Função para buscar objetivos da API
   const fetchObjectives = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/api/initiatives/objectives`);
+      const apiUrl = `${API_URL}/api/initiatives/objectives`;
+      console.log('Iniciando fetch de objetivos em:', apiUrl);
+      
+      const response = await fetch(apiUrl);
+      
       if (!response.ok) {
         throw new Error(`Erro ao carregar objetivos: ${response.status}`);
       }
+      
       const data = await response.json();
+      console.log('Objetivos recebidos:', data.length);
       setObjectives(data);
     } catch (err) {
-      console.error('Erro ao buscar objetivos:', err);
+      console.error('Erro ao buscar objetivos - Detalhes:', {
+        message: err.message,
+        name: err.name,
+        stack: err.stack
+      });
     }
   }, []);
 
   // Função para buscar áreas da API
   const fetchAreas = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/api/initiatives/areas`);
+      const apiUrl = `${API_URL}/api/initiatives/areas`;
+      console.log('Iniciando fetch de áreas em:', apiUrl);
+      
+      const response = await fetch(apiUrl);
+      
       if (!response.ok) {
         throw new Error(`Erro ao carregar áreas: ${response.status}`);
       }
+      
       const data = await response.json();
+      console.log('Áreas recebidas:', data.length);
       setAreas(data);
     } catch (err) {
-      console.error('Erro ao buscar áreas:', err);
+      console.error('Erro ao buscar áreas - Detalhes:', {
+        message: err.message,
+        name: err.name,
+        stack: err.stack
+      });
     }
   }, []);
 
