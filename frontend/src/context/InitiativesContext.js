@@ -116,18 +116,6 @@ export const InitiativesProvider = ({ children }) => {
     }
   }, []);
 
-  // Mapear status do backend para o formato do frontend
-  const mapStatus = (backendStatus) => {
-    const statusMap = {
-      'NAO_INICIADA': 'Não Iniciada',
-      'NO_CRONOGRAMA': 'No Cronograma',
-      'ATRASADA': 'Atrasada',
-      'CONCLUIDA': 'Concluída'
-    };
-    
-    return statusMap[backendStatus] || backendStatus;
-  };
-
   // Carregar todos os dados ao montar o componente
   useEffect(() => {
     fetchInitiatives();

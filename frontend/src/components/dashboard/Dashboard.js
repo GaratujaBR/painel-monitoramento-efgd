@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useInitiatives } from '../../context/InitiativesContext';
 import { useAuth } from '../../context/AuthContext';
-import StatusCard from './StatusCard';
-import ProgressChart from './ProgressChart';
 import InitiativeStatusChart from './InitiativeStatusChart';
 import ExecutionStatusChart from './ExecutionStatusChart';
 import PrincipleStatusChart from './PrincipleStatusChart';
@@ -133,7 +131,6 @@ const Dashboard = () => {
   // Performance counts for Performance EFGD chart
   const onScheduleInitiatives = performanceCounts['NO_CRONOGRAMA'] || 0;
   const delayedInitiatives = performanceCounts['ATRASADA'] || 0;
-  const averageProgress = metrics.averageProgress || Math.round(initiatives.reduce((sum, i) => sum + i.progress, 0) / initiatives.length) || 0;
   
   // Calculate percentages
   const completedPercentage = Math.round((completedInitiatives / totalInitiatives) * 100) || 0;

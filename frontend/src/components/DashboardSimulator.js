@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Dashboard from './dashboard/Dashboard';
-import DashboardLayout from './layout/DashboardLayout';
 import InitiativeStatusChart from './dashboard/InitiativeStatusChart';
 import './DashboardSimulator.css';
 import './dashboard/Dashboard.css';
@@ -93,9 +91,6 @@ const DashboardSimulator = () => {
               initiative.progress === 100 ? 'CONCLUIDA' : 'NAO_INICIADA',
       progress: initiative.progress
     }));
-
-    // Import the actual InitiativesContext
-    const { InitiativesProvider } = require('../context/InitiativesContext');
     
     // Create a simplified version of the Dashboard that uses the mock data
     const SimplifiedDashboard = () => {
