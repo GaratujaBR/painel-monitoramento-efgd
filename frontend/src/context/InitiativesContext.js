@@ -127,19 +127,23 @@ export const InitiativesProvider = ({ children }) => {
   // Função para filtrar iniciativas
   const getFilteredInitiatives = useCallback(() => {
     return initiatives.filter(initiative => {
-      // Usando loose equality (==) para lidar com possíveis diferenças de tipo (string vs number)
-      const matchesPrinciple = !filters.principleId || initiative.principleId == filters.principleId;
-      const matchesObjective = !filters.objectiveId || initiative.objectiveId == filters.objectiveId;
-      const matchesArea = !filters.areaId || initiative.areaId == filters.areaId;
-      // Verifica se o valor do filtro corresponde ao status OU à performance (case-insensitive)
+      // Usando igualdade estrita (===) para comparações mais seguras
+      const matchesPrinciple = !filters.principleId || initiative.principleId === filters.principleId;
+      const matchesObjective = !filters.objectiveId || initiative.objectiveId === filters.objectiveId;
+      const matchesArea = !filters.areaId || initiative.areaId === filters.areaId;
+      
+      // Verifica se o valor do filtro corresponde ao status OU à performance
       const matchesStatus = !filters.status || 
-                           initiative.status == filters.status || 
+                           initiative.status === filters.status || 
                            (initiative.performance && 
-                            (initiative.performance.toUpperCase() == filters.status ||
+                            (initiative.performance.toUpperCase() === filters.status ||
                              // Mapeamento adicional para lidar com diferentes formatos
                              (filters.status === 'NO_CRONOGRAMA' && initiative.performance.toUpperCase().includes('CRONOGRAMA')) ||
                              (filters.status === 'ATRASADA' && initiative.performance.toUpperCase().includes('ATRASA'))));
-      const matchesYear = !filters.completionYear || initiative.completionYear == filters.completionYear;
+      
+      // Usando igualdade estrita (===) para o ano
+      // Convertendo ambos para string para garantir a comparação correta, caso um seja número e outro string
+      const matchesYear = !filters.completionYear || String(initiative.completionYear) === String(filters.completionYear);
 
       return matchesPrinciple && matchesObjective && matchesArea && matchesStatus && matchesYear;
     });
