@@ -33,32 +33,6 @@ const LoginForm = () => {
     }
   };
 
-  const handleSimulateLogin = () => {
-    // Use the login function from AuthContext with a simulated user
-    login('admin@example.com', 'password')
-      .then(() => {
-        // Navigate to the real dashboard
-        navigate('/');
-      })
-      .catch(error => {
-        console.error('Login error:', error);
-        setError('Falha no login simulado. Tente novamente.');
-      });
-  };
-
-  const handleSimulateInitiatives = () => {
-    // Use the login function from AuthContext with a simulated user
-    login('admin@example.com', 'password')
-      .then(() => {
-        // Navigate to the initiatives page
-        navigate('/initiatives');
-      })
-      .catch(error => {
-        console.error('Login error:', error);
-        setError('Falha no login simulado. Tente novamente.');
-      });
-  };
-
   return (
     <div className="login-container">
       <div className="login-box">
@@ -81,24 +55,6 @@ const LoginForm = () => {
           ) : (
             'Entrar com Google'
           )}
-        </button>
-        
-        <div className="login-divider">
-          <span>ou</span>
-        </div>
-        
-        <button 
-          className="simulate-login-button"
-          onClick={handleSimulateLogin}
-        >
-          Simular Login (Dashboard)
-        </button>
-
-        <button 
-          className="simulate-login-button initiatives-button"
-          onClick={handleSimulateInitiatives}
-        >
-          Simular Login (Iniciativas)
         </button>
       </div>
     </div>
