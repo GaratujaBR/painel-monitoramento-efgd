@@ -8,8 +8,6 @@ import ObjectiveStatusChart from './ObjectiveStatusChart';
 import TimelineChart from './TimelineChart';
 import './Dashboard.css';
 
-const API_URL = 'http://localhost:3003';
-
 const Dashboard = () => {
   const { initiatives: contextInitiatives, loading: contextLoading } = useInitiatives();
   const { currentUser } = useAuth();
@@ -34,36 +32,40 @@ const Dashboard = () => {
   // Fetch dashboard data from the API
   useEffect(() => {
     const fetchDashboardData = async () => {
-      console.log("Tentando conectar ao backend em:", `${API_URL}/api/dashboard`);
+      if (!currentUser) return; // Não busca dados se não houver usuário logado
+
+      setLoading(true);
+      setError(null);
       try {
-        const response = await fetch(`${API_URL}/api/dashboard`);
-        
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/dashboard`);
         if (!response.ok) {
-          throw new Error(`Erro ao carregar dados do dashboard: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
         const data = await response.json();
-        console.log("Dados recebidos do dashboard:", data);
-        console.log("Princípios recebidos:", data.principles);
-        console.log("Objetivos recebidos:", data.objectives);
         setDashboardData(data);
-        setLastUpdate(new Date());
-        setLoading(false);
-      } catch (err) {
-        console.error('Erro detalhado ao buscar dados do dashboard:', {
-          message: err.message,
-          name: err.name,
-          stack: err.stack,
-          type: err.constructor.name
+        setLastUpdate(new Date()); // Atualiza a hora da última busca
+      } catch (error) {
+        console.error("Erro ao buscar dados do dashboard:", error);
+        setError(`Falha ao carregar dados do dashboard: ${error.message}. Verifique a conexão e a URL da API.`);
+        console.error("Erro detalhado ao buscar dados do dashboard:", { 
+          message: error.message, 
+          name: error.name, 
+          stack: error.stack, 
+          type: error.constructor.name 
         });
-        setError(`Erro ao carregar dados do dashboard: ${err.message}`);
+      } finally {
         setLoading(false);
       }
     };
-    
+
     fetchDashboardData();
-  }, []);
-  
+    
+    // Opcional: Atualizar a cada X minutos (ex: 5 minutos)
+    // const intervalId = setInterval(fetchDashboardData, 5 * 60 * 1000); 
+    // return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar
+
+  }, [currentUser]); // Dependência do currentUser para refazer o fetch se o usuário mudar
+
   // Use initiatives from context if dashboard data is not available
   const initiatives = dashboardData?.initiatives || contextInitiatives;
   const principles = dashboardData?.principles || [];
