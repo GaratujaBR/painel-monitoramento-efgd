@@ -21,11 +21,48 @@ class GoogleSheetsService {
       // Use path to credentials file relative to the current directory
       const path = require('path');
       const fs = require('fs');
-      const credentialsPath = path.resolve(__dirname, '../painel-de-monitoramento-efgd-b064b0a5d751.json');
       
-      // Verificar se o arquivo de credenciais existe
-      if (!fs.existsSync(credentialsPath)) {
-        console.error(`Arquivo de credenciais não encontrado em: ${credentialsPath}`);
+      // Lista de possíveis caminhos para o arquivo de credenciais
+      const possiblePaths = [
+        // Caminho original fixo
+        path.resolve(__dirname, '../painel-de-monitoramento-efgd-b064b0a5d751.json'),
+        // Nome do novo arquivo que você baixou (substitua pelo nome correto)
+        path.resolve(__dirname, '../painel-de-monitoramento-efgd-b19b16622734.json'),
+        // Verificar na raiz do projeto
+        path.resolve(process.cwd(), 'painel-de-monitoramento-efgd-b19b16622734.json'),
+        // Verificar na pasta /opt/render/project (comum no Render)
+        '/opt/render/project/src/painel-de-monitoramento-efgd-b19b16622734.json',
+        // Verificar em /etc/secrets (onde o Render coloca Secret Files)
+        '/etc/secrets/painel-de-monitoramento-efgd-b19b16622734.json'
+      ];
+      
+      // Verificar se existe uma variável de ambiente GOOGLE_APPLICATION_CREDENTIALS
+      const envCredentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+      if (envCredentialsPath) {
+        console.log(`Variável de ambiente GOOGLE_APPLICATION_CREDENTIALS encontrada: ${envCredentialsPath}`);
+        possiblePaths.unshift(envCredentialsPath); // Adiciona no início da lista para priorizar
+      } else {
+        console.log('Variável de ambiente GOOGLE_APPLICATION_CREDENTIALS não encontrada');
+      }
+      
+      // Verificar todos os caminhos possíveis
+      console.log('Verificando caminhos possíveis para o arquivo de credenciais:');
+      let credentialsPath = null;
+      
+      for (const path of possiblePaths) {
+        console.log(`Verificando: ${path}`);
+        if (fs.existsSync(path)) {
+          console.log(`✅ Arquivo de credenciais encontrado em: ${path}`);
+          credentialsPath = path;
+          break;
+        } else {
+          console.log(`❌ Arquivo não encontrado em: ${path}`);
+        }
+      }
+      
+      // Se não encontrou em nenhum lugar, lança erro
+      if (!credentialsPath) {
+        console.error('Arquivo de credenciais não encontrado em nenhum dos caminhos verificados');
         throw new Error('Arquivo de credenciais do Google Sheets não encontrado');
       }
       
@@ -35,35 +72,44 @@ class GoogleSheetsService {
         throw new Error('ID da planilha não configurado. Verifique a variável de ambiente GOOGLE_SHEETS_ID.');
       }
       
-      console.log("Arquivo de credenciais encontrado, tentando inicializar com spreadsheetId:", spreadsheetId);
+      console.log(`Usando arquivo de credenciais: ${credentialsPath}`);
+      console.log(`Usando spreadsheetId: ${spreadsheetId}`);
+      
+      try {
+        // Tentar ler o conteúdo do arquivo para verificar se é válido
+        const credentialsContent = fs.readFileSync(credentialsPath, 'utf8');
+        const credentials = JSON.parse(credentialsContent);
+        console.log(`Conta de serviço sendo usada: ${credentials.client_email}`);
+        
+        // Verificar se as propriedades essenciais existem
+        if (!credentials.client_email || !credentials.private_key) {
+          throw new Error('Arquivo de credenciais inválido: faltam campos obrigatórios');
+        }
+      } catch (parseError) {
+        console.error(`Erro ao ler/analisar o arquivo de credenciais: ${parseError.message}`);
+        throw new Error(`Arquivo de credenciais inválido: ${parseError.message}`);
+      }
 
       // Initialize Google Sheets API client with service account
+      console.log('Inicializando cliente de autenticação do Google...');
       const auth = new google.auth.GoogleAuth({
         keyFile: credentialsPath,
         scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
       });
 
+      console.log('Obtendo cliente de autenticação...');
       const authClient = await auth.getClient();
+      console.log('Cliente de autenticação obtido com sucesso');
+      
       this.sheets = google.sheets({ version: 'v4', auth: authClient });
       this.spreadsheetId = spreadsheetId;
       this.initialized = true;
 
-      console.log('Serviço Google Sheets inicializado com sucesso:', {
-        spreadsheetId,
-        timestamp: new Date(),
-        environment: process.env.NODE_ENV
-      });
-
-      // Start polling for changes
-      this.startChangePolling();
-
+      console.log('Serviço Google Sheets inicializado com sucesso');
       return true;
     } catch (error) {
-      console.error('Erro ao inicializar serviço Google Sheets:', {
-        message: error.message,
-        stack: error.stack,
-        timestamp: new Date()
-      });
+      console.error(`Erro ao inicializar serviço: ${error.message}`);
+      console.error(error.stack);
       throw error;
     }
   }
