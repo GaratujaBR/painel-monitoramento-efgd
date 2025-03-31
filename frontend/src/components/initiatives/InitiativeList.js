@@ -226,12 +226,8 @@ const InitiativeList = () => {
               <th onClick={() => requestSort('name')} className="sortable-header">
                 Iniciativa {getSortIcon('name')}
               </th>
-              <th onClick={() => requestSort('principleId')} className="sortable-header">
-                Princípio {getSortIcon('principleId')}
-              </th>
-              <th onClick={() => requestSort('objectiveId')} className="sortable-header">
-                Objetivo {getSortIcon('objectiveId')}
-              </th>
+              {/* Coluna Princípio Removida */}
+              {/* Coluna Objetivo Removida */}
               <th onClick={() => requestSort('areaId')} className="sortable-header">
                 Área {getSortIcon('areaId')}
               </th>
@@ -253,8 +249,8 @@ const InitiativeList = () => {
             {sortedInitiatives.map(initiative => (
               <tr key={initiative.id}>
                 <td className="text-left">{initiative.name}</td>
-                <td className="text-left">{getPrincipleName(initiative.principleId)}</td>
-                <td className="text-left">{getObjectiveName(initiative.objectiveId)}</td>
+                {/* Célula Princípio Removida */}
+                {/* Célula Objetivo Removida */}
                 <td className="text-left">{getAreaName(initiative.areaId)}</td>
                 <td className="text-center">{initiative.completionYear}</td>
                 <td className="text-center">

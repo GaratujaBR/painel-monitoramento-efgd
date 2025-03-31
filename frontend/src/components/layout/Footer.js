@@ -16,12 +16,7 @@ const Footer = () => {
           <h4>Equipe de Gestão</h4>
           <p>Secretaria de Governo Digital</p>
         </div>
-        
-        <div className="footer-logo">
-          <div className="ministry-logo">
-            <span>EFGD</span>
-          </div>
-        </div>
+
       </div>
       
       <div className="footer-copyright">
