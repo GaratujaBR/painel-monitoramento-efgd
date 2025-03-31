@@ -3,10 +3,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import './Charts.css';
 
 const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
-  console.log('=== OBJECTIVE STATUS CHART - DIAGNÓSTICO ===');
-  console.log('Iniciativas recebidas:', initiatives?.length);
-  console.log('Objetivos recebidos:', objectives?.length);
-
   // Mapear os objetivos por ID para exibição correta
   const objectiveNameMapping = {};
   
@@ -37,15 +33,6 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
       }
     }
   }
-  
-  console.log('Mapeamento de objetivos:', objectiveNameMapping);
-  console.log('Amostra de objetivos:', objectives.slice(0, 3));
-  
-  // Amostra de iniciativas para depuração
-  if (initiatives && initiatives.length > 0) {
-    console.log('Amostra de iniciativas:', initiatives.slice(0, 3));
-    console.log('Propriedades de uma iniciativa:', Object.keys(initiatives[0]));
-  }
 
   // Define status colors according to government guidelines
   const performanceColors = {
@@ -67,7 +54,6 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
       } else if (firstInitiative.PERFORMANCE) {
         performanceFieldName = 'PERFORMANCE';
       }
-      console.log('Campo de performance detectado:', performanceFieldName);
     }
     
     // Se não conseguirmos detectar o campo, usar 'performance' como padrão
@@ -103,8 +89,6 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
           data[objectiveId]['No Cronograma']++;
         } else if (performance === 'Atrasada') {
           data[objectiveId]['Atrasada']++;
-        } else if (performance && performance !== 'No Cronograma' && performance !== 'Atrasada') {
-          console.log(`Valor de performance não reconhecido: ${performance} para iniciativa ${initiative.id}`);
         }
       }
     });
@@ -116,15 +100,7 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
       
       // Uma iniciativa concluída sempre estará "No Cronograma" na coluna PERFORMANCE
       data[objectiveId]['No Cronograma'] = Math.max(0, noCronogramaOriginal - concluida);
-      
-      console.log(`Ajuste para Objetivo ${objectiveId}:`, {
-        'No Cronograma (original)': noCronogramaOriginal,
-        'Concluída': concluida,
-        'No Cronograma (ajustado)': data[objectiveId]['No Cronograma']
-      });
     });
-
-    console.log('Dados processados por objetivo:', data);
     
     // Ordenar por ID do objetivo e converter para array
     return Object.entries(data)
@@ -133,7 +109,6 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
   };
 
   const chartData = processData();
-  console.log('Dados finais para o gráfico:', chartData);
 
   // Custom tooltip para mostrar detalhes
   const CustomTooltip = ({ active, payload, label }) => {
@@ -199,79 +174,37 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
     return null;
   };
 
-  // Verificar qual é a situação do mapeamento de objetivos para o gráfico
-  const areObjectivesNamesMapped = chartData.some(item => item.name && item.name.includes(' - '));
-  console.log('Nomes de objetivos estão sendo mapeados corretamente?', areObjectivesNamesMapped);
-  
-  if (!areObjectivesNamesMapped) {
-    console.log('Aviso: Os nomes completos dos objetivos podem não estar sendo exibidos.');
-  }
+  // Verificar se temos nomes completos para os objetivos
+  const hasFullObjectiveNames = chartData.some(item => item.name && item.name.includes(' - '));
 
   return (
-    <div className="chart-container">
-      <h3>Status por Objetivos</h3>
-      <ResponsiveContainer width="100%" height={1000}>
+    <div className="chart-container objective-status-chart">
+      <h3>Status por Objetivo</h3>
+      <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={chartData}
-          layout="vertical"
-          margin={{ top: 5, right: 30, left: 50, bottom: 5 }}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 120
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" />
-          <YAxis 
-            type="category" 
+          <XAxis 
             dataKey="name" 
-            width={330} 
-            tick={{ fontSize: 14, fontWeight: 600 }}
-            tickFormatter={(value) => {
-              // Se o valor não for completo (sem " - "), tenta usar o mapeamento padrão
-              if (value && !value.includes(" - ") && value.match(/^\d+$/)) {
-                const defaultTexts = {
-                  "1": "01 - Prover serviços públicos digitais personalizados, simples, de centrados no cidadão",
-                  "2": "02 - Ofertar serviços digitais inclusivos",
-                  "3": "03 - Aperfeiçoar a governança de dados e a interoperabilidade",
-                  "4": "04 - Estimular o uso e a integração de plataformas e serviços de governo digital no governo federal",
-                  "5": "05 - Estimular o uso e a integração de plataformas e serviços de governo digital com os entes e poderes da federação",
-                  "6": "06 - Fomentar o uso inteligente de dados pelos órgãos do governo",
-                  "7": "07 - Fomentar o ecossistema de inovação aberta",
-                  "8": "08 - Desenvolver habilidades digitais dos servidores",
-                  "9": "09 - Simplificar e integrar as jornadas dos cidadãos na utilização dos serviços",
-                  "10": "10 - Implementar tecnologias e processos que apoiem a tomada de decisão",
-                  "11": "11 - Fomentar a participação na criação e melhoria dos serviços digitais",
-                  "12": "12 - Gerar capacidades para o governo digital",
-                  "13": "13 - Fomentar a formação de equipes de transformação digital",
-                  "14": "14 - Promover a adoção de metodologias ágeis na transformação digital",
-                  "15": "15 - Promover a colaboração entre instituições",
-                  "16": "16 - Adotar modelos inovadores de contratação de tecnologia"
-                };
-                return defaultTexts[value] || value;
-              }
-              return value;
-            }}
+            angle={-45} 
+            textAnchor="end" 
+            height={100}
+            interval={0}
+            tick={{ fontSize: 12 }}
           />
+          <YAxis />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Bar 
-            barSize={20} 
-            dataKey="Concluída" 
-            name="Concluída" 
-            fill="#00b505" 
-            stackId="a"
-          />
-          <Bar 
-            barSize={20} 
-            dataKey="No Cronograma" 
-            name="No Cronograma" 
-            fill="#203ce2" 
-            stackId="a"
-          />
-          <Bar 
-            barSize={20} 
-            dataKey="Atrasada" 
-            name="Atrasada" 
-            fill="#920a0a" 
-            stackId="a"
-          />
+          <Bar dataKey="Concluída" stackId="a" fill={performanceColors['Concluída']} />
+          <Bar dataKey="No Cronograma" stackId="a" fill={performanceColors['No Cronograma']} />
+          <Bar dataKey="Atrasada" stackId="a" fill={performanceColors['Atrasada']} />
         </BarChart>
       </ResponsiveContainer>
     </div>

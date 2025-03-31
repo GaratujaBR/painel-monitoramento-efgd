@@ -71,22 +71,6 @@ const Dashboard = () => {
   const principles = dashboardData?.principles || [];
   const objectives = dashboardData?.objectives || [];
 
-  // Logs detalhados para depuração
-  console.log("Iniciativas disponíveis:", initiatives?.length || 0);
-  console.log("Princípios disponíveis:", principles?.length || 0);
-  console.log("Objetivos disponíveis:", objectives?.length || 0);
-
-  // Verificar se as iniciativas têm os IDs de princípio e objetivo
-  if (initiatives && initiatives.length > 0) {
-    const withPrincipleId = initiatives.filter(i => i.principleId).length;
-    const withObjectiveId = initiatives.filter(i => i.objectiveId).length;
-    console.log(`Iniciativas com principleId: ${withPrincipleId}/${initiatives.length}`);
-    console.log(`Iniciativas com objectiveId: ${withObjectiveId}/${initiatives.length}`);
-
-    // Verificar uma amostra de iniciativas
-    console.log("Amostra de iniciativas:", initiatives.slice(0, 3));
-  }
-
   if (loading || contextLoading) {
     return <div className="dashboard-loading">Carregando dados...</div>;
   }
@@ -119,11 +103,6 @@ const Dashboard = () => {
     counts[performance] = (counts[performance] || 0) + 1;
     return counts;
   }, {});
-  
-  // Add debug logs
-  console.log("Dashboard rendering with totalInitiatives:", totalInitiatives);
-  console.log("Dashboard status counts:", statusCounts);
-  console.log("Dashboard performance counts:", performanceCounts);
 
   // Status counts for Status de Execução chart
   const completedInitiatives = statusCounts['CONCLUIDA'] || 0;
