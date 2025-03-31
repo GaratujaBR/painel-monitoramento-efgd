@@ -380,29 +380,26 @@
   background-color: #2670e8;
 }
 
-/* Performance Badge */
+/* Performance Badge - Estilo Botão */
 .performance-badge {
   display: inline-block;
-  padding: 6px 12px;
-  border-radius: 16px;
+  padding: 8px 20px;
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 900;
+  color: #fff;
   text-align: center;
-  min-width: 120px;
-  background-color: transparent;
-  border: 2px solid;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 5px;
 }
 
 .performance-badge[data-performance="No Cronograma"] {
-  color: #203ce2;
-  border-color: #203ce2;
-  background-color: rgba(32, 60, 226, 0.1);
+  background-color: #203ce2;
 }
 
 .performance-badge[data-performance="Atrasada"] {
-  color: #920a0a;
-  border-color: #920a0a;
-  background-color: rgba(146, 10, 10, 0.1);
+  background-color: #b10303;
 }
 
 /* Progress Bar */
