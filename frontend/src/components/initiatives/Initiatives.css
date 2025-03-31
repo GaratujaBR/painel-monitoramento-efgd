@@ -357,6 +357,7 @@
   min-width: 120px;
   background-color: transparent;
   border: 2px solid;
+  white-space: nowrap; /* Adicionado para evitar quebra de linha */
 }
 
 .status-badge[data-status="NAO_INICIADA"] {
