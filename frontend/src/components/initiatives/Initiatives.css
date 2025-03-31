@@ -346,48 +346,38 @@
   text-align: center;
 }
 
-/* Status Badge */
+/* Status Badge - Estilo Botão */
 .status-badge {
   display: inline-block;
-  padding: 6px 12px;
-  border-radius: 16px;
+  padding: 8px 20px;
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 900;
+  color: #fff;
   text-align: center;
-  min-width: 120px;
-  background-color: transparent;
-  border: 2px solid;
-  white-space: nowrap; /* Adicionado para evitar quebra de linha */
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 5px;
 }
 
 .status-badge[data-status="NAO_INICIADA"] {
-  color: #444444;
-  border-color: #444444;
-  background-color: rgba(68, 68, 68, 0.1);
+  background-color: #888888;
 }
 
 .status-badge[data-status="NO_CRONOGRAMA"] {
-  color: #00D000;
-  border-color: #00D000;
-  background-color: rgba(0, 208, 0, 0.1);
+  background-color: #203ce2;
 }
 
 .status-badge[data-status="ATRASADA"] {
-  color: #FF0000;
-  border-color: #FF0000;
-  background-color: rgba(255, 0, 0, 0.1);
+  background-color: #b10303;
 }
 
 .status-badge[data-status="CONCLUIDA"] {
-  color: #00b505;
-  border-color: #00b505;
-  background-color: rgba(0, 181, 5, 0.1);
+  background-color: #00b505;
 }
 
 .status-badge[data-status="EM_EXECUCAO"] {
-  color: #1d36b6;
-  border-color: #1d36b6;
-  background-color: rgba(29, 54, 182, 0.1);
+  background-color: #2670e8;
 }
 
 /* Performance Badge */
