@@ -5,9 +5,9 @@
   align-items: center;
   padding: 0 20px;
   height: 120px;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #e7e7e7;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: var(--color-background-light); /* Alterado para cor de fundo da página */
+  /* border-bottom: 1px solid #e7e7e7; */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 }
 
 .header-left {

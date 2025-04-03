@@ -62,8 +62,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  /* background-color: #fff; Removido para evitar conflito */
+  /* border-bottom: 1px solid #e0e0e0; Removido para evitar conflito */
   flex-wrap: wrap;
   min-height: 80px;
 }

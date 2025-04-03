@@ -4,48 +4,74 @@
 .dashboard-container {
   padding: var(--spacing-lg);
   font-family: Verdana, sans-serif;
-  max-width: var(--dashboard-width);
+  max-width: 1200px; /* Reduzido em 20% (de 1200px) */
   margin: 0 auto;
-  background-color: var(--color-white);
+  background-color: var(--color-background-light); /* Alterado de white para background-light */
+}
+
+/* Cabeçalho do dashboard */
+.dashboard-header {
+  margin-bottom: 30px; /* Espaço abaixo de todo o header */
+  position: relative; /* Necessário para alguns posicionamentos */
+}
+
+/* Novo estilo para o frame azul */
+.dashboard-intro {
+  background-color: #0066d0; /* Cor de fundo azul */
+  color: white; /* Cor do texto padrão dentro do frame */
+  padding: 20px 25px; /* Ajuste no padding vertical para compensar a falta do subtítulo */
+  border-radius: 15px; /* Mantém o arredondamento */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Mantém a sombra */
+  display: flex;
+  align-items: center; /* Alinha imagem e texto verticalmente */
+  /* Remover margin-bottom se o texto de atualização ficar dentro ou for removido */
+  /* margin-bottom: 15px; */ 
+  width: 100%; /* Faz o frame ocupar toda a largura do container pai */
+  box-sizing: border-box; /* Inclui padding na largura total */
+}
+
+.header-icon {
+  width: 48px; /* Tamanho do ícone */
+  height: 48px; /* Tamanho do ícone */
+  margin-right: 20px; /* Espaço entre ícone e texto */
+  flex-shrink: 0; /* Evita que o ícone encolha */
+}
+
+.header-text-content {
+  flex-grow: 1; /* Faz o container de texto ocupar o espaço restante */
+}
+
+/* Título com maior especificidade para garantir aplicação */
+.dashboard-intro .header-text-content .header-title {
+  font-family: 'Rawline', sans-serif; /* Fonte base */
+  font-size: 2.8em; /* Tamanho do título aumentado */
+  font-weight: 900; /* Peso Black */
+  color: white; /* Cor do título garantida como branca */
+  margin: 0; /* Remover margem */
+  line-height: 1.2;
+}
+
+/* Estilo para a data de atualização (agora fora do frame azul) */
+.dashboard-last-update {
+  color: var(--color-text-secondary); /* Cor padrão do texto secundário */
+  font-size: 0.9em;
+  text-align: right;
 }
 
 /* Header Styles */
 .dashboard-header {
-  background-color: var(--color-light-gray);
+  background-color: var(--color-background-light); /* Alterado de light-gray para background-light */
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-md);
   margin-bottom: var(--spacing-sm);
   position: relative;
 }
 
-.dashboard-intro h1 {
-  font-size: var(--font-size-h1);
-  font-weight: bold;
-  color: var(--color-black);
-  margin: 0 0 var(--spacing-md) 0;
-}
-
-.dashboard-description {
-  font-size: var(--font-size-regular);
-  color: var(--color-dark-gray);
-  line-height: 1.5;
-  margin: 0;
-  max-width: 80%;
-}
-
-.dashboard-last-update {
-  position: absolute;
-  top: var(--spacing-lg);
-  right: var(--spacing-lg);
-  font-size: var(--font-size-small);
-  color: var(--color-medium-gray);
-}
-
 /* Content Styles */
 .dashboard-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-md);
 }
 
 /* Section Styles */
@@ -110,12 +136,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  min-width: 120px;
+  max-width: 160px;
+  flex: 1;
 }
 
 .metric-box h2 {
   font-size: var(--font-size-data-label);
-  margin-bottom: var(--spacing-md);
-  text-align: center;
+  margin: 0 0 var(--spacing-md) 0;
   color: var(--color-dark-gray);
 }
 
@@ -592,6 +621,33 @@
   .dashboard-description {
     max-width: 100%;
   }
+  
+  .monitoramento {
+    font-size: 24px;
+  }
+  
+  .dashboard-intro {
+    padding: 15px;
+    flex-direction: column; /* Empilha ícone e texto */
+    align-items: flex-start; /* Alinha no início */
+    text-align: left;
+  }
+
+  .header-icon {
+    margin-right: 0;
+    margin-bottom: 15px; /* Espaço abaixo do ícone */
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-title {
+    font-size: 1.5em;
+  }
+
+  .dashboard-last-update {
+    text-align: center; /* Centraliza a data em telas pequenas */
+    margin-top: 10px; /* Adiciona espaço acima */
+  }
 }
 
 @media (max-width: 992px) {
@@ -729,4 +785,401 @@
   .execution-container {
     flex-direction: column-reverse;
   }
+}
+
+/* Notificação de dados mockados */
+.mock-data-notification {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mock-data-notification-content {
+  display: flex;
+  align-items: center;
+  max-width: 960px; /* Reduzido em 20% (de 1200px) */
+}
+
+.mock-data-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.mock-data-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .mock-data-notification {
+    padding: 8px;
+  }
+  
+  .mock-data-text {
+    font-size: 12px;
+  }
+}
+
+/* Cores principais */
+:root {
+  --color-blue-light: #2670e8;
+  --color-green: #00b505;
+  --color-red: #ff0000;
+  --color-blue-dark: #1d36b6;
+  --color-text-primary: #333;
+  --color-text-secondary: #555;
+  --color-white: #ffffff;
+  --color-background-light: #f0f2f5;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-black: 900;
+}
+
+/* Estilos gerais */
+body {
+  font-family: 'Rawline', sans-serif;
+  background-color: var(--color-background-light);
+  margin: 0;
+  padding: 0;
+}
+
+/* Container principal do dashboard */
+.dashboard-container {
+  max-width: 960px; /* Reduzido em 20% (de 1200px) */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--color-background-light);
+}
+
+/* Cabeçalho do dashboard */
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-intro h1 {
+  margin-bottom: 10px;
+  color: var(--color-text-primary);
+}
+
+.dashboard-description {
+  color: var(--color-text-secondary);
+  margin-bottom: 15px;
+}
+
+.dashboard-last-update {
+  color: var(--color-text-secondary);
+  font-size: 0.9em;
+  text-align: right;
+}
+
+/* Conteúdo do dashboard */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Estilos para os cartões */
+.dashboard-card {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  padding-top: 45px;
+  padding-bottom: 60px;
+  margin-bottom: 30px;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 25px 0;
+}
+
+.card-content {
+  display: flex;
+  align-items: center; /* Alinha verticalmente chart-section e info-container */
+  justify-content: space-around; /* Distribui espaço entre os elementos */
+  gap: -10px; /* Espaço mínimo entre eles */
+}
+
+/* Layout específico para o card de execução (info na esquerda) */
+.execution-content {
+  flex-direction: row;
+}
+
+/* Seção que contém o gráfico e sua legenda */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 40%; /* Dá um espaço base para a seção do gráfico */
+}
+
+/* Container para os gráficos */
+.chart-container {
+  width: 270px;  /* Largura fixa para o container do SVG */
+  height: 270px; /* Altura fixa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container para as informações numéricas */
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center; /* Centraliza as caixas */
+  flex-basis: 50%; /* Dá um espaço base para as infos */
+}
+
+/* Caixas de informação */
+.info-box {
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Importante para centralizar verticalmente */
+  text-align: center;
+  color: var(--color-white);
+  width: 170px; /* Largura fixa padronizada */
+  height: 113px; /* Altura fixa padronizada (substitui min-height) */
+  box-sizing: border-box;
+}
+
+.info-number {
+  font-size: 2.5em; /* Ajuste leve */
+  font-weight: var(--font-weight-black);
+  line-height: 1.1;
+}
+
+.info-label {
+  font-size: 0.7em; /* Ajuste leve */
+  font-weight: var(--font-weight-semibold);
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+
+/* Cores específicas para as caixas de informação */
+.on-schedule-initiatives {
+  background-color: var(--color-blue-light);
+}
+
+.delayed-initiatives {
+  background-color: var(--color-red);
+}
+
+.completed-initiatives {
+  background-color: var(--color-green);
+}
+
+.in-execution-initiatives {
+  background-color: var(--color-blue-dark);
+}
+
+/* Estilos para os gráficos circulares */
+.donut-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Estilos para as linhas do gráfico (FORA do @media query) */
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 9; /* Espessura correta */
+}
+
+.circle {
+  fill: none;
+  stroke-width: 9; /* Espessura correta */
+  stroke-linecap: butt;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+/* Cores específicas para as fatias dos gráficos */
+.performance-ontime {
+  stroke: var(--color-blue-light);
+}
+
+.performance-delayed {
+  stroke: var(--color-red);
+}
+
+.execution-completed {
+  stroke: var(--color-green);
+}
+
+.execution-inprogress {
+  stroke: var(--color-blue-dark);
+}
+
+/* Estilos para as legendas dos gráficos */
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px; /* Reduzi um pouco o espaço */
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 1.0em;
+  font-weight: var(--font-weight-medium);
+}
+
+.legend-color-box {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+/* Estilos para as seções adicionais */
+.status-by-principle,
+.status-by-objective,
+.timeline-section {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.status-by-principle h2,
+.status-by-objective h2,
+.timeline-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Notificação de dados mockados */
+.mock-data-notification {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mock-data-notification-content {
+  display: flex;
+  align-items: center;
+  max-width: 960px; /* Reduzido em 20% (de 1200px) */
+}
+
+.mock-data-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.mock-data-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .card-content {
+    flex-direction: column;
+    align-items: center; /* Centraliza tudo na coluna */
+  }
+
+  /* Garante que a ordem no modo coluna esteja correta */
+  .execution-content {
+     flex-direction: column;
+  }
+  .execution-content .info-container {
+    order: 2; /* Infos depois do gráfico */
+    margin-top: 20px;
+  }
+  .execution-content .chart-section {
+    order: 1; /* Gráfico primeiro */
+  }
+
+  .chart-section {
+     flex-basis: auto; /* Remove base flex */
+     width: 100%; /* Ocupa toda a largura */
+  }
+
+  .chart-container {
+    width: 160px; /* Reduz um pouco em telas menores */
+    height: 160px;
+    margin-bottom: 10px;
+  }
+
+  .info-container {
+    flex-basis: auto; /* Remove base flex */
+    width: 100%;
+    /* Mantém as caixas empilhadas verticalmente */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-box {
+     width: 226px; /* Pode aumentar um pouco a largura no modo coluna */
+     max-width: 85%;
+     height: auto; /* Altura automática em telas menores */
+     min-height: 102px; /* Mínimo para manter algum padrão */
+     padding-top: 15px; /* Ajuste opcional de padding vertical */
+     padding-bottom: 15px;
+  }
+
+  .info-number {
+    font-size: 2.2em;
+  }
+
+  .info-label {
+    font-size: 0.8em;
+  }
+
+  .mock-data-notification {
+    padding: 8px;
+  }
+  
+  .mock-data-text {
+    font-size: 12px;
+  }
+}
+
+/* Estilos para estados de carregamento e erro */
+.dashboard-loading,
+.dashboard-error {
+  text-align: center;
+  padding: 50px;
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 30px auto;
+  max-width: 600px;
+}
+
+.dashboard-error {
+  color: var(--color-red);
 }
