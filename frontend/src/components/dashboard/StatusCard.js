@@ -1,17 +1,17 @@
 import React from 'react';
 import './StatusCard.css';
 
-const StatusCard = ({ title, value, icon, color }) => {
+const StatusCard = ({ title, value, type, onClick }) => {
   return (
-    <div className={`status-card status-card-${color}`}>
-      <div className="status-card-icon">
-        <i className={`icon ${icon}-icon`}></i>
+    <button 
+      className={`status-card ${type || 'total'}`}
+      onClick={onClick}
+    >
+      <div className="status-card-info">
+        <h3>{title}</h3>
+        <p>{value}</p>
       </div>
-      <div className="status-card-content">
-        <h3 className="status-card-title">{title}</h3>
-        <div className="status-card-value">{value}</div>
-      </div>
-    </div>
+    </button>
   );
 };
 

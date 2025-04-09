@@ -972,7 +972,7 @@ body {
 
 /* Cores específicas para as caixas de informação */
 .on-schedule-initiatives {
-  background-color: var(--color-blue-light);
+  background-color: var(--color-blue);
 }
 
 .delayed-initiatives {
@@ -1016,7 +1016,7 @@ body {
 
 /* Cores específicas para as fatias dos gráficos */
 .performance-ontime {
-  stroke: var(--color-blue-light);
+  stroke: var(--color-blue); /* Alterado para usar o mesmo azul dos botões */
 }
 
 .performance-delayed {
@@ -1182,4 +1182,49 @@ body {
 
 .dashboard-error {
   color: var(--color-red);
+}
+
+/* Status Cards Grid Layout */
+.status-cards-container {
+  display: flex;             /* Use flexbox */
+  align-items: stretch;      /* Make items the same height */
+  justify-content: space-between; /* Push items to opposite ends */
+  gap: 1rem;                /* Standard space between items */
+  margin-bottom: 2rem;
+  width: 100%;              /* Ensure container takes full width */
+  padding: 0;               /* Remove any padding that might affect alignment */
+}
+
+/* New Info Frame Styles */
+.info-frame {
+  background-color: var(--color-white); /* White background - Crucial */
+  border-radius: var(--border-radius-medium);
+  padding: 1rem;
+  flex-grow: 1;            /* Allow frame to grow and fill space */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align text to the left */
+  box-shadow: var(--shadow-light);
+  min-height: 110px;       /* Add minimum height to ensure visibility */
+}
+
+/* Adjust the StatusCard in the top container */
+.status-cards-container > .status-card {
+  flex-shrink: 0;         /* Prevent card from shrinking */
+  width: 250px;           /* Fixed width */
+}
+
+/* Make StatusCard clickable while preserving current styles */
+.status-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-card:active {
+  transform: translateY(0);
 }

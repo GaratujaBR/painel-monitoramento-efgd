@@ -1,90 +1,39 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import './Charts.css';
+import React, { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useNavigate } from 'react-router-dom';
+import './ObjectiveStatusChart.css';
 
-const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
-  // Mapear os objetivos por ID para exibição correta
-  const objectiveNameMapping = {};
-  
-  if (objectives && objectives.length > 0) {
-    objectives.forEach(objective => {
-      // Verificar diferentes possíveis nomes de propriedade para o nome do objetivo
-      // Usar o texto completo do objetivo como mostrado na planilha
-      const objectiveName = objective.objetivo || objective.name || objective.OBJETIVO || objective.description;
-      if (objective.id) {
-        objectiveNameMapping[objective.id] = objectiveName;
-      }
-    });
-  }
-  
-  // Caso não tenhamos mapeamentos suficientes, adicionar os IDs dos objetivos com textos padrão
-  // baseados na sua planilha
-  if (Object.keys(objectiveNameMapping).length < 3) {
-    const defaultObjectiveTexts = {
-      1: "01 - Prover serviços públicos digitais personalizados, simples, de centrados no cidadão",
-      2: "02 - Ofertar serviços digitais inclusivos",
-      3: "03 - Aperfeiçoar a governança de dados e a interoperabilidade"
-    };
-    
-    // Adicionar mapeamentos padrão se não existirem
-    for (const [id, text] of Object.entries(defaultObjectiveTexts)) {
-      if (!objectiveNameMapping[id]) {
-        objectiveNameMapping[id] = text;
-      }
-    }
-  }
+const ObjectiveStatusChart = ({ initiatives, objectives }) => {
+  const navigate = useNavigate();
 
-  // Define status colors according to government guidelines
+  // Cores para o gráfico
   const performanceColors = {
-    'No Cronograma': '#203ce2', // Blue
-    'Atrasada': '#920a0a', // Red
-    'Concluída': '#00b505', // Green
+    'No Cronograma': 'var(--color-blue)',
+    'Atrasada': 'var(--color-red)',
   };
 
-  // Processar dados para o gráfico
+  // Função para processar os dados
   const processData = () => {
     const data = {};
-    let performanceFieldName = null;
     
-    // Determinar o nome correto do campo de performance verificando a primeira iniciativa
-    if (initiatives && initiatives.length > 0) {
-      const firstInitiative = initiatives[0];
-      if (firstInitiative.performance) {
-        performanceFieldName = 'performance';
-      } else if (firstInitiative.PERFORMANCE) {
-        performanceFieldName = 'PERFORMANCE';
-      }
-    }
-    
-    // Se não conseguirmos detectar o campo, usar 'performance' como padrão
-    if (!performanceFieldName) {
-      performanceFieldName = 'performance';
-    }
-    
-    initiatives?.forEach(initiative => {
+    initiatives.forEach(initiative => {
       const objectiveId = initiative.objectiveId;
-      const performance = initiative[performanceFieldName];
+      const performance = initiative.performance;
       
       if (objectiveId) {
+        // Aqui vamos usar apenas o ID do objetivo para o nome no gráfico
+        // Mantendo apenas o número do objetivo para o eixo X
+        
         if (!data[objectiveId]) {
-          // Buscar o nome do objetivo mapeado ou usar o ID como fallback
-          const objectiveName = objectiveNameMapping[objectiveId] || `Objetivo ${objectiveId}`;
-          
           data[objectiveId] = {
             id: objectiveId,
-            name: objectiveName,
-            'Concluída': 0,
+            name: objectiveId, // Usando apenas o ID como nome para o eixo X
+            fullName: objectives.find(obj => obj.id === objectiveId)?.name || objectiveId, // Guardando o nome completo
             'No Cronograma': 0,
             'Atrasada': 0
           };
         }
         
-        // Contar iniciativas concluídas com base no status
-        if (initiative.status === 'CONCLUIDA') {
-          data[objectiveId]['Concluída']++;
-        }
-        
-        // Usar exatamente os valores da coluna PERFORMANCE
         if (performance === 'No Cronograma') {
           data[objectiveId]['No Cronograma']++;
         } else if (performance === 'Atrasada') {
@@ -93,38 +42,57 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
       }
     });
     
-    // Ajustar o valor de "No Cronograma" para evitar contagem dupla com "Concluída"
-    Object.keys(data).forEach(objectiveId => {
-      const noCronogramaOriginal = data[objectiveId]['No Cronograma'];
-      const concluida = data[objectiveId]['Concluída'];
-      
-      // Uma iniciativa concluída sempre estará "No Cronograma" na coluna PERFORMANCE
-      data[objectiveId]['No Cronograma'] = Math.max(0, noCronogramaOriginal - concluida);
-    });
-    
-    // Ordenar por ID do objetivo e converter para array
-    return Object.entries(data)
-      .sort(([a], [b]) => Number(a) - Number(b))
-      .map(([_, value]) => value);
+    return Object.entries(data).map(([_, value]) => value);
   };
 
-  const chartData = processData();
+  // Manipulador de clique para as barras
+  const handleBarClick = (data, statusKey) => {
+    if (!data || !data.payload || !data.payload.id) {
+      console.error("ObjectiveChart: Dados inválidos recebidos no clique", data);
+      return;
+    }
 
-  // Custom tooltip para mostrar detalhes
+    const objectiveId = data.payload.id;
+    let statusFilterValue;
+
+    if (statusKey === 'No Cronograma') {
+      statusFilterValue = 'NO_CRONOGRAMA';
+    } else if (statusKey === 'Atrasada') {
+      statusFilterValue = 'ATRASADA';
+    } else {
+      console.error(`ObjectiveChart: Status inválido recebido: ${statusKey}`);
+      return;
+    }
+
+    if (objectiveId && statusFilterValue) {
+      navigate('/initiatives', { 
+        state: { 
+          filters: { 
+            objectiveId: objectiveId, 
+            status: statusFilterValue 
+          } 
+        } 
+      });
+    }
+  };
+
+  // Componente para o tooltip customizado
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
-      const concluida = payload.find(p => p.dataKey === 'Concluída')?.value || 0;
+      // Encontra os valores para cada status no payload
       const noCronograma = payload.find(p => p.dataKey === 'No Cronograma')?.value || 0;
       const atrasada = payload.find(p => p.dataKey === 'Atrasada')?.value || 0;
-      const total = concluida + noCronograma + atrasada;
+      const total = noCronograma + atrasada;
       
-      const concluidaPct = total > 0 ? Math.round((concluida / total) * 100) : 0;
+      // Calcula as porcentagens
       const noCronogramaPct = total > 0 ? Math.round((noCronograma / total) * 100) : 0;
       const atrasadaPct = total > 0 ? Math.round((atrasada / total) * 100) : 0;
-
-      // Formatar o label para mostrar "Objetivo X" se for apenas número
-      const formattedLabel = label && label.match(/^\d+$/) ? `Objetivo ${label}` : label;
       
+      // Obtém o nome completo do objetivo
+      const fullObjectiveName = payload[0]?.payload?.fullName || label;
+      // Formata o título como "ID - Nome completo"
+      const tooltipTitle = `${label} - ${fullObjectiveName}`;
+
       return (
         <div style={{
           backgroundColor: 'white',
@@ -140,24 +108,19 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
             margin: '0 0 10px 0',
             borderBottom: '1px solid #eee',
             paddingBottom: '5px'
-          }}>{formattedLabel}</p>
+          }}>{tooltipTitle}</p>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: '#00b505' }}>Concluída:</span>
-            <span style={{ fontWeight: '500' }}>{concluida} ({concluidaPct}%)</span>
-          </div>
-          
-          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: '#203ce2' }}>No Cronograma:</span>
+            <span style={{ color: 'var(--color-blue)' }}>No Cronograma:</span>
             <span style={{ fontWeight: '500' }}>{noCronograma} ({noCronogramaPct}%)</span>
           </div>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: '#920a0a' }}>Atrasada:</span>
+            <span style={{ color: 'var(--color-red)' }}>Atrasada:</span>
             <span style={{ fontWeight: '500' }}>{atrasada} ({atrasadaPct}%)</span>
           </div>
           
-          <div style={{ 
+          <div style={{
             marginTop: '10px', 
             paddingTop: '5px', 
             borderTop: '1px solid #eee',
@@ -174,38 +137,99 @@ const ObjectiveStatusChart = ({ initiatives, objectives = [] }) => {
     return null;
   };
 
-  // Verificar se temos nomes completos para os objetivos
-  const hasFullObjectiveNames = chartData.some(item => item.name && item.name.includes(' - '));
+  const chartData = processData();
+
+  // Definir o tamanho da fonte base
+  const baseFontSize = 17;
 
   return (
-    <div className="chart-container objective-status-chart">
-      <h3>Status por Objetivo</h3>
-      <ResponsiveContainer width="100%" height={400}>
+    <div 
+      className="objective-chart-scroll-container"
+      style={{
+        minWidth: '0',
+        width: '100%'
+      }}>
+      <ResponsiveContainer width="100%" height={500}>
         <BarChart
           data={chartData}
           margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 120
+            top: 60, // Diminuir margem superior
+            right: 60,
+            left: 60,
+            bottom: 20 // Diminuir margem inferior
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="name" 
-            angle={-45} 
-            textAnchor="end" 
-            height={100}
+            angle={-45}
+            textAnchor="end"
             interval={0}
-            tick={{ fontSize: 12 }}
+            tick={{ 
+              fontSize: 11,
+              fill: '#222'
+            }}
           />
-          <YAxis />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Bar dataKey="Concluída" stackId="a" fill={performanceColors['Concluída']} />
-          <Bar dataKey="No Cronograma" stackId="a" fill={performanceColors['No Cronograma']} />
-          <Bar dataKey="Atrasada" stackId="a" fill={performanceColors['Atrasada']} />
+          <YAxis 
+            tick={{ 
+              fontSize: baseFontSize,
+              fill: '#222' 
+            }}
+          />
+          <Tooltip 
+            content={<CustomTooltip />} 
+            cursor={{ fill: 'rgba(0, 0, 0, 0.1)' }}
+          /> 
+          <Bar 
+            barSize={20} 
+            dataKey="No Cronograma" 
+            stackId="a" 
+            fill={performanceColors['No Cronograma']}
+            radius={[5, 5, 0, 0]}
+            onClick={(data, index, event) => handleBarClick(data, "No Cronograma")}
+            cursor="pointer"
+          />
+          <Bar 
+            barSize={20} 
+            dataKey="Atrasada" 
+            stackId="a" 
+            fill={performanceColors['Atrasada']}
+            radius={[0, 0, 5, 5]}
+            onClick={(data, index, event) => handleBarClick(data, "Atrasada")}
+            cursor="pointer"
+          />
         </BarChart>
+        
+        {/* Legenda externa personalizada */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          marginTop: '10px', // Diminuir espaço entre gráfico e legenda
+          gap: '15px',
+          fontSize: baseFontSize + 1,
+          fontWeight: '500'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ 
+              width: '20px', 
+              height: '20px', 
+              backgroundColor: performanceColors['No Cronograma'],
+              marginRight: '10px',
+              borderRadius: '3px'
+            }}></div>
+            <span>No Cronograma</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ 
+              width: '20px', 
+              height: '20px', 
+              backgroundColor: performanceColors['Atrasada'],
+              marginRight: '10px',
+              borderRadius: '3px'
+            }}></div>
+            <span>Atrasada</span>
+          </div>
+        </div>
       </ResponsiveContainer>
     </div>
   );
