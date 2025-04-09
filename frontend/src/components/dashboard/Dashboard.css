@@ -4,48 +4,59 @@
 .dashboard-container {
   padding: var(--spacing-lg);
   font-family: Verdana, sans-serif;
-  max-width: var(--dashboard-width);
+  max-width: 1200px;
   margin: 0 auto;
-  background-color: var(--color-white);
+  background-color: var(--color-background-light);
 }
 
-/* Header Styles */
-.dashboard-header {
-  background-color: var(--color-light-gray);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius-md);
-  margin-bottom: var(--spacing-sm);
-  position: relative;
+/* Novo estilo para o frame azul */
+.dashboard-intro {
+  background-color: #0066d0;
+  color: white;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.dashboard-intro h1 {
-  font-size: var(--font-size-h1);
-  font-weight: bold;
-  color: var(--color-black);
-  margin: 0 0 var(--spacing-md) 0;
+.header-icon {
+  width: 48px;
+  height: 48px;
+  margin-right: 20px;
+  flex-shrink: 0;
 }
 
-.dashboard-description {
-  font-size: var(--font-size-regular);
-  color: var(--color-dark-gray);
-  line-height: 1.5;
+.header-text-content {
+  flex-grow: 1;
+}
+
+/* Título com maior especificidade para garantir aplicação */
+.dashboard-intro .header-text-content .header-title {
+  font-family: 'Rawline', sans-serif;
+  font-size: 2.8em;
+  font-weight: 900;
+  color: white;
   margin: 0;
-  max-width: 80%;
+  line-height: 1.2;
 }
 
+/* Estilo para a data de atualização (agora fora do frame azul) */
 .dashboard-last-update {
-  position: absolute;
-  top: var(--spacing-lg);
-  right: var(--spacing-lg);
-  font-size: var(--font-size-small);
-  color: var(--color-medium-gray);
+  color: var(--color-text-secondary);
+  font-size: 0.9em;
+  text-align: right;
+  margin-top: 10px;
 }
 
 /* Content Styles */
 .dashboard-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-md);
 }
 
 /* Section Styles */
@@ -110,12 +121,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  min-width: 120px;
+  max-width: 160px;
+  flex: 1;
 }
 
 .metric-box h2 {
   font-size: var(--font-size-data-label);
-  margin-bottom: var(--spacing-md);
-  text-align: center;
+  margin: 0 0 var(--spacing-md) 0;
   color: var(--color-dark-gray);
 }
 
@@ -198,24 +212,24 @@
 /* Status Section */
 .status-overview {
   display: grid;
-  grid-template-columns: 3fr 2fr; /* Ajustado para dar mais espaço ao gráfico */
-  gap: var(--spacing-xl); /* Aumentado de lg para xl */
+  grid-template-columns: 3fr 2fr;
+  gap: var(--spacing-xl);
   margin-bottom: var(--spacing-xl);
 }
 
 .status-chart-container {
   background-color: var(--color-white);
   border-radius: var(--border-radius-md);
-  padding: var(--spacing-xl) var(--spacing-lg); /* Aumentado padding vertical */
+  padding: var(--spacing-xl) var(--spacing-lg);
   box-shadow: var(--box-shadow-default);
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 350px; /* Garantir altura mínima para o gráfico */
+  min-height: 350px;
 }
 
 .status-chart-container h2 {
-  margin-bottom: var(--spacing-lg); /* Aumentado de md para lg */
+  margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-section-heading);
   text-align: center;
 }
@@ -223,25 +237,25 @@
 .metrics-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-lg); /* Aumentado de md para lg */
+  gap: var(--spacing-lg);
 }
 
 .metric-box {
   background-color: var(--color-white);
   border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg) var(--spacing-md); /* Aumentado padding vertical */
+  padding: var(--spacing-lg) var(--spacing-md);
   box-shadow: var(--box-shadow-default);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 100px; /* Altura mínima para consistência */
+  min-height: 100px;
 }
 
 .metric-box h2 {
   font-size: var(--font-size-data-label);
-  margin: 0 0 var(--spacing-md) 0; /* Aumentado de sm para md */
+  margin: 0 0 var(--spacing-md) 0;
   color: var(--color-dark-gray);
 }
 
@@ -249,7 +263,7 @@
   font-size: var(--font-size-kpi);
   font-weight: bold;
   line-height: 1;
-  margin-bottom: var(--spacing-sm); /* Adicionado margem inferior */
+  margin-bottom: var(--spacing-sm);
 }
 
 .completed-initiatives .metric-value {
@@ -300,7 +314,6 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--border-radius-sm);
-  /* Removed height, background-color, padding, and overflow-y restrictions */
 }
 
 /* Year chart styles */
@@ -592,6 +605,33 @@
   .dashboard-description {
     max-width: 100%;
   }
+  
+  .monitoramento {
+    font-size: 24px;
+  }
+  
+  .dashboard-intro {
+    padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .header-icon {
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-title {
+    font-size: 1.5em;
+  }
+
+  .dashboard-last-update {
+    text-align: center;
+    margin-top: 10px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -610,7 +650,6 @@
     min-height: 100px;
   }
   
-  /* Inverter a ordem para mobile na seção de execução */
   .execution-container {
     flex-direction: column-reverse;
   }
@@ -725,8 +764,426 @@
     min-height: 100px;
   }
   
-  /* Inverter a ordem para mobile na seção de execução */
   .execution-container {
     flex-direction: column-reverse;
   }
+}
+
+/* Notificação de dados mockados */
+.mock-data-notification {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mock-data-notification-content {
+  display: flex;
+  align-items: center;
+  max-width: 960px;
+}
+
+.mock-data-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.mock-data-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .mock-data-notification {
+    padding: 8px;
+  }
+  
+  .mock-data-text {
+    font-size: 12px;
+  }
+}
+
+/* Cores principais */
+:root {
+  --color-blue-light: #2670e8;
+  --color-green: #00b505;
+  --color-red: #ff0000;
+  --color-blue-dark: #1d36b6;
+  --color-text-primary: #333;
+  --color-text-secondary: #555;
+  --color-white: #ffffff;
+  --color-background-light: #f0f2f5;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-black: 900;
+}
+
+/* Estilos gerais */
+body {
+  font-family: 'Rawline', sans-serif;
+  background-color: var(--color-background-light);
+  margin: 0;
+  padding: 0;
+}
+
+/* Container principal do dashboard */
+.dashboard-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--color-background-light);
+}
+
+/* Conteúdo do dashboard */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Estilos para os cartões */
+.dashboard-card {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  padding-top: 45px;
+  padding-bottom: 60px;
+  margin-bottom: 30px;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 25px 0;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: -10px;
+}
+
+/* Layout específico para o card de execução (info na esquerda) */
+.execution-content {
+  flex-direction: row;
+}
+
+/* Seção que contém o gráfico e sua legenda */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 40%;
+}
+
+/* Container para os gráficos */
+.chart-container {
+  width: 270px;
+  height: 270px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container para as informações numéricas */
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  flex-basis: 50%;
+}
+
+/* Caixas de informação */
+.info-box {
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-white);
+  width: 170px;
+  height: 113px;
+  box-sizing: border-box;
+}
+
+.info-number {
+  font-size: 2.5em;
+  font-weight: var(--font-weight-black);
+  line-height: 1.1;
+}
+
+.info-label {
+  font-size: 0.7em;
+  font-weight: var(--font-weight-semibold);
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+
+/* Cores específicas para as caixas de informação */
+.on-schedule-initiatives {
+  background-color: var(--color-blue);
+}
+
+.delayed-initiatives {
+  background-color: var(--color-red);
+}
+
+.completed-initiatives {
+  background-color: var(--color-green);
+}
+
+.in-execution-initiatives {
+  background-color: var(--color-blue-dark);
+}
+
+/* Estilos para os gráficos circulares */
+.donut-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Estilos para as linhas do gráfico (FORA do @media query) */
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 9;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: butt;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+/* Cores específicas para as fatias dos gráficos */
+.performance-ontime {
+  stroke: var(--color-blue);
+}
+
+.performance-delayed {
+  stroke: var(--color-red);
+}
+
+.execution-completed {
+  stroke: var(--color-green);
+}
+
+.execution-inprogress {
+  stroke: var(--color-blue-dark);
+}
+
+/* Estilos para as legendas dos gráficos */
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 1.0em;
+  font-weight: var(--font-weight-medium);
+}
+
+.legend-color-box {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+/* Estilos para as seções adicionais */
+.status-by-principle,
+.status-by-objective,
+.timeline-section {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.status-by-principle h2,
+.status-by-objective h2,
+.timeline-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Notificação de dados mockados */
+.mock-data-notification {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mock-data-notification-content {
+  display: flex;
+  align-items: center;
+  max-width: 960px;
+}
+
+.mock-data-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.mock-data-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .card-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .execution-content {
+    flex-direction: column;
+  }
+  .execution-content .info-container {
+    order: 2;
+    margin-top: 20px;
+  }
+  .execution-content .chart-section {
+    order: 1;
+  }
+
+  .chart-section {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .chart-container {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 10px;
+  }
+
+  .info-container {
+    flex-basis: auto;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-box {
+    width: 226px;
+    max-width: 85%;
+    height: auto;
+    min-height: 102px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .info-number {
+    font-size: 2.2em;
+  }
+
+  .info-label {
+    font-size: 0.8em;
+  }
+
+  .mock-data-notification {
+    padding: 8px;
+  }
+  
+  .mock-data-text {
+    font-size: 12px;
+  }
+}
+
+/* Estilos para estados de carregamento e erro */
+.dashboard-loading,
+.dashboard-error {
+  text-align: center;
+  padding: 50px;
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 30px auto;
+  max-width: 600px;
+}
+
+.dashboard-error {
+  color: var(--color-red);
+}
+
+/* Status Cards Grid Layout */
+.status-cards-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  padding: 0;
+}
+
+/* New Info Frame Styles */
+.info-frame {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: var(--shadow-light);
+  min-height: 110px;
+}
+
+/* Adjust the StatusCard in the top container */
+.status-cards-container > .status-card {
+  flex-shrink: 0;
+  width: 250px;
+}
+
+/* Make StatusCard clickable while preserving current styles */
+.status-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-card:active {
+  transform: translateY(0);
 }
