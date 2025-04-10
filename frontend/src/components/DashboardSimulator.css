@@ -201,6 +201,7 @@
   flex: 1;
 }
 
+/* Comentado para evitar conflito com Dashboard.css
 .status-card-title {
   font-size: 14px;
   color: #666;
@@ -212,6 +213,7 @@
   font-weight: bold;
   color: #333;
 }
+*/
 
 .dashboard-charts-container {
   display: flex;
@@ -244,7 +246,22 @@
 }
 
 .chart-placeholder {
-  min-height: 200px;
+  width: 100%;
+  min-height: 300px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 16px;
+}
+
+.chart-container {
+  /* Estilos adicionais para o container do gráfico, se necessário */
+}
+
+.chart-legend {
   display: flex;
   flex-direction: column;
   gap: 10px;

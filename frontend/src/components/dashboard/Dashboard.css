@@ -4,7 +4,7 @@
 .dashboard-container {
   padding: var(--spacing-lg);
   font-family: Verdana, sans-serif;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   background-color: var(--color-background-light);
 }
@@ -540,274 +540,6 @@
   margin-bottom: 8px;
 }
 
-/* Media Queries para melhorar a responsividade */
-@media (max-width: 1024px) {
-  .dashboard-container {
-    padding: var(--spacing-md);
-  }
-  
-  .metric-value {
-    font-size: calc(var(--font-size-kpi) * 0.7);
-  }
-  
-  .dashboard-intro h1 {
-    font-size: calc(var(--font-size-main-title) * 0.8);
-  }
-  
-  .dashboard-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
-  }
-}
-
-@media (max-width: 768px) {
-  .status-overview {
-    grid-template-columns: 1fr;
-  }
-  
-  .principles-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .dashboard-header-area {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .dashboard-header-area h1 {
-    margin-bottom: var(--spacing-md);
-    font-size: calc(var(--font-size-main-title) * 0.6);
-  }
-  
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .dashboard-section {
-    padding: var(--spacing-md);
-  }
-  
-  .chart-container {
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  
-  .chart-container canvas {
-    min-width: 500px;
-  }
-  
-  .dashboard-last-update {
-    position: static;
-    margin-top: var(--spacing-md);
-    text-align: left;
-  }
-  
-  .dashboard-description {
-    max-width: 100%;
-  }
-  
-  .monitoramento {
-    font-size: 24px;
-  }
-  
-  .dashboard-intro {
-    padding: 15px;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .header-icon {
-    margin-right: 0;
-    margin-bottom: 15px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .header-title {
-    font-size: 1.5em;
-  }
-
-  .dashboard-last-update {
-    text-align: center;
-    margin-top: 10px;
-  }
-}
-
-@media (max-width: 992px) {
-  .performance-container,
-  .execution-container {
-    flex-direction: column;
-  }
-  
-  .performance-right,
-  .execution-left {
-    margin-top: var(--spacing-md);
-  }
-  
-  .performance-right .metric-box,
-  .execution-left .metric-box {
-    min-height: 100px;
-  }
-  
-  .execution-container {
-    flex-direction: column-reverse;
-  }
-}
-
-/* Novas regras para telas muito pequenas (smartphones) */
-@media (max-width: 480px) {
-  .dashboard-container {
-    padding: var(--spacing-sm);
-  }
-  
-  .dashboard-section {
-    padding: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .dashboard-header {
-    padding: var(--spacing-md);
-  }
-  
-  .dashboard-intro h1 {
-    font-size: calc(var(--font-size-main-title) * 0.5);
-  }
-  
-  .metric-value {
-    font-size: calc(var(--font-size-kpi) * 0.6);
-  }
-  
-  .metric-label {
-    font-size: calc(var(--font-size-small) * 0.9);
-  }
-  
-  .chart-container canvas {
-    min-width: 400px;
-  }
-  
-  .status-card {
-    padding: var(--spacing-sm);
-  }
-  
-  .status-card-title {
-    font-size: var(--font-size-small);
-  }
-  
-  .status-card-value {
-    font-size: calc(var(--font-size-h2) * 0.8);
-  }
-}
-
-/* Nova estrutura de layout horizontal para a seção de execução (invertida) */
-.execution-container {
-  display: flex;
-  background-color: var(--color-white);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
-  box-shadow: var(--box-shadow-default);
-  margin-bottom: var(--spacing-lg);
-  gap: var(--spacing-lg);
-}
-
-.execution-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--spacing-lg);
-}
-
-.execution-right {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.execution-right h2 {
-  margin-bottom: var(--spacing-md);
-  text-align: center;
-  font-size: var(--font-size-section-heading);
-}
-
-.execution-left .metric-box {
-  margin: 0;
-  height: auto;
-  min-height: 120px;
-}
-
-.in-execution-initiatives .metric-value {
-  color: var(--color-blue);
-  font-size: 4rem;
-}
-
-.completed-initiatives .metric-value {
-  color: var(--color-green);
-  font-size: 4rem;
-}
-
-/* Responsividade para o novo layout */
-@media (max-width: 992px) {
-  .performance-container,
-  .execution-container {
-    flex-direction: column;
-  }
-  
-  .performance-right,
-  .execution-left {
-    margin-top: var(--spacing-md);
-  }
-  
-  .performance-right .metric-box,
-  .execution-left .metric-box {
-    min-height: 100px;
-  }
-  
-  .execution-container {
-    flex-direction: column-reverse;
-  }
-}
-
-/* Notificação de dados mockados */
-.mock-data-notification {
-  background-color: #fff3cd;
-  border: 1px solid #ffeeba;
-  color: #856404;
-  padding: 10px 15px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.mock-data-notification-content {
-  display: flex;
-  align-items: center;
-  max-width: 960px;
-}
-
-.mock-data-icon {
-  font-size: 24px;
-  margin-right: 10px;
-}
-
-.mock-data-text {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-@media (max-width: 768px) {
-  .mock-data-notification {
-    padding: 8px;
-  }
-  
-  .mock-data-text {
-    font-size: 12px;
-  }
-}
-
 /* Cores principais */
 :root {
   --color-blue-light: #2670e8;
@@ -833,7 +565,7 @@ body {
 
 /* Container principal do dashboard */
 .dashboard-container {
-  max-width: 960px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 20px;
   background-color: var(--color-background-light);
@@ -1146,44 +878,975 @@ body {
 /* Status Cards Grid Layout */
 .status-cards-container {
   display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  width: 100%;
-  padding: 0;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
-/* New Info Frame Styles */
-.info-frame {
-  background-color: var(--color-white);
-  border-radius: var(--border-radius-medium);
-  padding: 1rem;
-  flex-grow: 1;
+/* Target the two main dashboard cards within their row */
+.dashboard-main-cards-row > .dashboard-card { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin-bottom: 0; 
+}
+
+/* Row for Chart Sections (StatusByPrinciple, StatusByObjective) */
+.dashboard-charts-row {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  box-shadow: var(--shadow-light);
-  min-height: 110px;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
 }
 
-/* Adjust the StatusCard in the top container */
-.status-cards-container > .status-card {
-  flex-shrink: 0;
-  width: 250px;
+/* Target the chart sections within their row */
+.dashboard-charts-row > .status-by-principle, 
+.dashboard-charts-row > .status-by-objective { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin: 0; 
 }
 
-/* Make StatusCard clickable while preserving current styles */
+/* Responsive Stacking */
+@media (max-width: 992px) { 
+  /* Stack main cards */
+  .dashboard-main-cards-row > .dashboard-card {
+    flex-basis: 100%;
+  }
+
+  /* Stack chart sections */
+  .dashboard-charts-row > .status-by-principle,
+  .dashboard-charts-row > .status-by-objective {
+    flex-basis: 100%;
+  }
+}
+
+/* Status Cards Row */
+.status-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+/* Unified Status Card Styling */
 .status-card {
+  aspect-ratio: 1/1; /* Makes the card square */
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .status-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
 }
 
 .status-card:active {
   transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Status Cards Container (top row with Info Frame and Total) */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Info Frame - takes remaining space */
+.info-frame {
+  flex: 1; /* Grow to fill space */
+  min-width: 250px;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 210px; /* Match approx height of one status card (updated) */
+}
+
+/* Ensure Total card uses the status card styling but doesn't grow */
+.status-cards-container > .status-card.total {
+  flex-grow: 0;      /* Don't grow */
+  flex-shrink: 0;    /* Don't shrink */
+  /* Use min-width from .status-card rule */
+}
+
+/* Performance and Execution Status Cards Containers - Stack vertically */
+.performance-status-cards,
+.execution-status-cards {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: stretch; /* Make cards fill container width if needed */
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; 
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Specific styling for the info-frame card (Total Initiatives) */
+.info-frame .status-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+}
+
+/* Make sure text in Total card is black */
+.info-frame .status-card .status-card-title,
+.info-frame .status-card .status-card-value {
+  color: var(--color-black);
+}
+
+/* Row for the two main dashboard cards (Performance, Execution) */
+.dashboard-main-cards-row { 
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the two main dashboard cards within their row */
+.dashboard-main-cards-row > .dashboard-card { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin-bottom: 0; 
+}
+
+/* Row for Chart Sections (StatusByPrinciple, StatusByObjective) */
+.dashboard-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the chart sections within their row */
+.dashboard-charts-row > .status-by-principle, 
+.dashboard-charts-row > .status-by-objective { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin: 0; 
+}
+
+/* Responsive Stacking */
+@media (max-width: 992px) { 
+  /* Stack main cards */
+  .dashboard-main-cards-row > .dashboard-card {
+    flex-basis: 100%;
+  }
+
+  /* Stack chart sections */
+  .dashboard-charts-row > .status-by-principle,
+  .dashboard-charts-row > .status-by-objective {
+    flex-basis: 100%;
+  }
+}
+
+/* Status Cards Row */
+.status-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; /* Makes the card square */
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Status Cards Container (top row with Info Frame and Total) */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Info Frame - takes remaining space */
+.info-frame {
+  flex: 1; /* Grow to fill space */
+  min-width: 250px;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 210px; /* Match approx height of one status card (updated) */
+}
+
+/* Ensure Total card uses the status card styling but doesn't grow */
+.status-cards-container > .status-card.total {
+  flex-grow: 0;      /* Don't grow */
+  flex-shrink: 0;    /* Don't shrink */
+  /* Use min-width from .status-card rule */
+}
+
+/* Performance and Execution Status Cards Containers - Stack vertically */
+.performance-status-cards,
+.execution-status-cards {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: stretch; /* Make cards fill container width if needed */
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; 
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Color overrides for specific status cards */
+.status-card.green {
+  background-color: var(--color-status-success);
+  border-color: var(--color-status-success-dark);
+}
+.status-card.green .status-card-title,
+.status-card.green .status-card-value {
+  color: white;
+}
+
+.status-card.red {
+  background-color: var(--color-status-danger);
+  border-color: var(--color-status-danger-dark);
+}
+.status-card.red .status-card-title,
+.status-card.red .status-card-value {
+  color: white;
+}
+
+.status-card.blue {
+  background-color: var(--color-status-info);
+  border-color: var(--color-status-info-dark);
+}
+.status-card.blue .status-card-title,
+.status-card.blue .status-card-value {
+  color: white;
+}
+
+.status-card.yellow {
+  background-color: var(--color-status-warning);
+  border-color: var(--color-status-warning-dark);
+}
+.status-card.yellow .status-card-title,
+.status-card.yellow .status-card-value {
+  color: white;
+}
+
+/* Specific styling for the info-frame card (Total Initiatives) */
+.info-frame .status-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+}
+
+/* Make sure text in Total card is black */
+.info-frame .status-card .status-card-title,
+.info-frame .status-card .status-card-value {
+  color: var(--color-black);
+}
+
+/* Row for the two main dashboard cards (Performance, Execution) */
+.dashboard-main-cards-row { 
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the two main dashboard cards within their row */
+.dashboard-main-cards-row > .dashboard-card { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin-bottom: 0; 
+}
+
+/* Row for Chart Sections (StatusByPrinciple, StatusByObjective) */
+.dashboard-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the chart sections within their row */
+.dashboard-charts-row > .status-by-principle, 
+.dashboard-charts-row > .status-by-objective { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin: 0; 
+}
+
+/* Responsive Stacking */
+@media (max-width: 992px) { 
+  /* Stack main cards */
+  .dashboard-main-cards-row > .dashboard-card {
+    flex-basis: 100%;
+  }
+
+  /* Stack chart sections */
+  .dashboard-charts-row > .status-by-principle,
+  .dashboard-charts-row > .status-by-objective {
+    flex-basis: 100%;
+  }
+}
+
+/* Status Cards Row */
+.status-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; /* Makes the card square */
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Status Cards Container (top row with Info Frame and Total) */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Info Frame - takes remaining space */
+.info-frame {
+  flex: 1; /* Grow to fill space */
+  min-width: 250px;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 210px; /* Match approx height of one status card (updated) */
+}
+
+/* Ensure Total card uses the status card styling but doesn't grow */
+.status-cards-container > .status-card.total {
+  flex-grow: 0;      /* Don't grow */
+  flex-shrink: 0;    /* Don't shrink */
+  /* Use min-width from .status-card rule */
+}
+
+/* Performance and Execution Status Cards Containers - Stack vertically */
+.performance-status-cards,
+.execution-status-cards {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: stretch; /* Make cards fill container width if needed */
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; 
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
 }

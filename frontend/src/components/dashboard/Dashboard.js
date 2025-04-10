@@ -3,6 +3,7 @@ import { useInitiatives } from '../../context/InitiativesContext';
 // eslint-disable-next-line no-unused-vars
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import './StatusCardColors.css';
 import computerIcon from '../../images/computer.png';
 import PrincipleStatusChart from './PrincipleStatusChart';
 import ObjectiveStatusChart from './ObjectiveStatusChart';
@@ -267,118 +268,131 @@ const Dashboard = () => {
       </div>
 
       <div className="dashboard-content">
-        {/* Status Cards Section */}
+        {/* Restore the top container for Total Initiatives and Info Frame */}
         <div className="status-cards-container">
-          {/* Add the new info frame here */}
+          {/* Info Frame (will expand) */}
           <div className="info-frame">
-            {/* Placeholder for future text */}
-            <span>Conteúdo futuro aqui...</span>
-          </div>
+            <span>Este painel de monitoramento interno permite aos gestores acompanhar de perto a execução das iniciativas da <b>Estratégia Federal de Governo Digital (EFGD)</b>. Visualize facilmente o andamento das ações sob sua responsabilidade, identifique rapidamente iniciativas em dia ou atrasadas e avalie o status geral de execução.
 
+Utilize estas informações para prever problemas, realocar recursos e tomar decisões ágeis e bem informadas, garantindo eficiência na implementação das políticas públicas.</span>
+          </div>
+          
+          {/* Total Initiatives Card (styled as square button) */}
+          <div 
+            className="status-card total" 
+            onClick={() => navigate('/initiatives')} 
+          >
+            <h3 className="status-card-title">Total de Iniciativas</h3>
+            <span className="status-card-value">{totalInitiatives}</span>
+          </div>
+        </div>
+
+        {/* First Responsive Row: Performance & Execution Cards */}
+        <div className="dashboard-main-cards-row">
+          {/* Card de Performance - Restore status cards inside */}
           <div className="dashboard-card">
-            <h2 className="card-title">Total de Iniciativas</h2>
+            <h2 className="card-title">Performance</h2>
             <div className="card-content">
-              <div className="info-container">
-                <span className="info-value">{totalInitiatives}</span>
+              <div className="chart-section">
+                <div className="chart-container">
+                  <PerformanceDonutChart 
+                    onSchedule={onScheduleInitiatives} 
+                    delayed={delayedInitiatives} 
+                  />
+                </div>
+                <div className="chart-legend">
+                  <div className="legend-item">
+                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-blue)' }}></span>
+                    No Cronograma
+                  </div>
+                  <div className="legend-item">
+                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-red)' }}></span>
+                    Em Atraso
+                  </div>
+                </div>
+              </div>
+              {/* Container for the two performance status cards */}
+              <div className="performance-status-cards">
+                 {/* On Schedule Card */}
+                 <div 
+                   className="status-card on-schedule" 
+                   onClick={() => navigate('/initiatives?status=onschedule')}
+                 >
+                   <h3 className="status-card-title">No Cronograma</h3>
+                   <span className="status-card-value">{onScheduleInitiatives}</span>
+                 </div>
+                 {/* Delayed Card */}
+                 <div 
+                   className="status-card delayed" 
+                   onClick={() => navigate('/initiatives?status=delayed')}
+                 >
+                   <h3 className="status-card-title">Em Atraso</h3>
+                   <span className="status-card-value">{delayedInitiatives}</span>
+                 </div>
               </div>
             </div>
           </div>
-          {/* Removed "Em Execução" and "Concluídas" cards from here */}
-        </div>
-
-        {/* Card de Performance */}
-        <div className="dashboard-card">
-          <h2 className="card-title">Performance</h2>
-          <div className="card-content">
-            <div className="chart-section">
-              <div className="chart-container">
-                <PerformanceDonutChart 
-                  onSchedule={onScheduleInitiatives} 
-                  delayed={delayedInitiatives} 
-                />
+          
+          {/* Card de Status da Execução - Restore status cards inside */}
+          <div className="dashboard-card">
+            <h2 className="card-title">Status da Execução</h2>
+            <div className="card-content execution-content">
+              {/* Container for the two execution status cards */}
+              <div className="execution-status-cards">
+                 {/* Completed Card */}
+                 <div 
+                   className="status-card completed" 
+                   onClick={() => navigate('/initiatives?status=completed')}
+                 >
+                   <h3 className="status-card-title">Concluídas</h3>
+                   <span className="status-card-value">{completedInitiatives}</span>
+                 </div>
+                 {/* In Execution Card */}
+                 <div 
+                   className="status-card in-execution" 
+                   onClick={() => navigate('/initiatives?status=inExecution')}
+                 >
+                   <h3 className="status-card-title">Em Execução</h3>
+                   <span className="status-card-value">{inExecutionInitiatives}</span>
+                 </div>
               </div>
-              <div className="chart-legend">
-                <div className="legend-item">
-                  <span className="legend-color-box" style={{ backgroundColor: 'var(--color-blue)' }}></span>
-                  No Cronograma
+              <div className="chart-section">
+                <div className="chart-container">
+                  <ExecutionDonutChart 
+                    completed={completedInitiatives} 
+                    inExecution={inExecutionInitiatives} 
+                  />
                 </div>
-                <div className="legend-item">
-                  <span className="legend-color-box" style={{ backgroundColor: 'var(--color-red)' }}></span>
-                  Em Atraso
-                </div>
-              </div>
-            </div>
-            {/* Replace .info-container content with StatusCards */}
-            <div className="info-container performance-status-cards">
-              <div className="status-card">
-                <h3 className="status-card-title">No Cronograma</h3>
-                <div className="status-card-content">
-                  <span className="status-card-value">{onScheduleInitiatives}</span>
-                </div>
-              </div>
-              <div className="status-card">
-                <h3 className="status-card-title">Em Atraso</h3>
-                <div className="status-card-content">
-                  <span className="status-card-value">{delayedInitiatives}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Card de Status da Execução */}
-        <div className="dashboard-card">
-          <h2 className="card-title">Status da Execução</h2>
-          <div className="card-content execution-content">
-            {/* Replace .info-container content with StatusCards */}
-            <div className="info-container execution-status-cards">
-              <div className="status-card">
-                <h3 className="status-card-title">Concluídas</h3>
-                <div className="status-card-content">
-                  <span className="status-card-value">{completedInitiatives}</span>
-                </div>
-              </div>
-              <div className="status-card">
-                <h3 className="status-card-title">Em Execução</h3>
-                <div className="status-card-content">
-                  <span className="status-card-value">{inExecutionInitiatives}</span>
-                </div>
-              </div>
-            </div>
-            <div className="chart-section">
-              <div className="chart-container">
-                <ExecutionDonutChart 
-                  completed={completedInitiatives} 
-                  inExecution={inExecutionInitiatives} 
-                />
-              </div>
-              <div className="chart-legend">
-                <div className="legend-item">
-                  <span className="legend-color-box" style={{ backgroundColor: 'var(--color-green)' }}></span>
-                  Concluídas
-                </div>
-                <div className="legend-item">
-                  <span className="legend-color-box" style={{ backgroundColor: 'var(--color-blue-dark)' }}></span>
-                  Em Execução
+                <div className="chart-legend">
+                  <div className="legend-item">
+                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-green)' }}></span>
+                    Concluídas
+                  </div>
+                  <div className="legend-item">
+                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-blue-dark)' }}></span>
+                    Em Execução
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         
-        {/* Outras seções do dashboard podem ser adicionadas aqui */}
-        <div className="status-by-principle"> 
-          <h2>Performance por Princípio</h2>
-          <div className="principle-chart">
-            <PrincipleStatusChart initiatives={safeInitiatives} principles={safePrinciples} /> 
-            {/* <p>Principle Chart Temporarily Disabled</p> */}
+        {/* Second Responsive Row: Principle & Objective Charts */}
+        <div className="dashboard-charts-row">
+          <div className="status-by-principle"> 
+            <h2>Performance por Princípio</h2>
+            <div className="principle-chart">
+              <PrincipleStatusChart initiatives={safeInitiatives} principles={safePrinciples} /> 
+              {/* <p>Principle Chart Temporarily Disabled</p> */}
+            </div>
           </div>
-        </div>
-        
-        <div className="status-by-objective">
-          <h2>Performance por Objetivos</h2>
-          <div className="objective-chart">
-            <ObjectiveStatusChart initiatives={safeInitiatives} objectives={safeObjectives} />
+          
+          <div className="status-by-objective">
+            <h2>Performance por Objetivos</h2>
+            <div className="objective-chart">
+              <ObjectiveStatusChart initiatives={safeInitiatives} objectives={safeObjectives} />
+            </div>
           </div>
         </div>
         
