@@ -9,7 +9,8 @@
  * 1. O método normalizeStatus no backend (googlesheets.service.js)
  * 2. A estrutura de filtros no InitiativesContext
  */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useInitiatives } from '../../context/InitiativesContext';
 import './Initiatives.css';
 
@@ -18,6 +19,7 @@ import './Initiatives.css';
  * Implementa filtros padronizados seguindo diretrizes EFGD
  */
 const InitiativeFilters = () => {
+  const location = useLocation();
   const { 
     principles, 
     objectives, 
@@ -28,6 +30,38 @@ const InitiativeFilters = () => {
   } = useInitiatives();
 
   const years = getUniqueYears();
+
+  // Effect to read URL parameters on mount/update
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const statusFromUrl = params.get('status');
+    console.log('[InitiativeFilters] Status from URL:', statusFromUrl); // Log for debugging
+
+    if (statusFromUrl) {
+      const decodedStatus = decodeURIComponent(statusFromUrl);
+      console.log('[InitiativeFilters] Decoded Status:', decodedStatus);
+
+      // Map URL value to internal filter value
+      let internalStatusValue = '';
+      if (decodedStatus === 'no cronograma') {
+        internalStatusValue = 'NO_CRONOGRAMA';
+      } else if (decodedStatus === 'delayed') { // Assuming 'delayed' for 'Em Atraso'
+        internalStatusValue = 'ATRASADA';
+      } else if (decodedStatus === 'completed') { // Assuming 'completed' for 'Concluída'
+        internalStatusValue = 'CONCLUIDA';
+      } else if (decodedStatus === 'inExecution') { // Added for 'Em Execução'
+        internalStatusValue = 'EM_EXECUCAO';
+      }
+      // Add more mappings if needed for other statuses like 'inExecution'
+
+      console.log('[InitiativeFilters] Mapped Internal Status:', internalStatusValue);
+
+      if (internalStatusValue && filters.status !== internalStatusValue) {
+        console.log('[InitiativeFilters] Updating context filter status to:', internalStatusValue);
+        updateFilters({ status: internalStatusValue });
+      }
+    }
+  }, [location.search, updateFilters, filters.status]); // <-- Add dependencies
 
   const handleFilterChange = (filterName, value) => {
     updateFilters({ [filterName]: value });
@@ -95,6 +129,7 @@ const InitiativeFilters = () => {
           className="filter-select"
         >
           <option value="">Todos</option>
+          <option value="EM_EXECUCAO">Em Execução</option> {/* Added Option */}
           <option value="NO_CRONOGRAMA">No Cronograma</option>
           <option value="ATRASADA">Atrasada</option>
           <option value="CONCLUIDA">Concluída</option>

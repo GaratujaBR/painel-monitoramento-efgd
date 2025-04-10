@@ -10,6 +10,7 @@
  * 3. A lógica de ordenação e filtragem que depende da estrutura de dados
  */
 import React, { useEffect, useState, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useInitiatives } from '../../context/InitiativesContext';
 import { FaSort, FaSortUp, FaSortDown, FaSync } from 'react-icons/fa';
 import InitiativeFilters from './InitiativeFilters';
@@ -20,6 +21,7 @@ import './Initiatives.css';
  * Implementa a visualização padronizada das iniciativas seguindo diretrizes EFGD
  */
 const InitiativeList = () => {
+  const location = useLocation();
   const { 
     principles, 
     objectives,
@@ -40,8 +42,11 @@ const InitiativeList = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    // Log URL parameters on mount
+    console.log('[InitiativeList] Location Search on Mount:', location.search);
+    
     fetchInitiatives();
-  }, [fetchInitiatives]);
+  }, [fetchInitiatives, location.search]);
 
   // Função para atualizar os dados
   const handleRefresh = async () => {

@@ -316,7 +316,7 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
                  {/* On Schedule Card */}
                  <div 
                    className="status-card on-schedule" 
-                   onClick={() => navigate('/initiatives?status=onschedule')}
+                   onClick={() => navigate('/initiatives?status=no%20cronograma')}
                  >
                    <h3 className="status-card-title">No Cronograma</h3>
                    <span className="status-card-value">{onScheduleInitiatives}</span>
