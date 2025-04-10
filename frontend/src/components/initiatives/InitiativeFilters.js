@@ -63,6 +63,60 @@ const InitiativeFilters = () => {
     }
   }, [location.search, updateFilters, filters.status]); // <-- Add dependencies
 
+  // Effect to read state from navigation (for chart clicks)
+  useEffect(() => {
+    // Check if we have state from navigation (from chart clicks)
+    if (location.state && location.state.filters) {
+      console.log('[InitiativeFilters] Received filters from navigation state:', location.state.filters);
+      
+      const { principleId, objectiveId, status } = location.state.filters;
+      const newFilters = {};
+      
+      // Apply principleId filter if provided
+      if (principleId) {
+        console.log('[InitiativeFilters] Setting principleId filter to:', principleId);
+        newFilters.principleId = principleId;
+      }
+      
+      // Apply objectiveId filter if provided
+      if (objectiveId) {
+        console.log('[InitiativeFilters] Setting objectiveId filter to:', objectiveId);
+        newFilters.objectiveId = objectiveId;
+      }
+      
+      // Apply status filter if provided - map from display value to internal value
+      if (status) {
+        let internalStatusValue = '';
+        if (status === 'No Cronograma' || status === 'NO_CRONOGRAMA') {
+          internalStatusValue = 'NO_CRONOGRAMA';
+        } else if (status === 'Atrasada' || status === 'ATRASADA') {
+          internalStatusValue = 'ATRASADA';
+        }
+        
+        if (internalStatusValue) {
+          console.log('[InitiativeFilters] Setting status filter to:', internalStatusValue);
+          newFilters.status = internalStatusValue;
+        }
+      }
+      
+      // Only update if we have new filters and they're different from current
+      if (Object.keys(newFilters).length > 0) {
+        // Check if any filter value is different from current
+        const needsUpdate = Object.entries(newFilters).some(
+          ([key, value]) => filters[key] !== value
+        );
+        
+        if (needsUpdate) {
+          console.log('[InitiativeFilters] Updating filters from navigation state');
+          updateFilters(newFilters);
+          
+          // Clear the location state to prevent reapplying filters on refresh
+          window.history.replaceState({}, document.title);
+        }
+      }
+    }
+  }, [location.state, updateFilters, filters]); // Add dependencies
+
   const handleFilterChange = (filterName, value) => {
     updateFilters({ [filterName]: value });
   };
