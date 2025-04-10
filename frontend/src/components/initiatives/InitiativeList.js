@@ -15,6 +15,8 @@ import { useInitiatives } from '../../context/InitiativesContext';
 import { FaSort, FaSortUp, FaSortDown, FaSync } from 'react-icons/fa';
 import InitiativeFilters from './InitiativeFilters';
 import './Initiatives.css';
+import { Tooltip } from 'react-tooltip'; // Importar Tooltip
+import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
 
 /**
  * Componente de listagem de iniciativas
@@ -85,7 +87,6 @@ const InitiativeList = () => {
   }, [areas]);
 
   // Renderiza o badge de status com as cores padrão do governo
-    // Renderiza o badge de status com as cores padrão do governo
   const StatusBadge = ({ status }) => {
     let displayLabel = 'Em Execução'; // Padrão para todos não concluídos
     let displayStatusKey = 'EM_EXECUCAO'; // Chave para estilização
@@ -110,14 +111,23 @@ const InitiativeList = () => {
   };
 
   // Renderiza o badge de performance
-  const PerformanceBadge = ({ performance }) => {
+  const PerformanceBadge = ({ performance, initiative }) => {
     if (!performance) return <span className="performance-badge">-</span>;
+    
+    // Usando os nomes exatos dos campos que vêm do backend
+    const metaValue = initiative?.meta2024 || 'N/D';
+    const executadoValue = initiative?.executado2024 || 'N/D';
+
+    const tooltipContent = `Meta 2024: ${metaValue}<br />Executado 2024: ${executadoValue}`;
     
     return (
       <span 
         className="performance-badge"
         data-performance={performance}
         aria-label={`Performance: ${performance}`}
+        // Atributos para react-tooltip
+        data-tooltip-id="performance-tooltip"
+        data-tooltip-html={tooltipContent} // Usar data-tooltip-html para permitir <br />
       >
         {performance}
       </span>
@@ -261,7 +271,8 @@ const InitiativeList = () => {
                   <StatusBadge status={initiative.status} />
                 </td>
                 <td className="text-center">
-                  <PerformanceBadge performance={initiative.performance} />
+                  {/* Passar a initiative completa para o PerformanceBadge */}
+                  <PerformanceBadge performance={initiative.performance} initiative={initiative} />
                 </td>
                 <td className="text-left">
                   {initiative.observations || '-'}
@@ -271,6 +282,8 @@ const InitiativeList = () => {
           </tbody>
         </table>
       </div>
+      {/* Adicionar o componente Tooltip aqui */}
+      <Tooltip id="performance-tooltip" place="top" effect="solid" />
     </div>
   );
 };

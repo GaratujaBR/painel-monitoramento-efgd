@@ -196,7 +196,9 @@ class GoogleSheetsService {
         performance: '',
         responsiblePerson: '',
         lastUpdate: '',
-        observations: ''
+        observations: '',
+        meta2024: '',
+        executado2024: ''
       };
       
       // Processar objectiveId e principleId
@@ -278,6 +280,14 @@ class GoogleSheetsService {
               
             case headerLower.includes('observações') || headerLower.includes('observacoes') || headerLower.includes('obs'):
               initiative.observations = value;
+              break;
+              
+            case header === 'META 2024':
+              initiative.meta2024 = value;
+              break;
+              
+            case header === 'Executado 2024':
+              initiative.executado2024 = value;
               break;
           }
         } catch (error) {

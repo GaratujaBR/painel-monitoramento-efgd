@@ -291,9 +291,9 @@
 
 /* Tabela de iniciativas */
 .initiatives-container {
-  width: 100%;
-  max-width: 1280px;
+  max-width: 1600px;
   margin: 0 auto;
+  padding: var(--spacing-lg);
   font-family: Verdana, sans-serif;
 }
 
