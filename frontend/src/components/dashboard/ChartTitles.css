@@ -1,0 +1,10 @@
+/* Estilos para os títulos dos gráficos */
+/* Usando seletores mais específicos para sobrescrever regras globais */
+.dashboard-card h2.chart-title {
+  text-align: center;
+  width: 100%; /* Garante que o título ocupe toda a largura */
+  margin-bottom: 1rem; /* Espaçamento abaixo do título */
+  font-size: var(--font-size-section-heading);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-black, black) !important; /* Define a cor do texto como preta e força aplicação */
+}

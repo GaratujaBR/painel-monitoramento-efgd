@@ -1,0 +1,77 @@
+/* PrincipleStatusChart.css */
+
+.principle-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding-top: 40px; 
+}
+
+.custom-chart-tooltip {
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
+  min-width: 200px;
+}
+
+.tooltip-title {
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.tooltip-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.tooltip-value {
+  font-weight: 500;
+}
+
+.tooltip-total {
+  margin-top: 10px;
+  padding-top: 5px;
+  border-top: 1px solid #eee;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-chart-legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.legend-color-box {
+  width: 20px; 
+  height: 20px; 
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
+.chart-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 200px;
+  color: #888;
+  font-style: italic;
+}

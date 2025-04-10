@@ -6,121 +6,71 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
-import './Charts.css';
+import './PrincipleStatusChart.css';
 
-/**
- * Componente de gráfico de performance por princípio usando Recharts
- * Exibe a distribuição de performance (No Cronograma vs Em Atraso) para cada princípio em um gráfico de barras empilhadas
- */
-const PrincipleStatusChart = ({ initiatives, principles = [] }) => {
+const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
   const navigate = useNavigate();
 
-  // Define status colors using CSS variables for consistency
+  // Cores para o gráfico
   const performanceColors = {
-    'No Cronograma': 'var(--color-blue)', // Use CSS variable for blue
-    'Atrasada': 'var(--color-red)',     // Use CSS variable for red
+    'No Cronograma': 'var(--color-blue)',
+    'Atrasada': 'var(--color-red)',
   };
 
-  const baseFontSize = 17;
+  // Função para processar os dados
+  const processData = () => {
+    const data = {};
 
-  // Mapeamento manual dos IDs numéricos para os nomes completos de princípios
-  const principleNameMapping = {
-    1: "I - Governo Centrado no Cidadão e Inclusivo",
-    2: "II - Governo Integrado e Colaborativo",
-    3: "III - Governo Digital e Eficiente",
-    4: "IV - Governo Confiável e Seguro", // Garante que ID 4 seja mapeado corretamente
-    5: "V - Governo Transparente e Aberto",
-    6: "VI - Governo Orientado por Dados"
-  };
+    initiatives.forEach(initiative => {
+      const principleId = initiative.principleId;
+      const performance = initiative.performance;
 
-  // Normalizar o principleId para garantir consistência
-  const normalizeInitiatives = (initiatives || []).map(initiative => {
-    const newInitiative = {...initiative};
-    
-    return newInitiative;
-  });
-  
-  // Agrupar por princípio
-  const initiativesByPrinciple = {};
-  
-  // Primeiro agrupar todas as iniciativas por principleId
-  normalizeInitiatives.forEach(initiative => {
-    // Se não tiver principleId, pular
-    if (!initiative.principleId) {
-      console.log(`Iniciativa sem principleId: ${initiative.id}`);
-      return;
-    }
-    
-    // Normalizar para string para evitar problemas de tipo
-    const principleId = String(initiative.principleId);
-    
-    if (!initiativesByPrinciple[principleId]) {
-      initiativesByPrinciple[principleId] = {
-        id: principleId,
-        name: principleNameMapping[initiative.principleId] || `Princípio ${principleId}`,
-        initiatives: []
-      };
-    }
-    
-    initiativesByPrinciple[principleId].initiatives.push(initiative);
-  });
+      if (principleId) {
+        // Encontra o princípio correspondente no array 'principles'
+        // Certifique-se de que a propriedade correta (ex: 'name' ou 'PRINCIPIO') está sendo usada
+        const principleInfo = principles.find(p => p.id === principleId);
+        const principleName = principleInfo?.name || `Princípio ${principleId}`; // Ajuste 'name' se necessário
 
-  // Processar dados para o gráfico de performance
-  let processedData = Object.values(initiativesByPrinciple).map(principle => {
-    // Inicializar contagens de performance
-    let noCronogramaCount = 0;
-    let atrasadaCount = 0;
-    
-    // Contar iniciativas por status de performance (ignorando concluídas)
-    principle.initiatives.forEach(initiative => {
-      // Contar por status (usando os identificadores internos)
-      if (initiative.status === 'NO_CRONOGRAMA') {
-        noCronogramaCount++;
-      } else if (initiative.status === 'ATRASADA') {
-        atrasadaCount++;
-      } 
-      // Iniciativas com status 'CONCLUIDA' ou outro são ignoradas aqui
+        if (!data[principleId]) {
+          data[principleId] = {
+            id: principleId,
+            // Usar o nome encontrado para 'name' e 'fullName'
+            name: principleName, // Usado internamente ou para labels curtos se necessário
+            fullName: principleName, // Usado para o eixo Y e tooltips
+            'No Cronograma': 0,
+            'Atrasada': 0
+          };
+        }
+
+        if (performance === 'No Cronograma') {
+          data[principleId]['No Cronograma']++;
+        } else if (performance === 'Atrasada') {
+          data[principleId]['Atrasada']++;
+        }
+      }
     });
 
-    // Retornar os dados formatados para o gráfico, usando as chaves esperadas pelas Barras
-    return {
-      principleId: principle.id,
-      principle: principle.name,
-      'No Cronograma': noCronogramaCount, // Chave corresponde ao dataKey da Barra
-      'Atrasada': atrasadaCount,         // Chave corresponde ao dataKey da Barra
-    };
-  });
-  
-  // Ordenar por principleId
-  processedData.sort((a, b) => {
-    const aNum = parseInt(a.principleId);
-    const bNum = parseInt(b.principleId);
-    
-    if (!isNaN(aNum) && !isNaN(bNum)) {
-      return aNum - bNum;
-    }
-    
-    return (a.principle || '').localeCompare(b.principle || '');
-  });
+    // Retorna os dados ordenados pelo ID (ou pode ordenar por nome, se preferir)
+    return Object.values(data).sort((a, b) => a.id - b.id);
+  };
 
   // Manipulador de clique para as barras
-  const handleBarClick = (data, statusKey) => {
-    if (!data || !data.payload || !data.payload.principleId) {
-      console.error("PrincipleChart: Dados inválidos recebidos no clique", data);
+  const handleBarClick = (entry, statusKey) => {
+    if (!entry || !entry.payload || !entry.payload.id) {
+      console.error("PrincipleChart: Dados inválidos recebidos no clique", entry);
       return;
     }
 
-    const principleId = data.payload.principleId;
+    const principleId = entry.payload.id;
     let statusFilterValue;
 
     if (statusKey === 'No Cronograma') {
-      statusFilterValue = 'NO_CRONOGRAMA';
+      statusFilterValue = 'No Cronograma';
     } else if (statusKey === 'Atrasada') {
-      statusFilterValue = 'ATRASADA';
+      statusFilterValue = 'Atrasada';
     } else {
       console.error(`PrincipleChart: Status inválido recebido: ${statusKey}`);
       return;
@@ -138,54 +88,38 @@ const PrincipleStatusChart = ({ initiatives, principles = [] }) => {
     }
   };
 
-  // Custom tooltip for the bar chart
+  // Componente para o tooltip customizado
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+      // Encontra os valores para cada status no payload
       const noCronograma = payload.find(p => p.dataKey === 'No Cronograma')?.value || 0;
       const atrasada = payload.find(p => p.dataKey === 'Atrasada')?.value || 0;
       const total = noCronograma + atrasada;
       
+      // Calcula as porcentagens
       const noCronogramaPct = total > 0 ? Math.round((noCronograma / total) * 100) : 0;
       const atrasadaPct = total > 0 ? Math.round((atrasada / total) * 100) : 0;
       
+      // Obtém o nome completo do princípio
+      const fullPrincipleName = payload[0]?.payload?.fullName || label;
+
       return (
-        <div style={{
-          backgroundColor: 'white',
-          padding: '15px',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          fontSize: '14px',
-          minWidth: '200px'
-        }}>
-          <p style={{ 
-            fontWeight: 'bold', 
-            margin: '0 0 0 0',
-            borderBottom: '1px solid #eee',
-            paddingBottom: '5px'
-          }}>{label}</p>
+        <div className="custom-chart-tooltip">
+          <p className="tooltip-title">{fullPrincipleName}</p>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: 'var(--color-blue)' }}>No Cronograma:</span>
-            <span style={{ fontWeight: '500' }}>{noCronograma} ({noCronogramaPct}%)</span>
+          <div className="tooltip-item">
+            <span style={{ color: performanceColors['No Cronograma'] }}>No Cronograma:</span>
+            <span className="tooltip-value">{noCronograma} ({noCronogramaPct}%)</span>
           </div>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: 'var(--color-red)' }}>Atrasada:</span>
-            <span style={{ fontWeight: '500' }}>{atrasada} ({atrasadaPct}%)</span>
+          <div className="tooltip-item">
+            <span style={{ color: performanceColors['Atrasada'] }}>Atrasada:</span>
+            <span className="tooltip-value">{atrasada} ({atrasadaPct}%)</span>
           </div>
           
-          <div style={{ 
-            marginTop: '10px', 
-            paddingTop: '5px',
-            paddingBottom: '5px', 
-            borderTop: '1px solid #eee',
-            fontWeight: 'bold',
-            display: 'flex',
-            justifyContent: 'space-between'
-          }}>
+          <div className="tooltip-total">
             <span>Total:</span>
-            <span>{total} iniciativas em execução</span>
+            <span>{total} iniciativas</span>
           </div>
         </div>
       );
@@ -193,85 +127,113 @@ const PrincipleStatusChart = ({ initiatives, principles = [] }) => {
     return null;
   };
 
+  const chartData = processData();
+  
+  // Verificar se há dados para exibir
+  if (!chartData || chartData.length === 0) {
+    return <div className="chart-placeholder">Sem dados de princípios para exibir.</div>;
+  }
+
+  // Definir o tamanho da fonte base
+  const baseFontSize = 11; // Reduzir um pouco para caber mais texto
+  // Calcular altura dinâmica - base + altura por barra
+  const dynamicHeight = 100 + chartData.length * 60;
+
   return (
-    <>
-      <ResponsiveContainer width="100%" height={500}>
+    <div className="principle-chart-container">
+      {/* Ajuste dinâmico da altura */}
+      <ResponsiveContainer width="100%" height={dynamicHeight}>
         <BarChart
-          data={processedData}
-          layout="vertical"
-          margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
+          layout="vertical" // Define layout horizontal (barras crescem da esquerda para direita)
+          data={chartData}
+          margin={{
+            top: 20,
+            right: 50, // Aumentar margem direita para valores/labels das barras
+            left: 50, // Aumentar margem esquerda para nomes longos dos princípios
+            bottom: 20
+          }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" 
+          {/* Eixo X agora é numérico */}
+          <XAxis
+            type="number"
+            allowDecimals={false}
             tick={{ 
-              fontSize: baseFontSize,
-              fill: '#222'
-            }}
+              fontSize: baseFontSize, 
+              fill: '#222' 
+            }} 
           />
+          {/* Eixo Y agora são as categorias (nomes dos princípios) */}
           <YAxis 
             type="category" 
-            dataKey="principle" 
+            dataKey="fullName" // Usar o nome completo como label do eixo Y
+            width={50} // Largura do eixo Y para caber nomes
+            interval={0} // Mostrar todos os labels
             tick={{ 
-              fontSize: 14, 
-              fontWeight: 600,
-              fill: '#222'
-            }}
-            width={230}
+              fontSize: baseFontSize, 
+              fill: '#222',
+              // Optional: Add text wrapping if names are too long
+              // width: 150, 
+              // textAnchor: 'end',
+              // dx: -5 // Adjust position slightly
+            }} 
           />
-          <Tooltip content={<CustomTooltip />} /> 
+          <Tooltip 
+            content={<CustomTooltip />} 
+            cursor={{ fill: 'rgba(0, 0, 0, 0.1)' }}
+          />
+          {/* Barras agora são verticais em relação ao eixo Y */}
           <Bar 
-            barSize={20} 
+            barSize={15} // Ajustar tamanho da barra
             dataKey="No Cronograma" 
-            name="No Cronograma" 
-            fill={performanceColors['No Cronograma']} 
-            stackId="a"
-            radius={[0, 5, 5, 0]}
-            onClick={(data, index, event) => handleBarClick(data, "No Cronograma")}
+            stackId="a" 
+            fill={performanceColors['No Cronograma']}
+            radius={[0, 5, 5, 0]} // Ajustar raio para horizontal
+            onClick={(data) => handleBarClick(data, "No Cronograma")}
             cursor="pointer"
-          />
+          >
+            {/* Opcional: Adicionar labels nas barras - descomente se desejar
+            <LabelList 
+              dataKey="No Cronograma" 
+              position="right" 
+              formatter={(value) => value > 0 ? value : ''} 
+              style={{ fill: '#FFF', fontSize: '10px' }} 
+            /> 
+            */}
+          </Bar>
           <Bar 
-            barSize={20} 
+            barSize={15} 
             dataKey="Atrasada" 
-            name="Atrasada" 
-            fill={performanceColors['Atrasada']} 
-            stackId="a"
-            radius={[0, 5, 5, 0]}
-            onClick={(data, index, event) => handleBarClick(data, "Atrasada")}
+            stackId="a" 
+            fill={performanceColors['Atrasada']}
+            radius={[0, 5, 5, 0]} // Ajustar raio para horizontal
+            onClick={(data) => handleBarClick(data, "Atrasada")}
             cursor="pointer"
-          />
+          >
+            {/* Opcional: Adicionar labels nas barras
+            <LabelList 
+              dataKey="Atrasada" 
+              position="right" 
+              formatter={(value) => value > 0 ? value : ''} 
+              style={{ fill: '#FFF', fontSize: '10px' }} 
+            />
+            */}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
+      
       {/* Legenda externa personalizada */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        marginTop: '10px',
-        gap: '15px',
-        fontSize: baseFontSize + 1,
-        fontWeight: '500'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ 
-            width: '20px', 
-            height: '20px', 
-            backgroundColor: performanceColors['No Cronograma'],
-            marginRight: '10px',
-            borderRadius: '3px'
-          }}></div>
+      <div className="custom-chart-legend">
+        <div className="legend-item">
+          <div className="legend-color-box" style={{ backgroundColor: performanceColors['No Cronograma'] }}></div>
           <span>No Cronograma</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ 
-            width: '20px', 
-            height: '20px', 
-            backgroundColor: performanceColors['Atrasada'],
-            marginRight: '10px',
-            borderRadius: '3px'
-          }}></div>
+        <div className="legend-item">
+          <div className="legend-color-box" style={{ backgroundColor: performanceColors['Atrasada'] }}></div>
           <span>Atrasada</span>
         </div>
-      </div>  
-    </>
+      </div>
+    </div>
   );
 };
 

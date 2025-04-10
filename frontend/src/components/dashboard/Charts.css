@@ -341,9 +341,8 @@
 
 .recharts-wrapper,
 .recharts-responsive-container {
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 300px !important;
+  width: 700px;
+  height: 500px;
   overflow: visible !important;
 }
 
@@ -471,7 +470,7 @@
   }
   
   .donut-total {
-    font-size: calc(var(--font-size-data-label) * 0.9);
+    font-size: calc(var(--font-size-data-label) * 1.2);
   }
   
   .chart-wrapper {

@@ -3,7 +3,9 @@ import { useInitiatives } from '../../context/InitiativesContext';
 // eslint-disable-next-line no-unused-vars
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import './DashboardCharts.css'; // Import the new CSS file for chart layout
 import './StatusCardColors.css';
+import './ChartTitles.css'; // Importando o novo arquivo CSS para títulos
 import computerIcon from '../../images/computer.png';
 import PrincipleStatusChart from './PrincipleStatusChart';
 import ObjectiveStatusChart from './ObjectiveStatusChart';
@@ -380,19 +382,22 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
         
         {/* Second Responsive Row: Principle & Objective Charts */}
         <div className="dashboard-charts-row">
-          <div className="status-by-principle"> 
-            <h2>Performance por Princípio</h2>
-            <div className="principle-chart">
-              <PrincipleStatusChart initiatives={safeInitiatives} principles={safePrinciples} /> 
-              {/* <p>Principle Chart Temporarily Disabled</p> */}
-            </div>
+          <div className="dashboard-card principle-status-card">
+            <h2 className="chart-title">Performance por Princípio</h2>
+            {(safeInitiatives && safeInitiatives.length > 0 && safePrinciples && safePrinciples.length > 0) ? (
+              <PrincipleStatusChart initiatives={safeInitiatives} principles={safePrinciples} />
+            ) : (
+              <p>Carregando dados dos princípios e iniciativas...</p>
+            )}
           </div>
           
-          <div className="status-by-objective">
-            <h2>Performance por Objetivos</h2>
-            <div className="objective-chart">
+          <div className="dashboard-card objective-status-card">
+            <h2 className="chart-title">Performance por Objetivos</h2>
+            {(safeInitiatives && safeInitiatives.length > 0 && safeObjectives && safeObjectives.length > 0) ? (
               <ObjectiveStatusChart initiatives={safeInitiatives} objectives={safeObjectives} />
-            </div>
+            ) : (
+              <p>Carregando dados dos objetivos e iniciativas...</p>
+            )}
           </div>
         </div>
         
