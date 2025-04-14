@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento Interno</title>
+    <style>
+        .monitoramento {
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            color: #222;
+            position: relative;
+            padding: 10px 20px;
+        }
+
+        .monitoramento::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 50%;
+            background-color: #0055CC;
+            z-index: -1;
+        }
+
+        .interno {
+            color: #FFD700;
+        }
+
+        .texto {
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="monitoramento">
+        <span class="texto">Monitoramento</span>
+        <span class="interno">INTERNO</span>
+    </div>
+</body>
+</html>

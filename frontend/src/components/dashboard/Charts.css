@@ -1,0 +1,535 @@
+/* Shared Chart Styles - Seguindo diretrizes do manual de identidade visual */
+/* Usando variáveis CSS para consistência */
+
+/* Progress Chart Styles */
+.progress-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  font-family: Verdana, sans-serif;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: var(--spacing-sm);
+}
+
+.progress-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.progress-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-small);
+}
+
+.initiative-name {
+  color: var(--color-dark-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.initiative-progress-value {
+  color: var(--color-medium-gray);
+  font-weight: bold;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: var(--color-light-gray);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: var(--border-radius-sm);
+  transition: width 0.3s ease;
+  background-color: var(--color-blue);
+}
+
+/* Initiative Status Chart Styles */
+.initiative-status-chart,
+.execution-status-chart {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */ /* <-- COMMENT OUT or REMOVE this line */
+  gap: var(--spacing-lg);
+  font-family: Verdana, sans-serif;
+  width: 100%; /* <-- Ensure the component tries to take full width */
+}
+
+.recharts-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recharts-custom-tooltip {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--box-shadow-default);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-light-gray);
+}
+
+.tooltip-label {
+  font-weight: bold;
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--color-black);
+  font-size: var(--font-size-small);
+}
+
+.tooltip-value {
+  margin: 0;
+  color: var(--color-dark-gray);
+  font-size: var(--font-size-small);
+}
+
+.tooltip-total {
+  margin: var(--spacing-xs) 0 0;
+  font-weight: bold;
+  color: var(--color-black);
+  border-top: 1px solid var(--color-light-gray);
+  padding-top: var(--spacing-xs);
+  font-size: var(--font-size-small);
+}
+
+.chart-total-container {
+  display: flex;
+  justify-content: center;
+  margin-top: -20px;
+}
+
+.chart-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  justify-content: center;
+  box-shadow: var(--box-shadow-default);
+}
+
+.total-value {
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffd000;
+}
+
+.total-label {
+  font-size: var(--font-size-medium);
+  font-weight: bold;
+  color: var(--color-dark-gray);
+  text-align: center;
+}
+
+.status-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+  max-width: 250px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--border-radius-sm);
+  flex-shrink: 0;
+}
+
+.legend-label {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: var(--font-size-small);
+}
+
+.legend-status {
+  color: var(--color-dark-gray);
+}
+
+.legend-count {
+  color: var(--color-medium-gray);
+  font-weight: bold;
+}
+
+/* Timeline Chart Styles */
+.timeline-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  font-family: Verdana, sans-serif;
+  padding: var(--spacing-sm) 0;
+}
+
+.timeline-header {
+  position: relative;
+  height: 30px;
+}
+
+.timeline-ruler {
+  position: relative;
+  height: 100%;
+  margin-left: 200px;
+}
+
+.timeline-marker {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
+.timeline-marker-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10px;
+  width: 1px;
+  background-color: var(--color-light-gray);
+}
+
+.timeline-marker-date {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  white-space: nowrap;
+}
+
+.timeline-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.timeline-row {
+  display: flex;
+  height: 40px;
+  align-items: center;
+}
+
+.timeline-initiative-name {
+  width: 200px;
+  padding-right: var(--spacing-lg);
+  font-size: var(--font-size-small);
+  color: var(--color-dark-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timeline-initiative-milestones {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-light-gray);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.timeline-milestone {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.milestone-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--box-shadow-default);
+  padding: var(--spacing-sm);
+  width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 3;
+}
+
+.timeline-milestone:hover .milestone-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.milestone-name {
+  font-size: var(--font-size-small);
+  font-weight: bold;
+  color: var(--color-dark-gray);
+  margin-bottom: var(--spacing-xs);
+}
+
+.milestone-date {
+  font-size: var(--font-size-footnote);
+  color: var(--color-medium-gray);
+  margin-bottom: var(--spacing-xs);
+}
+
+.milestone-status {
+  font-size: var(--font-size-footnote);
+  padding: 2px 6px;
+  border-radius: var(--border-radius-sm);
+  display: inline-block;
+}
+
+.milestone-completed {
+  border: 2px solid var(--color-green);
+}
+
+.milestone-in-progress {
+  border: 2px solid var(--color-blue);
+}
+
+.milestone-delayed {
+  border: 2px solid var(--color-red);
+}
+
+.milestone-not-started {
+  border: 2px solid var(--color-medium-gray);
+}
+
+.timeline-legend {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-light-gray);
+}
+
+/* Estilos específicos para os gráficos de princípio e objetivo */
+.principle-status-chart, 
+.objective-status-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible !important;
+  margin-bottom: 20px;
+}
+
+.recharts-wrapper,
+.recharts-responsive-container {
+  width: 700px;
+  height: 500px;
+  overflow: visible !important;
+}
+
+/* Melhorar a legibilidade dos textos nos gráficos */
+.recharts-text.recharts-cartesian-axis-tick-value {
+  font-weight: 500 !important;
+}
+
+/* Botão Ver Todos */
+.show-all-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.show-all-button {
+  display: block;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-blue);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-small);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.show-all-button:hover {
+  background-color: var(--color-dark-blue);
+}
+
+.show-all-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(24, 62, 255, 0.3);
+}
+
+/* Status colors for charts */
+.status-concluida {
+  fill: var(--color-green);
+  background-color: var(--color-green);
+}
+
+.status-no-cronograma {
+  fill: var(--color-blue);
+  background-color: var(--color-blue);
+}
+
+.status-atrasada {
+  fill: var(--color-red);
+  background-color: var(--color-red);
+}
+
+.status-nao-iniciada {
+  fill: var(--color-medium-gray);
+  background-color: var(--color-medium-gray);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-initiative-name {
+    width: 120px;
+    font-size: var(--font-size-footnote);
+  }
+  
+  .timeline-marker-date {
+    font-size: var(--font-size-footnote);
+  }
+  
+  .donut-chart-container {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .donut-total {
+    font-size: var(--font-size-data-label);
+  }
+  
+  .timeline-legend {
+    flex-wrap: wrap;
+  }
+  
+  .recharts-container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .chart-container {
+    overflow-x: auto;
+    padding-bottom: 15px;
+  }
+  
+  .chart-wrapper {
+    min-width: 500px;
+  }
+  
+  /* Ajustes para os gráficos de status por princípio e objetivo */
+  .principle-status-chart,
+  .objective-status-chart {
+    overflow-x: auto;
+  }
+  
+  .principle-status-chart canvas,
+  .objective-status-chart canvas {
+    min-width: 500px;
+    height: auto !important;
+  }
+  
+  /* Melhorar tooltips em dispositivos móveis */
+  .custom-tooltip {
+    max-width: 250px;
+    font-size: 12px;
+    padding: 8px;
+  }
+  
+  .tooltip-title {
+    font-size: 13px;
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+  .donut-chart-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .donut-total {
+    font-size: calc(var(--font-size-data-label) * 1.2);
+  }
+  
+  .chart-wrapper {
+    min-width: 400px;
+  }
+  
+  .timeline-initiative-name {
+    width: 100px;
+    font-size: calc(var(--font-size-footnote) * 0.9);
+  }
+  
+  .timeline-marker-date {
+    font-size: calc(var(--font-size-footnote) * 0.9);
+  }
+  
+  .custom-tooltip {
+    max-width: 200px;
+    font-size: 11px;
+    padding: 6px;
+  }
+  
+  .tooltip-title {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  
+  /* Ajustes para os gráficos de status por princípio e objetivo */
+  .principle-status-chart canvas,
+  .objective-status-chart canvas {
+    min-width: 400px;
+  }
+}
+
+/* Toggle View Button (Ver todos / Ver menos) */
+.toggle-view-button {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-blue);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-small);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-view-button:hover {
+  background-color: var(--color-dark-blue);
+}
+
+.toggle-view-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(24, 62, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .toggle-view-button {
+    padding: 0.4rem 0.8rem;
+    font-size: calc(var(--font-size-small) - 1px);
+  }
+}

@@ -1,0 +1,448 @@
+/* UserManagement.css */
+/* Estilos para o módulo de gerenciamento de usuários */
+
+.user-management-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.user-management-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-management-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Estilos para a lista de usuários */
+.user-list-container {
+  margin-top: 20px;
+}
+
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.user-list-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-list-filters {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-list-search {
+  position: relative;
+}
+
+.user-list-search input {
+  padding: 8px 12px 8px 35px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 14px;
+}
+
+.user-list-search i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.user-list-filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.user-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.user-list-table th {
+  background-color: #f2f2f2;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.user-list-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-list-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.user-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.user-status-active {
+  background-color: #e6f7e6;
+  color: #00D000;
+}
+
+.user-status-inactive {
+  background-color: #ffebeb;
+  color: #FF0000;
+}
+
+.user-status-pending {
+  background-color: #fff8e6;
+  color: #ffa500;
+}
+
+.user-role {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.user-role-admin {
+  background-color: #e6e6ff;
+  color: #183EFF;
+}
+
+.user-role-manager {
+  background-color: #fff8e6;
+  color: #ffa500;
+}
+
+.user-role-user {
+  background-color: #f2f2f2;
+  color: #666;
+}
+
+.user-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.user-action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #183EFF;
+  font-size: 16px;
+}
+
+.user-action-button:hover {
+  color: #0022cc;
+}
+
+.user-action-button.delete {
+  color: #FF0000;
+}
+
+.user-action-button.delete:hover {
+  color: #cc0000;
+}
+
+/* Paginação */
+.user-list-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.pagination-button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination-button.active {
+  background-color: #183EFF;
+  color: white;
+  border-color: #183EFF;
+}
+
+.pagination-button:hover:not(.active) {
+  background-color: #f5f5f5;
+}
+
+/* Estilos para detalhes do usuário */
+.user-detail-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.user-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.user-detail-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-detail-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.user-detail-action-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.user-detail-action-button.primary {
+  background-color: #183EFF;
+  color: white;
+  border: none;
+}
+
+.user-detail-action-button.secondary {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.user-detail-action-button.danger {
+  background-color: #FF0000;
+  color: white;
+  border: none;
+}
+
+.user-detail-section {
+  margin-bottom: 25px;
+}
+
+.user-detail-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.user-detail-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.user-detail-field {
+  margin-bottom: 15px;
+}
+
+.user-detail-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.user-detail-value {
+  font-size: 16px;
+  color: #333;
+}
+
+.user-detail-form-field {
+  margin-bottom: 20px;
+}
+
+.user-detail-form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.user-detail-form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.user-detail-form-input:focus {
+  border-color: #183EFF;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(24, 62, 255, 0.2);
+}
+
+.user-detail-form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.user-detail-form-error {
+  color: #FF0000;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Estilos para gerenciamento de papéis */
+.role-management-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.role-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.role-management-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.role-list {
+  margin-top: 15px;
+}
+
+.role-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.role-item:last-child {
+  border-bottom: none;
+}
+
+.role-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.role-description {
+  color: #666;
+  font-size: 14px;
+}
+
+.role-permissions {
+  margin-top: 20px;
+}
+
+.permission-group {
+  margin-bottom: 20px;
+}
+
+.permission-group-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.permission-checkbox {
+  margin-right: 10px;
+}
+
+.permission-label {
+  font-size: 14px;
+  color: #333;
+}
+
+.permission-description {
+  font-size: 12px;
+  color: #666;
+  margin-left: 25px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .user-detail-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .user-list-filters {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .user-list-search input {
+    width: 100%;
+  }
+  
+  .user-list-filter-select {
+    width: 100%;
+  }
+  
+  .user-list-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

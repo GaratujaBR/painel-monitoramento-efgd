@@ -1,0 +1,1852 @@
+/* Dashboard Styles - Seguindo diretrizes do manual de identidade visual */
+
+/* Container principal - ajustado para proporção 16:9 (1280x720) */
+.dashboard-container {
+  padding: var(--spacing-lg);
+  font-family: Verdana, sans-serif;
+  max-width: 1600px;
+  margin: 0 auto;
+  background-color: var(--color-background-light);
+}
+
+/* Novo estilo para o frame azul */
+.dashboard-intro {
+  background-color: #0066d0;
+  color: white;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.header-text-content {
+  flex-grow: 1;
+}
+
+/* Título com maior especificidade para garantir aplicação */
+.dashboard-intro .header-text-content .header-title {
+  font-family: 'Rawline', sans-serif;
+  font-size: 2.8em;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Estilo para a data de atualização (agora fora do frame azul) */
+.dashboard-last-update {
+  color: var(--color-text-secondary);
+  font-size: 0.9em;
+  text-align: right;
+  margin-top: 10px;
+}
+
+/* Content Styles */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Section Styles */
+.dashboard-section {
+  background-color: var(--color-light-gray);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--box-shadow-default);
+}
+
+.dashboard-section h2 {
+  font-size: var(--font-size-section-heading);
+  color: var(--color-black);
+  margin: 0 0 var(--spacing-lg) 0;
+  font-weight: bold;
+}
+
+/* Nova estrutura do Dashboard */
+.status-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.performance-card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--box-shadow-default);
+  margin-bottom: var(--spacing-lg);
+}
+
+.status-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+.status-chart-container h2 {
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  font-size: var(--font-size-section-heading);
+}
+
+.metrics-row {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.metric-box {
+  flex: 1;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--box-shadow-default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 120px;
+  max-width: 160px;
+  flex: 1;
+}
+
+.metric-box h2 {
+  font-size: var(--font-size-data-label);
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-dark-gray);
+}
+
+.on-schedule-initiatives .metric-value {
+  color: var(--color-blue);
+  font-size: 4rem;
+}
+
+.delayed-initiatives .metric-value {
+  color: var(--color-red);
+  font-size: 4rem;
+}
+
+/* Nova estrutura de layout horizontal para a seção de performance */
+.performance-container {
+  display: flex;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--box-shadow-default);
+  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-lg);
+}
+
+.performance-left {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.performance-left h2 {
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  font-size: var(--font-size-section-heading);
+}
+
+.performance-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.performance-right .metric-box {
+  margin: 0;
+  height: auto;
+  min-height: 120px;
+}
+
+/* Principles Section */
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.principle-item {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--box-shadow-default);
+  transition: var(--transition-default);
+  cursor: pointer;
+}
+
+.principle-item:hover {
+  box-shadow: var(--box-shadow-elevated);
+  transform: translateY(-2px);
+}
+
+.principle-item h3 {
+  font-size: var(--font-size-data-label);
+  color: var(--color-black);
+  margin: 0;
+  text-align: center;
+}
+
+/* Status Section */
+.status-overview {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.status-chart-container {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  box-shadow: var(--box-shadow-default);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 350px;
+}
+
+.status-chart-container h2 {
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-section-heading);
+  text-align: center;
+}
+
+.metrics-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+.metric-box {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg) var(--spacing-md);
+  box-shadow: var(--box-shadow-default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100px;
+}
+
+.metric-box h2 {
+  font-size: var(--font-size-data-label);
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-dark-gray);
+}
+
+.metric-value {
+  font-size: var(--font-size-kpi);
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: var(--spacing-sm);
+}
+
+.completed-initiatives .metric-value {
+  color: var(--color-green);
+}
+
+.on-schedule-initiatives .metric-value {
+  color: var(--color-blue);
+}
+
+.delayed-initiatives .metric-value {
+  color: var(--color-red);
+}
+
+.status-by-principle, 
+.status-by-objective, 
+.initiatives-by-year {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--box-shadow-default);
+  margin-bottom: var(--spacing-lg);
+}
+
+.principle-chart, 
+.objective-chart {
+  width: 100%;
+  min-height: 400px;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  margin-top: 10px;
+  padding: 10px;
+  overflow: visible !important;
+}
+
+.status-by-principle, 
+.status-by-objective {
+  width: 100%;
+  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.year-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Year chart styles */
+.year-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.year-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.year-label {
+  width: 120px;
+  font-weight: bold;
+  color: var(--color-dark-gray);
+  font-size: var(--font-size-data-label);
+}
+
+.year-count {
+  width: 50px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-blue);
+  font-size: var(--font-size-data-label);
+}
+
+.year-bar-container {
+  flex: 1;
+  height: 20px;
+  background-color: var(--color-light-gray);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.year-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  background-color: var(--color-blue);
+}
+
+.dashboard-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: var(--font-size-regular);
+  color: var(--color-medium-gray);
+}
+
+.dashboard-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: var(--font-size-regular);
+  color: var(--color-red);
+  background-color: rgba(255, 0, 0, 0.1);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+/* Milestone Stats */
+.milestone-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.milestone-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-md);
+  background-color: var(--color-light-gray);
+  border-radius: var(--border-radius-md);
+}
+
+.milestone-stat-label {
+  font-size: var(--font-size-data-label);
+  color: var(--color-dark-gray);
+  margin-bottom: var(--spacing-sm);
+}
+
+.milestone-stat-value {
+  font-size: var(--font-size-kpi);
+  font-weight: bold;
+  line-height: 1;
+}
+
+.milestone-stat-value.completed {
+  color: var(--color-green);
+}
+
+.milestone-stat-value.in-progress {
+  color: var(--color-blue);
+}
+
+.milestone-stat-value.delayed {
+  color: var(--color-red);
+}
+
+.milestone-stat-value.not-started {
+  color: var(--color-medium-gray);
+}
+
+/* Recent Initiatives */
+.recent-initiatives {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.recent-initiative-item {
+  padding: var(--spacing-md);
+  background-color: var(--color-light-gray);
+  border-radius: var(--border-radius-md);
+}
+
+.recent-initiative-item h4 {
+  font-size: var(--font-size-data-label);
+  color: var(--color-dark-gray);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.initiative-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.initiative-status {
+  font-size: var(--font-size-small);
+  padding: 3px 8px;
+  border-radius: var(--border-radius-sm);
+}
+
+.status-on-track {
+  background-color: rgba(0, 208, 0, 0.1);
+  color: var(--color-green);
+}
+
+.status-in-progress {
+  background-color: rgba(24, 62, 255, 0.1);
+  color: var(--color-blue);
+}
+
+.status-at-risk {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: var(--color-red);
+}
+
+.initiative-progress {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+}
+
+.initiative-progress-bar {
+  height: 8px;
+  background-color: var(--color-light-gray);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.initiative-progress-fill {
+  height: 100%;
+  background-color: var(--color-blue);
+  border-radius: var(--border-radius-sm);
+}
+
+.principle-status-chart,
+.objective-status-chart {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.principle-status-chart h2,
+.objective-status-chart h2 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.show-all-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #1d36b6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.show-all-button:hover {
+  background-color: #152a8f;
+}
+
+.custom-tooltip {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.custom-tooltip p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #333;
+}
+
+.custom-tooltip .label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Cores principais */
+:root {
+  --color-blue-light: #2670e8;
+  --color-green: #00b505;
+  --color-red: #ff0000;
+  --color-blue-dark: #1d36b6;
+  --color-text-primary: #333;
+  --color-text-secondary: #555;
+  --color-white: #ffffff;
+  --color-background-light: #f0f2f5;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-black: 900;
+}
+
+/* Estilos gerais */
+body {
+  font-family: 'Rawline', sans-serif;
+  background-color: var(--color-background-light);
+  margin: 0;
+  padding: 0;
+}
+
+/* Container principal do dashboard */
+.dashboard-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--color-background-light);
+}
+
+/* Conteúdo do dashboard */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Estilos para os cartões */
+.dashboard-card {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  padding-top: 45px;
+  padding-bottom: 60px;
+  margin-bottom: 30px;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 25px 0;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: -10px;
+}
+
+/* Layout específico para o card de execução (info na esquerda) */
+.execution-content {
+  flex-direction: row;
+}
+
+/* Seção que contém o gráfico e sua legenda */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 40%;
+}
+
+/* Container para os gráficos */
+.chart-container {
+  width: 270px;
+  height: 270px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container para as informações numéricas */
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  flex-basis: 50%;
+}
+
+/* Caixas de informação */
+.info-box {
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-white);
+  width: 170px;
+  height: 113px;
+  box-sizing: border-box;
+}
+
+.info-number {
+  font-size: 2.5em;
+  font-weight: var(--font-weight-black);
+  line-height: 1.1;
+}
+
+.info-label {
+  font-size: 0.7em;
+  font-weight: var(--font-weight-semibold);
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+
+/* Cores específicas para as caixas de informação */
+.on-schedule-initiatives {
+  background-color: var(--color-blue);
+}
+
+.delayed-initiatives {
+  background-color: var(--color-red);
+}
+
+.completed-initiatives {
+  background-color: var(--color-green);
+}
+
+.in-execution-initiatives {
+  background-color: var(--color-blue-dark);
+}
+
+/* Estilos para os gráficos circulares */
+.donut-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Estilos para as linhas do gráfico (FORA do @media query) */
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 9;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: butt;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+/* Cores específicas para as fatias dos gráficos */
+.performance-ontime {
+  stroke: var(--color-blue);
+}
+
+.performance-delayed {
+  stroke: var(--color-red);
+}
+
+.execution-completed {
+  stroke: var(--color-green);
+}
+
+.execution-inprogress {
+  stroke: var(--color-blue-dark);
+}
+
+/* Estilos para as legendas dos gráficos */
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 1.0em;
+  font-weight: var(--font-weight-medium);
+}
+
+.legend-color-box {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+/* Estilos para as seções adicionais */
+.status-by-principle,
+.status-by-objective,
+.timeline-section {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.status-by-principle h2,
+.status-by-objective h2,
+.timeline-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Notificação de dados mockados */
+.mock-data-notification {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mock-data-notification-content {
+  display: flex;
+  align-items: center;
+  max-width: 960px;
+}
+
+.mock-data-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.mock-data-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .card-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .execution-content {
+    flex-direction: column;
+  }
+  .execution-content .info-container {
+    order: 2;
+    margin-top: 20px;
+  }
+  .execution-content .chart-section {
+    order: 1;
+  }
+
+  .chart-section {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .chart-container {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 10px;
+  }
+
+  .info-container {
+    flex-basis: auto;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-box {
+    width: 226px;
+    max-width: 85%;
+    height: auto;
+    min-height: 102px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .info-number {
+    font-size: 2.2em;
+  }
+
+  .info-label {
+    font-size: 0.8em;
+  }
+
+  .mock-data-notification {
+    padding: 8px;
+  }
+  
+  .mock-data-text {
+    font-size: 12px;
+  }
+}
+
+/* Estilos para estados de carregamento e erro */
+.dashboard-loading,
+.dashboard-error {
+  text-align: center;
+  padding: 50px;
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 30px auto;
+  max-width: 600px;
+}
+
+.dashboard-error {
+  color: var(--color-red);
+}
+
+/* Status Cards Grid Layout */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Target the two main dashboard cards within their row */
+.dashboard-main-cards-row > .dashboard-card { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin-bottom: 0; 
+}
+
+/* Row for Chart Sections (StatusByPrinciple, StatusByObjective) */
+.dashboard-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the chart sections within their row */
+.dashboard-charts-row > .status-by-principle, 
+.dashboard-charts-row > .status-by-objective { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin: 0; 
+}
+
+/* Responsive Stacking */
+@media (max-width: 992px) { 
+  /* Stack main cards */
+  .dashboard-main-cards-row > .dashboard-card {
+    flex-basis: 100%;
+  }
+
+  /* Stack chart sections */
+  .dashboard-charts-row > .status-by-principle,
+  .dashboard-charts-row > .status-by-objective {
+    flex-basis: 100%;
+  }
+}
+
+/* Status Cards Row */
+.status-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; /* Makes the card square */
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Status Cards Container (top row with Info Frame and Total) */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Info Frame - takes remaining space */
+.info-frame {
+  flex: 1; /* Grow to fill space */
+  min-width: 250px;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 210px; /* Match approx height of one status card (updated) */
+}
+
+/* Ensure Total card uses the status card styling but doesn't grow */
+.status-cards-container > .status-card.total {
+  flex-grow: 0;      /* Don't grow */
+  flex-shrink: 0;    /* Don't shrink */
+  /* Use min-width from .status-card rule */
+}
+
+/* Performance and Execution Status Cards Containers - Stack vertically */
+.performance-status-cards,
+.execution-status-cards {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: stretch; /* Make cards fill container width if needed */
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; 
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Specific styling for the info-frame card (Total Initiatives) */
+.info-frame .status-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+}
+
+/* Make sure text in Total card is black */
+.info-frame .status-card .status-card-title,
+.info-frame .status-card .status-card-value {
+  color: var(--color-black);
+}
+
+/* Row for the two main dashboard cards (Performance, Execution) */
+.dashboard-main-cards-row { 
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the two main dashboard cards within their row */
+.dashboard-main-cards-row > .dashboard-card { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin-bottom: 0; 
+}
+
+/* Row for Chart Sections (StatusByPrinciple, StatusByObjective) */
+.dashboard-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the chart sections within their row */
+.dashboard-charts-row > .status-by-principle, 
+.dashboard-charts-row > .status-by-objective { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin: 0; 
+}
+
+/* Responsive Stacking */
+@media (max-width: 992px) { 
+  /* Stack main cards */
+  .dashboard-main-cards-row > .dashboard-card {
+    flex-basis: 100%;
+  }
+
+  /* Stack chart sections */
+  .dashboard-charts-row > .status-by-principle,
+  .dashboard-charts-row > .status-by-objective {
+    flex-basis: 100%;
+  }
+}
+
+/* Status Cards Row */
+.status-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; /* Makes the card square */
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Status Cards Container (top row with Info Frame and Total) */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Info Frame - takes remaining space */
+.info-frame {
+  flex: 1; /* Grow to fill space */
+  min-width: 250px;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 210px; /* Match approx height of one status card (updated) */
+}
+
+/* Ensure Total card uses the status card styling but doesn't grow */
+.status-cards-container > .status-card.total {
+  flex-grow: 0;      /* Don't grow */
+  flex-shrink: 0;    /* Don't shrink */
+  /* Use min-width from .status-card rule */
+}
+
+/* Performance and Execution Status Cards Containers - Stack vertically */
+.performance-status-cards,
+.execution-status-cards {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: stretch; /* Make cards fill container width if needed */
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; 
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Color overrides for specific status cards */
+.status-card.green {
+  background-color: var(--color-status-success);
+  border-color: var(--color-status-success-dark);
+}
+.status-card.green .status-card-title,
+.status-card.green .status-card-value {
+  color: white;
+}
+
+.status-card.red {
+  background-color: var(--color-status-danger);
+  border-color: var(--color-status-danger-dark);
+}
+.status-card.red .status-card-title,
+.status-card.red .status-card-value {
+  color: white;
+}
+
+.status-card.blue {
+  background-color: var(--color-status-info);
+  border-color: var(--color-status-info-dark);
+}
+.status-card.blue .status-card-title,
+.status-card.blue .status-card-value {
+  color: white;
+}
+
+.status-card.yellow {
+  background-color: var(--color-status-warning);
+  border-color: var(--color-status-warning-dark);
+}
+.status-card.yellow .status-card-title,
+.status-card.yellow .status-card-value {
+  color: white;
+}
+
+/* Specific styling for the info-frame card (Total Initiatives) */
+.info-frame .status-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+}
+
+/* Make sure text in Total card is black */
+.info-frame .status-card .status-card-title,
+.info-frame .status-card .status-card-value {
+  color: var(--color-black);
+}
+
+/* Row for the two main dashboard cards (Performance, Execution) */
+.dashboard-main-cards-row { 
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the two main dashboard cards within their row */
+.dashboard-main-cards-row > .dashboard-card { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin-bottom: 0; 
+}
+
+/* Row for Chart Sections (StatusByPrinciple, StatusByObjective) */
+.dashboard-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-lg); 
+}
+
+/* Target the chart sections within their row */
+.dashboard-charts-row > .status-by-principle, 
+.dashboard-charts-row > .status-by-objective { 
+  flex: 1 1 calc(50% - var(--spacing-lg) / 2);
+  min-width: 300px; 
+  margin: 0; 
+}
+
+/* Responsive Stacking */
+@media (max-width: 992px) { 
+  /* Stack main cards */
+  .dashboard-main-cards-row > .dashboard-card {
+    flex-basis: 100%;
+  }
+
+  /* Stack chart sections */
+  .dashboard-charts-row > .status-by-principle,
+  .dashboard-charts-row > .status-by-objective {
+    flex-basis: 100%;
+  }
+}
+
+/* Status Cards Row */
+.status-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; /* Makes the card square */
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
+
+/* Status Cards Container (top row with Info Frame and Total) */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Info Frame - takes remaining space */
+.info-frame {
+  flex: 1; /* Grow to fill space */
+  min-width: 250px;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 210px; /* Match approx height of one status card (updated) */
+}
+
+/* Ensure Total card uses the status card styling but doesn't grow */
+.status-cards-container > .status-card.total {
+  flex-grow: 0;      /* Don't grow */
+  flex-shrink: 0;    /* Don't shrink */
+  /* Use min-width from .status-card rule */
+}
+
+/* Performance and Execution Status Cards Containers - Stack vertically */
+.performance-status-cards,
+.execution-status-cards {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: stretch; /* Make cards fill container width if needed */
+}
+
+/* Unified Status Card Styling */
+.status-card {
+  aspect-ratio: 1/1; 
+  min-width: 210px;
+  /* Remove flex: 1; as stacking handles width differently */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: white; /* Default text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.status-card:active {
+  transform: translateY(0);
+}
+
+.status-card-value {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 900; /* Black weight */
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.status-card-title {
+  font-family: 'Rawline', sans-serif;
+  font-weight: 600; /* Semibold weight */
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+  color: var(--color-black); /* Black text for better contrast on yellow */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+  color: var(--color-white); /* White text for better contrast on red */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+  color: var(--color-white); /* White text for better contrast on green */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+  color: var(--color-white); /* White text for better contrast on blue */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Stack top container items */
+  .status-cards-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* Ensure Total card takes full width when stacked */
+  .status-cards-container > .status-card.total {
+     width: 100%;
+     min-width: unset; /* Remove min-width when full width */
+  }
+  
+  .info-frame {
+      min-height: auto; /* Allow height to adjust */
+  }
+
+  .performance-status-cards,
+  .execution-status-cards {
+    flex-direction: row; /* Side-by-side again within their parent card */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+  
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex: 1; /* Allow them to share space */
+    min-width: 168px; /* Adjust min-width for smaller view */
+  }
+}
+
+@media (max-width: 576px) {
+  .performance-status-cards .status-card,
+  .execution-status-cards .status-card {
+    flex-basis: 100%; /* Stack fully on very small screens */
+    min-width: unset;
+  }
+}
