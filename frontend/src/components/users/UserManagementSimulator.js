@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaFilter, FaUserPlus, FaUserEdit, FaTrash, FaEllipsisV, FaUserCog, FaLock, FaEnvelope, FaPhone, FaIdCard } from 'react-icons/fa';
 import './Users.css';
-import '../DashboardSimulator.css';
 import tituloMonitora from '../../images/titulo-monitora.png';
 
 /**

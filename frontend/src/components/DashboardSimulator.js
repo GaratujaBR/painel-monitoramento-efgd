@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import InitiativeStatusChart from './dashboard/InitiativeStatusChart';
-import './DashboardSimulator.css';
 import './dashboard/Dashboard.css';
 import tituloMonitora from '../images/titulo-monitora.png';
 

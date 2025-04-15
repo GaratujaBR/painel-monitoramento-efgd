@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaFilter, FaFileAlt, FaDownload, FaEye, FaEllipsisV, FaCalendarAlt } from 'react-icons/fa';
 import './Reports.css';
-import '../DashboardSimulator.css';
 import tituloMonitora from '../../images/titulo-monitora.png';
 
 /**

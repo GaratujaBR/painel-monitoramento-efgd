@@ -143,7 +143,6 @@ const DateChart = ({ initiatives = [] }) => {
 
   return (
     <div ref={chartContainerRef} className="chart-container" style={{ width: '100%', minHeight: 400, background: 'white', borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', padding: 24 }}>
-      <h2 className="chart-title">Performance por Ano/Prazo</h2>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={chartData}

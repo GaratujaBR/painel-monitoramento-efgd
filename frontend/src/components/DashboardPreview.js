@@ -6,7 +6,6 @@ import NotificationList from './notifications/NotificationList';
 import ReportList from './reports/ReportList';
 import UserManagement from './user-management/UserManagement';
 import tituloMonitora from '../images/titulo-monitora.png';
-import './DashboardSimulator.css';
 
 /**
  * Componente para visualizar o dashboard principal sem precisar fazer login

@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEllipsisV, FaSort } from 'react-icons/fa';
 import './Initiatives.css';
-import '../DashboardSimulator.css';
 import tituloMonitora from '../../images/titulo-monitora.png';
 import { useInitiatives } from '../../context/InitiativesContext';
 import InitiativeFilters from './InitiativeFilters';

@@ -75,6 +75,17 @@ router.get('/areas', async (req, res, next) => {
   }
 });
 
+// Get priority performance data
+router.get('/priority-performance', async (req, res, next) => {
+  try {
+    const performanceData = await dataService.getPriorityPerformanceData();
+    res.json(performanceData);
+  } catch (error) {
+    console.error("Erro na rota /priority-performance:", error);
+    next(error);
+  }
+});
+
 // Force refresh data
 router.post('/refresh', async (req, res, next) => {
   try {

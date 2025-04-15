@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaFilter, FaBell, FaEllipsisV, FaCheck, FaTrash } from 'react-icons/fa';
 import './Notifications.css';
-import '../DashboardSimulator.css';
 import tituloMonitora from '../../images/titulo-monitora.png';
 
 /**

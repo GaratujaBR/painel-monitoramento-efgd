@@ -12,6 +12,7 @@ import dataIcon from '../../assets/icons/data.png';
 import PrincipleStatusChart from './PrincipleStatusChart';
 import ObjectiveStatusChart from './ObjectiveStatusChart';
 import DateChart from './DateChart'; // IMPORTAÇÃO ATUALIZADA DO NOVO GRÁFICO
+import PriorityPerformanceChart from './PriorityPerformanceChart';
 
 // Componente para o gráfico de donut de Performance
 const PerformanceDonutChart = ({ onSchedule, delayed }) => {
@@ -409,9 +410,14 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
           </div>
         </div>
         
-        <div className="prazo-section">
-          <div className="timeline-chart">
+        {/* Performance das Prioritárias ao lado do gráfico de datas */}
+        <div className="dashboard-charts-row">
+          <div className="dashboard-card date-chart-card">
+            <h2 className="chart-title">Performance por Ano/Prazo</h2>
             <DateChart initiatives={safeInitiatives} />
+          </div>
+          <div className="dashboard-card priority-performance-card">
+            <PriorityPerformanceChart />
           </div>
         </div>
       </div>

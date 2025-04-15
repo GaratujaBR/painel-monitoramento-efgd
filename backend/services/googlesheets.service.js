@@ -163,6 +163,7 @@ class GoogleSheetsService {
     const prazoIndex = findColumnIndex(['prazo', 'ano', 'conclusão', 'conclusao']);
     const performanceIndex = findColumnIndex(['performance', 'desempenho']);
     const principleIndex = findColumnIndex(['princípio', 'principio', 'princípios', 'principios', 'princ']);
+    const priorityExternalIndex = findColumnIndex(['priori. externa (mgi/cc)', 'prioridade externa', 'prioritaria']);
     const princPioIndex = headers.findIndex(header => 
       header && header.toString().toUpperCase().includes('PRINC') && header.toString().includes('(')
     );
@@ -178,7 +179,8 @@ class GoogleSheetsService {
       areaIndex,
       statusIndex,
       prazoIndex,
-      performanceIndex
+      performanceIndex,
+      priorityExternalIndex
     });
     
     return rows.map((row, rowIndex) => {
@@ -198,7 +200,8 @@ class GoogleSheetsService {
         lastUpdate: '',
         observations: '',
         meta2024: '',
-        executado2024: ''
+        executado2024: '',
+        priorityExternal: ''
       };
       
       // Processar objectiveId e principleId
@@ -288,6 +291,10 @@ class GoogleSheetsService {
               
             case header === 'Executado 2024':
               initiative.executado2024 = value;
+              break;
+              
+            case priorityExternalIndex === index:
+              initiative.priorityExternal = value ? value.toString().trim().toUpperCase() : '';
               break;
           }
         } catch (error) {
@@ -624,6 +631,42 @@ class GoogleSheetsService {
     } catch (error) {
       console.error('Erro ao extrair objetivos das iniciativas:', error);
       return [];
+    }
+  }
+
+  /**
+   * Busca e agrega dados de performance das iniciativas marcadas como prioritárias.
+   * @returns {Promise<Object>} Objeto com contagem de performance (ex: { 'No Cronograma': 10, 'Atrasada': 5 })
+   */
+  async getPriorityPerformanceData() {
+    if (!this.initialized) {
+      await this.initialize();
+    }
+
+    try {
+      const cacheKey = 'priority_performance_data';
+      const cached = this.cache.get(cacheKey);
+      if (cached) {
+        return cached;
+      }
+
+      const initiatives = await this.getSpreadsheetData(); // Usa os dados já transformados
+      
+      const priorityInitiatives = initiatives.filter(init => init.priorityExternal === 'SIM');
+      
+      const performanceCounts = priorityInitiatives.reduce((acc, init) => {
+        const performanceStatus = init.performance || 'Não Definido'; // Tratar casos sem performance
+        acc[performanceStatus] = (acc[performanceStatus] || 0) + 1;
+        return acc;
+      }, {});
+
+      console.log(`[INFO] Dados de performance prioritária agregados:`, performanceCounts);
+      this.cache.set(cacheKey, performanceCounts);
+      return performanceCounts;
+
+    } catch (error) {
+      console.error('Erro ao buscar dados de performance prioritária:', error);
+      throw error;
     }
   }
 }
