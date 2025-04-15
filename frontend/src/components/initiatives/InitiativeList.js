@@ -9,14 +9,15 @@
  * 2. As funções auxiliares para exibir nomes de princípios, objetivos e áreas
  * 3. A lógica de ordenação e filtragem que depende da estrutura de dados
  */
-import React, { useEffect, useState, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { useInitiatives } from '../../context/InitiativesContext';
 import { FaSort, FaSortUp, FaSortDown, FaSync } from 'react-icons/fa';
 import InitiativeFilters from './InitiativeFilters';
 import './Initiatives.css';
 import { Tooltip } from 'react-tooltip'; // Importar Tooltip
 import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
+import LoadingIcon from '../../assets/icons/data.png'; // Importar o ícone de loading
 
 /**
  * Componente de listagem de iniciativas
@@ -24,31 +25,122 @@ import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
  */
 const InitiativeList = () => {
   const location = useLocation();
-  const { 
-    principles, 
+  const [searchParams] = useSearchParams();
+  const {
+    principles,
     objectives,
-    areas, 
-    loading, 
-    error, 
-    fetchInitiatives, 
-    getFilteredInitiatives
+    areas,
+    loading,
+    error,
+    fetchInitiatives,
+    getFilteredInitiatives,
+    updateFilters
+    // Removido: compareValues: compareValuesFromContext 
   } = useInitiatives();
 
-  // Estado para controle de ordenação - inicializado para ordenar por ID
+  // Estado para controle de ordenação
   const [sortConfig, setSortConfig] = useState({
     key: 'id',
     direction: 'asc'
   });
-  
+
   // Estado para controle de atualização
   const [refreshing, setRefreshing] = useState(false);
 
+  // Efeito para buscar dados e aplicar filtros iniciais da navegação/URL
   useEffect(() => {
-    // Log URL parameters on mount
-    console.log('[InitiativeList] Location Search on Mount:', location.search);
-    
-    fetchInitiatives();
-  }, [fetchInitiatives, location.search]);
+    // Ler o status da URL primeiro
+    const statusFromUrl = searchParams.get('status');
+    console.log('[InitiativeList] Montado. Status da URL:', statusFromUrl, 'Location.state:', location.state);
+
+    // Definir filtros iniciais
+    let initialFilters = {
+      principleId: '',
+      objectiveId: '',
+      areaId: '',
+      status: '', // Começa vazio
+      completionYear: ''
+    };
+
+    // Priorizar o status da URL se existir
+    if (statusFromUrl) {
+      let internalStatusValue = '';
+      const decodedStatus = decodeURIComponent(statusFromUrl).toLowerCase();
+
+      // Mapear valor da URL para valor interno
+      switch (decodedStatus) {
+        case 'delayed':
+        case 'atrasada': // Adicionar variações se necessário
+          internalStatusValue = 'ATRASADA';
+          break;
+        case 'completed':
+        case 'concluida':
+          internalStatusValue = 'CONCLUIDA';
+          break;
+        case 'inexecution':
+        case 'em execucao': // Usar lowercase para comparação
+        case 'em execução':
+          internalStatusValue = 'EM_EXECUCAO';
+          break;
+        case 'ontime':
+        case 'no cronograma':
+          internalStatusValue = 'NO_CRONOGRAMA';
+          break;
+        default:
+          console.warn(`[InitiativeList] Status da URL não reconhecido: ${decodedStatus}`);
+          break;
+      }
+
+      if (internalStatusValue) {
+        console.log(`[InitiativeList] Aplicando status da URL '${statusFromUrl}' como status interno '${internalStatusValue}'`);
+        initialFilters.status = internalStatusValue;
+      } else {
+        console.log(`[InitiativeList] Status da URL '${statusFromUrl}' não mapeado, ignorando.`);
+      }
+    }
+    // Aplicar filtros do location.state SE HOUVEREM e não houver status da URL
+    // (ou decidir como combinar/priorizar se ambos pudessem ocorrer)
+    else if (location.state?.filters) {
+      console.log('[InitiativeList] Aplicando filtros da navegação (state):', location.state.filters);
+      // Normalizar os valores recebidos do state
+      initialFilters = {
+        ...initialFilters, // Mantém o status vazio se não veio do state
+        principleId: String(location.state.filters.principleId || ''),
+        objectiveId: String(location.state.filters.objectiveId || ''),
+        areaId: String(location.state.filters.areaId || ''),
+        // Mapear também o status vindo do state, se necessário
+        status: mapStateStatusToInternal(location.state.filters.status), // Usar uma função de mapeamento se necessário
+        completionYear: String(location.state.filters.completionYear || '')
+      };
+
+      // Limpar o state da navegação
+      window.history.replaceState({}, document.title);
+    } else {
+      console.log('[InitiativeList] Sem filtros na navegação ou URL, garantindo reset.');
+      // Garantir que os filtros estejam limpos se nada veio da URL ou state
+      // (initialFilters já está resetado neste ponto)
+    }
+
+    // Atualizar os filtros no contexto
+    console.log('[InitiativeList] Atualizando filtros no contexto:', initialFilters);
+    updateFilters(initialFilters);
+
+  }, [location.state, searchParams, updateFilters]); // Adicionar searchParams às dependências
+
+  // Função auxiliar para mapear status vindo do location.state (se necessário)
+  // Ajuste conforme os valores que podem vir do state
+  const mapStateStatusToInternal = (stateStatus) => {
+    if (!stateStatus) return '';
+    const upperStatus = String(stateStatus).toUpperCase();
+    switch (upperStatus) {
+      case 'ATRASADA': return 'ATRASADA';
+      case 'CONCLUIDA': return 'CONCLUIDA';
+      case 'EM_EXECUCAO': return 'EM_EXECUCAO';
+      case 'NO_CRONOGRAMA': return 'NO_CRONOGRAMA';
+      // Adicione outros mapeamentos se os valores do state forem diferentes
+      default: return ''; 
+    }
+  };
 
   // Função para atualizar os dados
   const handleRefresh = async () => {
@@ -65,47 +157,56 @@ const InitiativeList = () => {
     }
   };
 
+  // Obter as iniciativas filtradas do contexto
   const filteredInitiatives = getFilteredInitiatives();
 
   // Funções auxiliares para nomes com useCallback
   const getPrincipleName = useCallback((principleId) => {
-    // Usando loose equality (==) para lidar com possíveis diferenças de tipo (string vs number)
     const principle = principles.find(p => p.id == principleId);
     return principle ? principle.name : 'Não definido';
   }, [principles]);
 
   const getObjectiveName = useCallback((objectiveId) => {
-    // Usando loose equality (==) para lidar com possíveis diferenças de tipo (string vs number)
     const objective = objectives.find(o => o.id == objectiveId);
     return objective ? objective.name : 'Não definido';
   }, [objectives]);
 
   const getAreaName = useCallback((areaId) => {
-    // Usando loose equality (==) para lidar com possíveis diferenças de tipo (string vs number)
     const area = areas.find(area => area.id == areaId);
     return area ? area.name : 'Não definida';
   }, [areas]);
 
   // Renderiza o badge de status com as cores padrão do governo
   const StatusBadge = ({ status }) => {
-    let displayLabel = 'Em Execução'; // Padrão para todos não concluídos
-    let displayStatusKey = 'EM_EXECUCAO'; // Chave para estilização
+    let className = 'status-badge';
+    let displayText = status; // Texto padrão
+    let statusKey = ''; // Chave para estilização CSS
 
-    if (status === 'CONCLUIDA') {
-      displayLabel = 'Concluída';
-      displayStatusKey = 'CONCLUIDA';
+    switch (String(status).toUpperCase()) {
+      case 'EM EXECUÇÃO':
+      case 'EM EXECUCAO':
+      case 'INEXECUTION':
+        statusKey = 'EM_EXECUCAO';
+        displayText = 'Em Execução';
+        break;
+      case 'CONCLUÍDA':
+      case 'CONCLUIDA':
+      case 'COMPLETED':
+        statusKey = 'CONCLUIDA';
+        displayText = 'Concluída';
+        break;
+      default:
+        statusKey = status?.toUpperCase()?.replace(' ', '_') || 'UNKNOWN';
+        break;
     }
-
-    // Log para debug
-    // console.log('Status recebido:', status, '-> Status Exibido:', displayLabel);
 
     return (
       <span 
-        className="status-badge"
-        data-status={displayStatusKey} // Usar a chave para consistência de estilo
-        aria-label={`Status: ${displayLabel}`}
+        className={className}
+        data-status={statusKey}
+        aria-label={`Status: ${displayText}`}
       >
-        {displayLabel}
+        {displayText}
       </span>
     );
   };
@@ -118,18 +219,47 @@ const InitiativeList = () => {
     const metaValue = initiative?.meta2024 || 'N/D';
     const executadoValue = initiative?.executado2024 || 'N/D';
 
-    const tooltipContent = `Meta 2024: ${metaValue}<br />Executado 2024: ${executadoValue}`;
+    // Construir o tooltip com todas as informações
+    let tooltipContent = `Meta 2024: ${metaValue}<br />Executado 2024: ${executadoValue}`;
+    if (initiative?.performanceObs) {
+      tooltipContent += `<br /><br />Observação: ${initiative.performanceObs}`;
+    }
     
+    let className = 'performance-badge';
+    let displayText = performance; // Texto padrão é o valor recebido
+
+    // Normalizar o status para exibição e estilo
+    switch (String(performance).toUpperCase()) {
+      case 'NO CRONOGRAMA':
+      case 'ONTIME': // Valor usado no filtro da URL
+        className += ' performance-on-time'; // Classe para verde
+        displayText = 'No Cronograma';
+        break;
+      case 'EM ATRASO':
+      case 'DELAYED': // Valor usado no filtro da URL
+      case 'ATRASADA': // Valor original que estava sendo usado
+        className += ' performance-delayed'; // Classe para vermelho
+        displayText = 'Atrasada'; // Manter o texto original
+        break;
+      case 'ATENÇÃO':
+      case 'ATENCAO': // Variação sem acento
+        className += ' performance-attention'; // Classe para amarelo
+        displayText = 'Atenção';
+        break;
+      default:
+        className += ' performance-unknown'; // Classe neutra para casos não mapeados
+        break;
+    }
+
     return (
       <span 
-        className="performance-badge"
+        className={className}
         data-performance={performance}
-        aria-label={`Performance: ${performance}`}
-        // Atributos para react-tooltip
+        aria-label={`Performance: ${displayText}`}
         data-tooltip-id="performance-tooltip"
-        data-tooltip-html={tooltipContent} // Usar data-tooltip-html para permitir <br />
+        data-tooltip-html={tooltipContent}
       >
-        {performance}
+        {displayText}
       </span>
     );
   };
@@ -158,34 +288,37 @@ const InitiativeList = () => {
       return <FaSort className="sort-icon" />;
     }
     return sortConfig.direction === 'asc' ? 
-      <FaSortUp className="sort-icon active" /> : 
-      <FaSortDown className="sort-icon active" />;
+           <FaSortUp className="sort-icon active" /> : 
+           <FaSortDown className="sort-icon active" />;
   };
 
-  // Função para comparar valores na ordenação
+  // Função para comparar valores na ordenação (RESTAURADA LOCALMENTE)
   const compareValues = useCallback((valueA, valueB, type = 'string') => {
-    if (valueA === null || valueA === undefined) return 1;
+    // Tratamento para nulos ou indefinidos para garantir que fiquem no fim (ou início, dependendo da ordem)
+    // Aqui, nulos/undefined são considerados "maiores" para irem para o fim na ordem ascendente.
+    if (valueA === null || valueA === undefined) return 1; 
     if (valueB === null || valueB === undefined) return -1;
 
     switch (type) {
       case 'number':
         return Number(valueA) - Number(valueB);
-      case 'date':
-        return new Date(valueA) - new Date(valueB);
+      case 'date': // Se houver datas futuras
+        // return new Date(valueA) - new Date(valueB); // Descomentar se usar datas
+        return String(valueA).localeCompare(String(valueB)); // Comparar como string por enquanto
       default:
         return String(valueA).localeCompare(String(valueB));
     }
-  }, []);
+  }, []); // useCallback sem dependências, pois a lógica é aut contida
 
   // Aplica a ordenação
-  const sortedInitiatives = React.useMemo(() => {
-    const sorted = [...filteredInitiatives];
+  const sortedInitiatives = useMemo(() => {
+    const sorted = [...filteredInitiatives]; // Usar cópia das iniciativas filtradas
     sorted.sort((a, b) => {
       let aValue = a[sortConfig.key];
       let bValue = b[sortConfig.key];
       let valueType = 'string';
 
-      // Tratamento especial para campos com referências
+      // Tratamento especial para campos com referências ou tipos específicos
       if (sortConfig.key === 'id') {
         valueType = 'number'; // Tratar ID como número
       } else if (sortConfig.key === 'principleId') {
@@ -200,24 +333,38 @@ const InitiativeList = () => {
       } else if (sortConfig.key === 'completionYear') {
         valueType = 'number';
       } else if (sortConfig.key === 'performance') {
-        // Ordenação especial para performance
-        const perfOrder = { 'No Cronograma': 1, 'Atrasada': 2 };
-        aValue = perfOrder[a.performance] || 0;
-        bValue = perfOrder[b.performance] || 0;
+        // Definir ordem customizada para performance
+        const perfOrder = { 'NO CRONOGRAMA': 1, 'ATENÇÃO': 2, 'EM ATRASO': 3, 'ONTIME': 1, 'DELAYED': 3, 'ATENCAO': 2 }; // Adicionar mapeamento URL
+        aValue = perfOrder[String(a.performance).toUpperCase()] || 4; // Desconhecido/N/A por último
+        bValue = perfOrder[String(b.performance).toUpperCase()] || 4;
+        valueType = 'number';
+      } else if (sortConfig.key === 'status') {
+         // Usar os valores normalizados pelo StatusBadge pode ser mais consistente
+         // Ou definir uma ordem aqui também
+        const statusOrder = { 'EM EXECUÇÃO': 1, 'CONCLUÍDA': 2, 'INEXECUTION': 1, 'COMPLETED': 2, 'EM EXECUCAO': 1, 'CONCLUIDA': 2 }; // Adicionar mapeamento URL
+        aValue = statusOrder[String(a.status).toUpperCase()] || 3; // Outros por último
+        bValue = statusOrder[String(b.status).toUpperCase()] || 3;
         valueType = 'number';
       } else if (sortConfig.key === 'observations') {
-        // Tratamento para observações (podem ser nulas)
         aValue = a.observations || '';
         bValue = b.observations || '';
       }
 
-      const comparison = compareValues(aValue, bValue, valueType);
+      // Usar a função compareValues LOCAL
+      const comparison = compareValues(aValue, bValue, valueType); 
       return sortConfig.direction === 'asc' ? comparison : -comparison;
     });
     return sorted;
-  }, [filteredInitiatives, sortConfig, getPrincipleName, getObjectiveName, getAreaName, compareValues]);
+  }, [filteredInitiatives, sortConfig, getPrincipleName, getObjectiveName, getAreaName, compareValues]); // Usar compareValues local na dependência
 
-  if (loading) return <div className="loading">Carregando...</div>;
+  if (loading) return (
+    <div className="loading">
+      <div className="loading-content">
+        <img src={LoadingIcon} alt="Carregando" className="loading-icon" />
+        <span>Carregando dados...</span>
+      </div>
+    </div>
+  );
   if (error) return <div className="error">Erro ao carregar iniciativas: {error}</div>;
 
   return (
