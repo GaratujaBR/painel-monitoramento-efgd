@@ -194,7 +194,7 @@ const ObjectiveStatusChart = ({ initiatives, objectives }) => {
             dataKey="Atrasada" 
             stackId="a" 
             fill={performanceColors['Atrasada']}
-            radius={[0, 0, 5, 5]}
+            radius={[5, 5, 0, 0]}
             onClick={(data, index, event) => handleBarClick(data, "Atrasada")}
             cursor="pointer"
           />
