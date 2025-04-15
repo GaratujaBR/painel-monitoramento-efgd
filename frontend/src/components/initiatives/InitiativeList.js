@@ -184,10 +184,11 @@ const InitiativeList = () => {
 
     switch (String(status).toUpperCase()) {
       case 'EM EXECUÇÃO':
+      case 'EM_EXECUCAO': // Adicionado case para valor interno
       case 'EM EXECUCAO':
       case 'INEXECUTION':
         statusKey = 'EM_EXECUCAO';
-        displayText = 'Em Execução';
+        displayText = 'EM EXECUÇÃO';
         break;
       case 'CONCLUÍDA':
       case 'CONCLUIDA':
