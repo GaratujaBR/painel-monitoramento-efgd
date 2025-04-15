@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -9,6 +9,23 @@ import { useAuth } from '../../context/AuthContext';
 const DashboardLayout = () => {
   const { currentUser } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Verifica a largura da tela ao montar o componente
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      const isMobile = window.innerWidth <= 768;
+      setSidebarOpen(!isMobile); // Fecha a sidebar em telas móveis
+    };
+
+    // Verifica inicialmente
+    checkScreenWidth();
+
+    // Adiciona listener para redimensionamento
+    window.addEventListener('resize', checkScreenWidth);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenWidth);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);

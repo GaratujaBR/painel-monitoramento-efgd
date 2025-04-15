@@ -36,6 +36,31 @@
   transition: all 0.3s ease;
 }
 
+/* Botão de toggle da sidebar */
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 2001;
+  background-color: #20358f;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 20px;
+  line-height: 1;
+  transition: background-color 0.3s ease;
+  margin-top: 0;
+  margin-left: 0;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: #3a5299;
+}
+
 /* Estilos para o novo título EFGD */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 

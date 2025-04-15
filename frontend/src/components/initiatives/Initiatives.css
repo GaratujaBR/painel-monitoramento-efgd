@@ -277,9 +277,7 @@
 }
 
 /* Estados de carregamento e erro */
-.loading,
-.error,
-.no-initiatives {
+.loading, .error, .no-initiatives {
   text-align: center;
   padding: 40px;
   color: #585C5D;
@@ -432,8 +430,22 @@
 .loading, .error {
   text-align: center;
   padding: 20px;
-  font-size: 16px;
+  font-size: var(--font-size-regular);
   color: #666;
+}
+
+/* Estilos para o container de loading */
+.loading-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo para o ícone de loading */
+.loading-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .error {

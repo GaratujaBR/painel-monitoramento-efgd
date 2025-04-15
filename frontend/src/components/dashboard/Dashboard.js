@@ -6,9 +6,12 @@ import './Dashboard.css';
 import './DashboardCharts.css'; // Import the new CSS file for chart layout
 import './StatusCardColors.css';
 import './ChartTitles.css'; // Importando o novo arquivo CSS para títulos
+import './ChartTitles.css';
 import computerIcon from '../../images/computer.png';
+import dataIcon from '../../assets/icons/data.png';
 import PrincipleStatusChart from './PrincipleStatusChart';
 import ObjectiveStatusChart from './ObjectiveStatusChart';
+import DateChart from './DateChart'; // IMPORTAÇÃO ATUALIZADA DO NOVO GRÁFICO
 
 // Componente para o gráfico de donut de Performance
 const PerformanceDonutChart = ({ onSchedule, delayed }) => {
@@ -192,7 +195,12 @@ const Dashboard = () => {
   const safeInitiatives = Array.isArray(initiatives) ? initiatives : [];
 
   if (loading || initiativesLoading) {
-    return <div className="dashboard-loading">Carregando dados...</div>;
+    return (
+      <div className="dashboard-loading">
+        <img src={dataIcon} alt="Ícone de dados" className="loading-icon" />
+        <span>Carregando dados...</span>
+      </div>
+    );
   }
   
   if (error && !usingMockData) {
@@ -401,10 +409,9 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
           </div>
         </div>
         
-        <div className="timeline-section">
-          <h2>Linha do Tempo de Entregas</h2>
+        <div className="prazo-section">
           <div className="timeline-chart">
-            {/* Componente para o gráfico de linha do tempo */}
+            <DateChart initiatives={safeInitiatives} />
           </div>
         </div>
       </div>

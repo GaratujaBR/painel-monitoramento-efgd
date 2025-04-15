@@ -37,9 +37,15 @@ const InitiativeFilters = () => {
     if (location.state && location.state.filters) {
       console.log('[InitiativeFilters] Received filters from navigation state:', location.state.filters);
       
-      const { principleId, objectiveId, status } = location.state.filters;
+      const { principleId, objectiveId, status, priority } = location.state.filters;
       const newFilters = {};
       
+      // Apply priority filter if provided
+      if (priority) {
+        console.log('[InitiativeFilters] Setting priority filter to:', priority);
+        newFilters.priority = priority;
+      }
+
       // Apply principleId filter if provided
       if (principleId) {
         console.log('[InitiativeFilters] Setting principleId filter to:', principleId);
@@ -91,6 +97,20 @@ const InitiativeFilters = () => {
 
   return (
     <div className="filters-container">
+      <div className="filter-group">
+        <label htmlFor="priority-filter">Prioridade Externa:</label>
+        <select
+          id="priority-filter"
+          value={filters.priority || ''}
+          onChange={(e) => handleFilterChange('priority', e.target.value)}
+          className="filter-select"
+        >
+          <option value="">Todos</option>
+          <option value="SIM">SIM</option>
+          <option value="NÃO">NÃO</option>
+        </select>
+      </div>
+
       <div className="filter-group">
         <label htmlFor="principle-filter">Por Princípio:</label>
         <select

@@ -25,13 +25,9 @@ const Header = ({ toggleSidebar }) => {
   return (
     <header className="dashboard-header">
       <div className="header-left">
-        {/* Botão de toggle da barra lateral - temporariamente desativado
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
-          <span></span>
-          <span></span>
-          <span></span>
+        <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
+          ☰
         </button>
-        */}
         <div className="titulo-container">
           <h1>
             <span className="linha-1">ESTRATÉGIA <span className="federal">FEDERAL</span> de</span>

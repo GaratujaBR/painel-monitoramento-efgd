@@ -47,6 +47,7 @@ export const InitiativesProvider = ({ children }) => {
   const [error, setError] = useState(null);
   // Estado para armazenar os filtros
   const [filters, setFilters] = useState({
+    priority: '',
     principleId: '',
     objectiveId: '',
     areaId: '',
@@ -182,7 +183,28 @@ export const InitiativesProvider = ({ children }) => {
 
   // Função para filtrar iniciativas
   const getFilteredInitiatives = useCallback(() => {
-    return initiatives.filter(initiative => {
+    console.log('[InitiativesContext] Filtering initiatives with filters:', filters);
+    if (!initiatives || initiatives.length === 0) {
+      console.log('[InitiativesContext] No initiatives to filter.');
+      return [];
+    }
+
+    return initiatives.filter((initiative, index) => {
+      // Log para a primeira iniciativa para ver os dados brutos
+      if (index === 0) {
+          console.log('[InitiativesContext] First initiative data sample:', initiative);
+          console.log('[InitiativesContext] Priority value from data:', initiative.priorityExternal);
+      }
+
+      // Filtra por prioridade usando a chave priorityExternal
+      const priorityValue = initiative.priorityExternal;
+      const matchesPriority = !filters.priority || (priorityValue && priorityValue.trim().toUpperCase() === filters.priority.toUpperCase());
+      
+      // Log detalhado da comparação de prioridade para as primeiras 5 iniciativas
+      if (index < 5) {
+        console.log(`[InitiativesContext] Initiative ${initiative.id || index}: Priority Data='${priorityValue}', Filter='${filters.priority}', Match=${matchesPriority}`);
+      }
+
       // Usando igualdade estrita (===) para comparações mais seguras
       const matchesPrinciple = !filters.principleId || initiative.principleId === filters.principleId;
       const matchesObjective = !filters.objectiveId || initiative.objectiveId === filters.objectiveId;
@@ -201,7 +223,14 @@ export const InitiativesProvider = ({ children }) => {
       // Convertendo ambos para string para garantir a comparação correta, caso um seja número e outro string
       const matchesYear = !filters.completionYear || String(initiative.completionYear) === String(filters.completionYear);
 
-      return matchesPrinciple && matchesObjective && matchesArea && matchesStatus && matchesYear;
+      const finalMatch = matchesPriority && matchesPrinciple && matchesObjective && matchesArea && matchesStatus && matchesYear;
+
+      // Log do resultado final para as primeiras 5 iniciativas
+      if (index < 5) {
+        console.log(`[InitiativesContext] Initiative ${initiative.id || index}: Final Match=${finalMatch}`);
+      }
+
+      return finalMatch;
     });
   }, [initiatives, filters]);
 
@@ -213,7 +242,12 @@ export const InitiativesProvider = ({ children }) => {
 
   // Função para atualizar os filtros
   const updateFilters = useCallback((newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+    console.log('[InitiativesContext] updateFilters called with:', newFilters);
+    setFilters(prev => {
+      const updatedFilters = { ...prev, ...newFilters };
+      console.log('[InitiativesContext] Filters updated from:', prev, 'to:', updatedFilters);
+      return updatedFilters;
+    });
   }, []);
 
   const value = {
