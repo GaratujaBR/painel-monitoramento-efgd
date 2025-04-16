@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { getApiUrl } from '../../utils/apiUrl';
 
 const PriorityPerformanceChart = () => {
   const [performanceData, setPerformanceData] = useState(null);
@@ -18,7 +19,10 @@ const PriorityPerformanceChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/initiatives/priority-performance');
+        const apiUrl = getApiUrl();
+        console.log('[PriorityPerformanceChart] Valor de getApiUrl():', apiUrl);
+        console.log('[PriorityPerformanceChart] URL usada:', `${apiUrl}/api/initiatives/priority-performance`);
+        const response = await fetch(`${apiUrl}/api/initiatives/priority-performance`);
         if (!response.ok) {
           throw new Error('Erro ao buscar dados de performance');
         }
