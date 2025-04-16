@@ -75,7 +75,7 @@ router.get('/areas', async (req, res, next) => {
   }
 });
 
-// Get priority performance data
+// Rota para obter performance das iniciativas prioritárias - Usando dataService
 router.get('/priority-performance', async (req, res, next) => {
   try {
     const performanceData = await dataService.getPriorityPerformanceData();
