@@ -11,6 +11,24 @@ import {
 import { useNavigate } from 'react-router-dom';
 import './PrincipleStatusChart.css';
 
+// Função para converter número para numeral romano
+const toRoman = (num) => {
+  if (typeof num !== 'number' || !Number.isInteger(num) || num < 1) {
+    return num; // Retorna o valor original se não for um inteiro positivo
+  }
+  const romanMap = {
+    M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1
+  };
+  let roman = '';
+  for (let key in romanMap) {
+    while (num >= romanMap[key]) {
+      roman += key;
+      num -= romanMap[key];
+    }
+  }
+  return roman;
+};
+
 const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
   const navigate = useNavigate();
 
@@ -33,24 +51,34 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
     const data = {};
 
     initiatives.forEach(initiative => {
-      const principleId = initiative.principleId;
+      const principleId = initiative.principleId; // Pode ser string ou número
       const performance = initiative.performance;
 
       if (principleId) {
-        // Use the map for the full name, fall back to ID if not found
+        // Garantir que temos um ID numérico para a propriedade 'id' e ordenação
+        const numericPrincipleId = parseInt(principleId, 10); 
+        
+        // Validar se a conversão foi bem-sucedida (evitar NaN)
+        if (isNaN(numericPrincipleId)) {
+            console.warn(`PrincipleStatusChart: Invalid principleId found: ${principleId}`);
+            return; // Pular esta iniciativa se o ID não for um número válido
+        }
+
+        // Use o principleId original (string ou número) como chave para o mapa e para buscar o nome
         const principleName = principleNameMap[principleId] || `Princípio ${principleId}`;
 
-        if (!data[principleId]) {
-          data[principleId] = {
-            id: principleId,
-            // Use ID for the axis label for potentially shorter text
-            name: `P${principleId}`,
-            fullName: principleName, // Use the full name from the map for the tooltip
+        if (!data[principleId]) { // Usar chave original
+          data[principleId] = { // Usar chave original
+            id: numericPrincipleId, // << CORREÇÃO: Usar o ID numérico aqui
+            // Use ID para o axis label para potentially shorter text
+            name: `P${principleId}`, // Usar ID original para o nome curto (P1, P2...)
+            fullName: principleName, // Use o nome completo para o tooltip
             'No Cronograma': 0,
             'Atrasada': 0
           };
         }
 
+        // Usar chave original para atualizar contadores
         if (performance === 'No Cronograma') {
           data[principleId]['No Cronograma']++;
         } else if (performance === 'Atrasada') {
@@ -59,7 +87,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
       }
     });
 
-    // Retorna os dados ordenados pelo ID (ou pode ordenar por nome, se preferir)
+    // A ordenação agora funcionará corretamente pois a.id e b.id são números
     return Object.values(data).sort((a, b) => a.id - b.id);
   };
 
@@ -169,12 +197,13 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
               fill: '#222' 
             }} 
           />
-          {/* Eixo Y agora são as categorias (nomes dos princípios) */}
+          {/* Eixo Y agora são as categorias (IDs dos princípios formatados como romanos) */}
           <YAxis 
             type="category" 
-            dataKey="fullName" // Usar o nome completo como label do eixo Y
-            width={50} // Largura do eixo Y para caber nomes
+            dataKey="id" // Alterado de "fullName" para "id"
+            width={50} // Pode precisar de ajuste dependendo da largura dos numerais
             interval={0} // Mostrar todos os labels
+            tickFormatter={toRoman} // Adicionado formatador para numerais romanos
             tick={{ 
               fontSize: baseFontSize, 
               fill: '#222',

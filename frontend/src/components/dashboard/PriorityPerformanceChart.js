@@ -42,7 +42,7 @@ const PriorityPerformanceChart = () => {
   }, []);
 
   const innerRadius = 60;
-  const outerRadius = 100;
+  const outerRadius = 120;
 
   const COLORS = {
     'No Cronograma': 'var(--color-blue)',
@@ -86,7 +86,7 @@ const PriorityPerformanceChart = () => {
       <div
         className="chart-wrapper"
         ref={chartWrapperRef}
-        style={{ height: '320px' }}
+        style={{ height: '420px' }}
       >
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>

@@ -75,3 +75,8 @@
   color: #888;
   font-style: italic;
 }
+
+.principle-chart-container .recharts-cartesian-axis-tick-value {
+  font-size: 18px !important;
+}
+
