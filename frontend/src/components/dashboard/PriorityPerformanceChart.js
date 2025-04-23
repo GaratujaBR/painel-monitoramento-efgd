@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { getApiUrl } from '../../utils/apiUrl';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useInitiatives } from '../../context/InitiativesContext'; // Import useInitiatives
 
 const PriorityPerformanceChart = () => {
   const [performanceData, setPerformanceData] = useState(null);
@@ -9,12 +11,14 @@ const PriorityPerformanceChart = () => {
 
   const chartWrapperRef = useRef(null);
 
+  const navigate = useNavigate(); // Get navigate function
+  const { applyFiltersAndNavigate } = useInitiatives(); // Get applyFiltersAndNavigate from context
+
   useEffect(() => {
     if (chartWrapperRef.current) {
       const rect = chartWrapperRef.current.getBoundingClientRect();
-      
     }
-  });
+  }, []); // Only run on mount
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +32,8 @@ const PriorityPerformanceChart = () => {
         // Transformar os dados para o formato esperado pelo gráfico
         const chartData = Object.entries(rawData).map(([name, value]) => ({
           name,
-          value
+          value,
+          priorityValue: name // Store the original priority value
         }));
         setPerformanceData(chartData);
         setLoading(false);
@@ -49,6 +54,17 @@ const PriorityPerformanceChart = () => {
     'Atrasada': 'var(--color-red)',
     'Não Definido': 'var(--color-blue)',
     'Concluída': 'var(--color-blue)'
+  };
+
+  const handleSliceClick = (data) => {
+    if (data && data.payload && data.payload.priorityValue) {
+      const priority = data.payload.priorityValue;
+      console.log(`Filtering by Priority: ${priority}`); // Debug log
+      // Use applyFiltersAndNavigate with the correct filter key 'priority'
+      applyFiltersAndNavigate({ priority: priority }); 
+    } else {
+      console.warn('PriorityPerformanceChart: Clicked slice data missing priorityValue', data);
+    }
   };
 
   if (loading) {
@@ -98,10 +114,10 @@ const PriorityPerformanceChart = () => {
               outerRadius={outerRadius}
               paddingAngle={1}
               dataKey="value"
+              nameKey="name"
               label={({ name, value }) => `${Math.round((value / total) * 100)}%`}
-              onAnimationStart={() => {
-                
-              }}
+              onClick={handleSliceClick} // Keep the onClick handler
+              style={{ cursor: 'pointer' }} // Keep the pointer cursor
             >
               {performanceData.map((entry, index) => (
                 <Cell
@@ -110,12 +126,7 @@ const PriorityPerformanceChart = () => {
                 />
               ))}
             </Pie>
-            <Tooltip
-              formatter={(value, name) => [
-                `${value} (${Math.round((value / total) * 100)}%)`,
-                name
-              ]}
-            />
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -126,7 +137,7 @@ const PriorityPerformanceChart = () => {
               className="legend-color-box"
               style={{ backgroundColor: COLORS[entry.name] }}
             />
-            {entry.name} ({entry.value})
+            {entry.name}
           </div>
         ))}
       </div>

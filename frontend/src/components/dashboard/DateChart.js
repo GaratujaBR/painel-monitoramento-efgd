@@ -94,7 +94,6 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const DateChart = ({ initiatives = [] }) => {
   const chartData = processData(initiatives);
-  const chartContainerRef = useRef(null);
   const hasData = chartData.some((d) => d['No Cronograma'] > 0 || d['Atrasada'] > 0);
 
   const { applyFiltersAndNavigate } = useInitiatives();
@@ -117,7 +116,12 @@ const DateChart = ({ initiatives = [] }) => {
   };
 
   return (
-    <div ref={chartContainerRef} className="chart-container" style={{ width: '100%', minHeight: 400, background: 'white', borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', padding: 24 }}>
+    <div className="chart-container" style={{
+      width: '100%',
+      minHeight: 400,
+      background: 'white',
+      padding: 24,
+    }}>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={chartData}
