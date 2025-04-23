@@ -20,6 +20,14 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
     'Atrasada': 'var(--color-red)',
   };
 
+  // Build a map from principleId to human-readable name using initiatives
+  const principleNameMap = {};
+  initiatives.forEach(initiative => {
+    if (initiative.principleId && initiative.principle) {
+      principleNameMap[initiative.principleId] = initiative.principle;
+    }
+  });
+
   // Função para processar os dados
   const processData = () => {
     const data = {};
@@ -29,17 +37,15 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
       const performance = initiative.performance;
 
       if (principleId) {
-        // Encontra o princípio correspondente no array 'principles'
-        // Certifique-se de que a propriedade correta (ex: 'name' ou 'PRINCIPIO') está sendo usada
-        const principleInfo = principles.find(p => p.id === principleId);
-        const principleName = principleInfo?.name || `Princípio ${principleId}`; // Ajuste 'name' se necessário
+        // Use the map for the full name, fall back to ID if not found
+        const principleName = principleNameMap[principleId] || `Princípio ${principleId}`;
 
         if (!data[principleId]) {
           data[principleId] = {
             id: principleId,
-            // Usar o nome encontrado para 'name' e 'fullName'
-            name: principleName, // Usado internamente ou para labels curtos se necessário
-            fullName: principleName, // Usado para o eixo Y e tooltips
+            // Use ID for the axis label for potentially shorter text
+            name: `P${principleId}`,
+            fullName: principleName, // Use the full name from the map for the tooltip
             'No Cronograma': 0,
             'Atrasada': 0
           };

@@ -20,8 +20,6 @@ class GoogleSheetsService {
     }
 
     try {
-      console.log('Attempting to initialize Google Sheets service...');
-      
       // Verificar se existe uma variável de ambiente GOOGLE_APPLICATION_CREDENTIALS
       if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
         console.log('Variável de ambiente GOOGLE_APPLICATION_CREDENTIALS não encontrada');
@@ -146,8 +144,6 @@ class GoogleSheetsService {
 
     const [headers, ...rows] = values;
     
-    console.log('Cabeçalhos da planilha:', headers);
-    
     const findColumnIndex = (keywords) => {
       return headers.findIndex(header => {
         if (!header) return false;
@@ -157,7 +153,8 @@ class GoogleSheetsService {
     };
 
     // Encontrar índices das colunas
-    const objectiveIndex = findColumnIndex(['objetivo', 'iniciativa']);
+    const initiativeIndex = findColumnIndex(['iniciativa']);
+    const objectiveIndex = findColumnIndex(['objetivo']);
     const areaIndex = findColumnIndex(['área', 'area', 'departamento', 'diretoria']);
     const statusIndex = findColumnIndex(['status', 'situação', 'situacao']);
     const prazoIndex = findColumnIndex(['prazo', 'ano', 'conclusão', 'conclusao']);
@@ -169,19 +166,6 @@ class GoogleSheetsService {
     );
     const objectiveIdIndex = headers.findIndex(h => h === 'objectiveId');
     const principleIdIndex = headers.findIndex(h => h === 'principleId');
-    
-    console.log("[DIAGNÓSTICO] Índices de colunas encontrados:", {
-      objectiveIndex,
-      objectiveIdIndex,
-      principleIndex,
-      principleIdIndex,
-      princPioIndex,
-      areaIndex,
-      statusIndex,
-      prazoIndex,
-      performanceIndex,
-      priorityExternalIndex
-    });
     
     return rows.map((row, rowIndex) => {
       const initiative = {
@@ -213,22 +197,24 @@ class GoogleSheetsService {
         initiative.principleId = row[principleIdIndex].toString();
       }
       
-      // Processar textos de objetivo e princípio
-      if (objectiveIndex !== -1 && row[objectiveIndex]) {
-        initiative.objective = row[objectiveIndex];
-        initiative.name = row[objectiveIndex];
-      }
-      
+      // Garante que o texto completo do princípio seja incluído
       if (principleIndex !== -1 && row[principleIndex]) {
         initiative.principle = row[principleIndex];
-      } else if (princPioIndex !== -1 && row[princPioIndex]) {
-        initiative.principle = row[princPioIndex];
+      }
+      
+      // Processar textos de objetivo e princípio
+      // Corrige: separa nome da iniciativa e texto do objetivo
+      if (initiativeIndex !== -1 && row[initiativeIndex]) {
+        initiative.name = row[initiativeIndex]; // Nome da iniciativa
+      }
+      if (objectiveIndex !== -1 && row[objectiveIndex]) {
+        initiative.OBJETIVO = row[objectiveIndex]; // Texto do objetivo
+        initiative.objective = row[objectiveIndex]; // Compatibilidade
       }
       
       // Processar status - Leitura primária da coluna STATUS
       if (statusIndex !== -1 && row[statusIndex]) {
         initiative.status = this.normalizeStatus(row[statusIndex]);
-        console.log(`[DEBUG] Status lido da coluna STATUS: ${row[statusIndex]} -> normalizado para: ${initiative.status}`);
       }
       
       // Processar outras colunas
@@ -241,11 +227,12 @@ class GoogleSheetsService {
         
         try {
           switch(true) {
+            case initiativeIndex === index:
             case objectiveIndex === index:
-            case principleIndex === index:
-            case princPioIndex === index:
             case objectiveIdIndex === index:
+            case principleIndex === index:
             case principleIdIndex === index:
+            case princPioIndex === index:
               break;
               
             case headerLower.includes('área') || headerLower.includes('area') || headerLower.includes('departamento'):
@@ -311,7 +298,6 @@ class GoogleSheetsService {
     if (!status) return 'NAO_INICIADA';
     
     const statusLower = status.toString().toLowerCase().trim();
-    console.log(`[DEBUG] Normalizando status: "${statusLower}"`);
     
     // Concluída - verificar primeiro para evitar falsos positivos com "em execução"
     if (statusLower.includes('concluída') || 
@@ -322,7 +308,6 @@ class GoogleSheetsService {
         statusLower === 'finalizado' ||
         statusLower === 'concluída' ||
         statusLower === 'concluida') {
-      console.log(`[DEBUG] Status normalizado para CONCLUIDA`);
       return 'CONCLUIDA';
     }
     
@@ -331,7 +316,6 @@ class GoogleSheetsService {
         statusLower.includes('nao iniciada') || 
         statusLower === 'não iniciado' || 
         statusLower === 'nao iniciado') {
-      console.log(`[DEBUG] Status normalizado para NAO_INICIADA`);
       return 'NAO_INICIADA';
     }
     
@@ -341,14 +325,12 @@ class GoogleSheetsService {
         statusLower === 'em execução' ||
         statusLower === 'em execucao' ||
         statusLower === 'em andamento') {
-      console.log(`[DEBUG] Status normalizado para EM_EXECUCAO`);
       return 'EM_EXECUCAO';
     }
     
     // No cronograma
     if (statusLower.includes('cronograma') || 
         statusLower === 'no prazo') {
-      console.log(`[DEBUG] Status normalizado para NO_CRONOGRAMA`);
       return 'NO_CRONOGRAMA';
     }
     
@@ -356,11 +338,9 @@ class GoogleSheetsService {
     if (statusLower.includes('atrasada') || 
         statusLower === 'atrasado' || 
         statusLower === 'em atraso') {
-      console.log(`[DEBUG] Status normalizado para ATRASADA`);
       return 'ATRASADA';
     }
     
-    console.log(`[DEBUG] Status não reconhecido, usando padrão NAO_INICIADA`);
     return 'NAO_INICIADA';
   }
 

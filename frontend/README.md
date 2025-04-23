@@ -1,3 +1,15 @@
+## 📈 Gráfico de Performance das Iniciativas Prioritárias
+
+- O dashboard exibe corretamente o gráfico de performance das iniciativas prioritárias, consumindo dados diretamente do Google Sheets.
+- A API `/api/initiatives/priority-performance` estável e sem dependências de banco de dados.
+- Este é um marco importante de estabilidade do sistema.
+
+**Data do snapshot:** 2025-04-15  
+**Commit:** 7cb4a95  
+**Tag:** v1.0.0-dashboard-estavel
+
+---
+
 # Começando com o Create React App
 
 Este projeto foi inicializado com [Create React App](https://github.com/facebook/create-react-app).

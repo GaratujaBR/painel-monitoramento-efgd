@@ -1,8 +1,43 @@
-/* Status Card Styles - Specific to Dashboard - Primarily Color Variants */
+/* Status Card Styles - Mimicking .metric-box with colored backgrounds */
+.status-card {
+  /* Base structure */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg) var(--spacing-md);
+  box-shadow: var(--box-shadow-default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100px;
+  
+  /* Base button styles */
+  border: none;
+  cursor: pointer;
+  width: 100%; /* Take full width of container */
+  min-width: 180px; /* Minimum width */
+  max-width: 220px; /* Maximum width */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  /* Default background - will be overridden by specific types */
+  background-color: var(--color-blue-dark);
+}
 
-/* Default text color - Assuming white is the most common */
-.status-card-info h3,
+/* Style title - now white for all cards */
+.status-card-info h3 {
+  font-size: var(--font-size-data-label);
+  margin: 0 0 var(--spacing-md) 0;
+  color: white;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+/* Style value - now white for all cards */
 .status-card-info p {
+  font-size: var(--font-size-kpi);
+  font-weight: bold;
+  line-height: 1;
+  margin: 0;
   color: white;
 }
 
@@ -14,25 +49,60 @@
   color: black;
 }
 
-/* Color Variants for the backgrounds using semantic variables */
+/* Color Variants for the backgrounds */
 .status-card.total {
-  background-color: var(--status-total);
+  background-color: var(--color-yellow);
 }
 
 .status-card.in-execution {
-  background-color: var(--status-on-schedule); /* Assumed mapping from plan */
+  background-color: var(--color-blue-dark);
 }
 
 .status-card.completed {
-  background-color: var(--status-completed);
+  background-color: var(--color-green);
 }
 
 .status-card.delayed {
-  background-color: var(--status-delayed);
+  background-color: var(--color-red);
 }
 
 .status-card.on-schedule {
-  background-color: var(--status-on-schedule);
+  background-color: var(--color-blue);
+}
+
+/* Hover/Active Effects */
+.status-card:hover {
+  box-shadow: var(--box-shadow-elevated);
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.status-card:active {
+  transform: translateY(0);
+  box-shadow: var(--box-shadow-default);
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .status-card {
+    padding: var(--spacing-md);
+    min-height: 80px;
+  }
+  
+  .status-card-info h3 {
+    font-size: calc(var(--font-size-data-label) * 0.9);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .status-card-info p {
+    font-size: calc(var(--font-size-kpi) * 0.8);
+  }
+}
+
+/* Remove icon - no longer needed as per old design */
+.status-card-icon {
+  display: none;
 }
 
 /* Keep any existing icon styles that might be used elsewhere */

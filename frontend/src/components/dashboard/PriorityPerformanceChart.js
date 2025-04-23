@@ -12,7 +12,7 @@ const PriorityPerformanceChart = () => {
   useEffect(() => {
     if (chartWrapperRef.current) {
       const rect = chartWrapperRef.current.getBoundingClientRect();
-      console.log('[LOG] chart-wrapper size:', rect.width, rect.height);
+      
     }
   });
 
@@ -20,8 +20,6 @@ const PriorityPerformanceChart = () => {
     const fetchData = async () => {
       try {
         const apiUrl = getApiUrl();
-        console.log('[PriorityPerformanceChart] Valor de getApiUrl():', apiUrl);
-        console.log('[PriorityPerformanceChart] URL usada:', `${apiUrl}/api/initiatives/priority-performance`);
         const response = await fetch(`${apiUrl}/api/initiatives/priority-performance`);
         if (!response.ok) {
           throw new Error('Erro ao buscar dados de performance');
@@ -102,7 +100,7 @@ const PriorityPerformanceChart = () => {
               dataKey="value"
               label={({ name, value }) => `${Math.round((value / total) * 100)}%`}
               onAnimationStart={() => {
-                console.log('[LOG] Pie radii:', { innerRadius, outerRadius });
+                
               }}
             >
               {performanceData.map((entry, index) => (

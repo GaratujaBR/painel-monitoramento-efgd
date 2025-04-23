@@ -1,0 +1,56 @@
+/* Status Card Color Variants */
+.status-card.total {
+  background-color: var(--color-yellow);
+}
+
+.status-card.total .status-card-title,
+.status-card.total .status-card-value {
+  color: var(--color-black); /* Apply black specifically to title and value */
+}
+
+.status-card.on-schedule {
+  background-color: var(--color-blue);
+}
+
+.status-card.on-schedule .status-card-title,
+.status-card.on-schedule .status-card-value {
+  color: var(--color-white); /* Apply white specifically to title and value */
+}
+
+.status-card.delayed {
+  background-color: var(--color-red);
+}
+
+.status-card.delayed .status-card-title,
+.status-card.delayed .status-card-value {
+  color: var(--color-white); /* Apply white specifically to title and value */
+}
+
+.status-card.completed {
+  background-color: var(--color-green);
+}
+
+.status-card.completed .status-card-title,
+.status-card.completed .status-card-value {
+  color: var(--color-white); /* Apply white specifically to title and value */
+}
+
+.status-card.in-execution {
+  background-color: var(--color-blue);
+}
+
+.status-card.in-execution .status-card-title,
+.status-card.in-execution .status-card-value {
+  color: var(--color-white); /* Apply white specifically to title and value */
+}
+
+/* Specific styling for the info-frame card (Total Initiatives) */
+.info-frame .status-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+}
+
+.info-frame .status-card .status-card-title,
+.info-frame .status-card .status-card-value {
+  color: var(--color-black);
+}

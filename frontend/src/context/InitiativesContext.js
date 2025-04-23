@@ -10,12 +10,9 @@
  * 3. A função getFilteredInitiatives que implementa a lógica de filtragem
  */
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-
-// API URL - Configuração mais flexível para funcionar em diferentes ambientes
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3003';
+import { getApiUrl } from '../utils/apiUrl';
 
 // Log da URL da API para diagnóstico
-console.log('API_URL configurada:', API_URL);
 console.log('Ambiente:', process.env.NODE_ENV);
 console.log('Variáveis de ambiente disponíveis:', process.env.REACT_APP_API_URL || 'Não definida');
 
@@ -61,7 +58,7 @@ export const InitiativesProvider = ({ children }) => {
     setError(null);
     
     try {
-      const apiUrl = `${API_URL}/api/initiatives`;
+      const apiUrl = `${getApiUrl()}/api/initiatives`;
       console.log('Iniciando fetch de iniciativas em:', apiUrl);
       console.log('User Agent:', navigator.userAgent);
       console.log('Plataforma:', navigator.platform);
@@ -103,7 +100,7 @@ export const InitiativesProvider = ({ children }) => {
   // Função para buscar princípios da API
   const fetchPrinciples = useCallback(async () => {
     try {
-      const apiUrl = `${API_URL}/api/initiatives/principles`;
+      const apiUrl = `${getApiUrl()}/api/initiatives/principles`;
       console.log('Iniciando fetch de princípios em:', apiUrl);
       
       const response = await fetch(apiUrl);
@@ -128,7 +125,7 @@ export const InitiativesProvider = ({ children }) => {
   // Função para buscar objetivos da API
   const fetchObjectives = useCallback(async () => {
     try {
-      const apiUrl = `${API_URL}/api/initiatives/objectives`;
+      const apiUrl = `${getApiUrl()}/api/initiatives/objectives`;
       console.log('Iniciando fetch de objetivos em:', apiUrl);
       
       const response = await fetch(apiUrl);
@@ -139,7 +136,12 @@ export const InitiativesProvider = ({ children }) => {
       
       const data = await response.json();
       console.log('Objetivos recebidos:', data.length);
-      setObjectives(data);
+      // DEBUG: Show sample objective to confirm property name
+      console.log('Sample objective:', data[0]);
+      setObjectives(data.map(obj => ({
+        id: obj.id,
+        name: obj.name // Use the correct property for the full objective text
+      })));
     } catch (err) {
       console.error('Erro ao buscar objetivos - Detalhes:', {
         message: err.message,
@@ -152,7 +154,7 @@ export const InitiativesProvider = ({ children }) => {
   // Função para buscar áreas da API
   const fetchAreas = useCallback(async () => {
     try {
-      const apiUrl = `${API_URL}/api/initiatives/areas`;
+      const apiUrl = `${getApiUrl()}/api/initiatives/areas`;
       console.log('Iniciando fetch de áreas em:', apiUrl);
       
       const response = await fetch(apiUrl);

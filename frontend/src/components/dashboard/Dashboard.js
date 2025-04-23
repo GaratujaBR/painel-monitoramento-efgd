@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getApiUrl } from '../../utils/apiUrl';
 import { useInitiatives } from '../../context/InitiativesContext';
 // eslint-disable-next-line no-unused-vars
 import { useOutletContext, useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ import PrincipleStatusChart from './PrincipleStatusChart';
 import ObjectiveStatusChart from './ObjectiveStatusChart';
 import DateChart from './DateChart'; // IMPORTAÇÃO ATUALIZADA DO NOVO GRÁFICO
 import PriorityPerformanceChart from './PriorityPerformanceChart';
+
 
 // Componente para o gráfico de donut de Performance
 const PerformanceDonutChart = ({ onSchedule, delayed }) => {
@@ -125,6 +127,7 @@ const Dashboard = () => {
     }
   };
   
+    
   useEffect(() => {
     const fetchDashboardData = async () => {
       if (usingMockData) {
@@ -152,17 +155,12 @@ const Dashboard = () => {
       setLoading(true); 
 
       try {
-        console.log('Buscando dados do dashboard da API (sem autenticação - usando URL completa)...'); 
-        const response = await fetch(`http://localhost:3003/api/dashboard`); 
-
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/api/dashboard`);
         if (!response.ok) {
-          const errorBody = await response.text(); 
-          console.error(`Erro HTTP: ${response.status}, Body: ${errorBody}`);
-          throw new Error(`Erro HTTP: ${response.status}`);
+          throw new Error('Erro ao buscar dados do dashboard.');
         }
-
-        const data = await response.json();
-        console.log('Dados do dashboard recebidos (sem auth):', data);
+        const data = await response.json(); 
         setDashboardData(data); 
         if (data.lastUpdate && typeof updateLastUpdateTime === 'function') {
            updateLastUpdateTime(data.lastUpdate); 

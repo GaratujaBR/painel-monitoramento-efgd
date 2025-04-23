@@ -18,6 +18,7 @@ import './Initiatives.css';
 import { Tooltip } from 'react-tooltip'; // Importar Tooltip
 import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
 import LoadingIcon from '../../assets/icons/data.png'; // Importar o ícone de loading
+import { getApiUrl } from '../../utils/apiUrl';
 
 /**
  * Componente de listagem de iniciativas
@@ -46,6 +47,13 @@ const InitiativeList = () => {
 
   // Estado para controle de atualização
   const [refreshing, setRefreshing] = useState(false);
+
+  // Utilitário para obter a URL da API considerando ambiente
+  // const getApiUrl = () =>
+  //   process.env.REACT_APP_API_URL ||
+  //   (process.env.NODE_ENV === 'production'
+  //     ? 'https://painel-monitoramento-efgd.onrender.com'
+  //     : '');
 
   // Efeito para buscar dados e aplicar filtros iniciais da navegação/URL
   useEffect(() => {
@@ -146,7 +154,8 @@ const InitiativeList = () => {
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      await fetch('http://localhost:3003/api/initiatives/refresh', {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/initiatives/refresh`, {
         method: 'POST',
       });
       await fetchInitiatives();
@@ -185,7 +194,7 @@ const InitiativeList = () => {
     switch (String(status).toUpperCase()) {
       case 'EM EXECUÇÃO':
       case 'EM_EXECUCAO': // Adicionado case para valor interno
-      case 'EM EXECUCAO':
+      case 'EM_EXECUCAO':
       case 'INEXECUTION':
         statusKey = 'EM_EXECUCAO';
         displayText = 'EM EXECUÇÃO';

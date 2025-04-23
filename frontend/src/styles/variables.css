@@ -1,50 +1,74 @@
 /* Variáveis CSS para o Painel de Monitoramento EFGD */
 
 :root {
-  /* Cores Primárias (conforme manual de identidade visual) */
-  --color-yellow: #FFD000;
-  --color-blue: #183EFF;
-  --color-green: #00D000;
-  --color-red: #FF0000;
+  /* === CORES === */
+  /* Cores base do plano */
+  --color-primary: #071D41;
+  --color-secondary: #1351B4;
 
-  /* Cores Base para Elementos UI */
+  /* Cores de Status (do plano) */
+  --status-total: #FFC107;       /* Amarelo/Laranja */
+  --status-on-schedule: #2196F3; /* Azul */
+  --status-delayed: #F44336;     /* Vermelho */
+  --status-completed: #4CAF50;   /* Verde */
+
+  /* Cores Primárias (do manual de identidade visual - existentes) */
+  --color-yellow: #FFD000;
+  --color-blue: #183EFF; /* Nota: diferente de --color-secondary */
+  --color-green: #00D000; /* Nota: diferente de --status-completed */
+  --color-red: #FF0000;   /* Nota: diferente de --status-delayed */
+
+  /* Cores Base para Elementos UI (existentes) */
   --color-black: #000000;
   --color-dark-gray: #585C5D;
   --color-medium-gray: #999999;
   --color-light-gray: #e7e7e7;
   --color-white: #FFFFFF;
+  --color-background-light: #f8f9fa; /* Adicionado com base em uso anterior */
 
-  /* Tamanhos de Fonte (ajustados para melhor visualização) */
-  --font-size-main-title: 32pt; /* 42.67px - reduzido de 44pt */
-  --font-size-section-heading: 20pt; /* 26.67px - reduzido de 26pt */
-  --font-size-regular: 14pt; /* 18.67px - mantido */
-  --font-size-small: 12pt; /* 16px - mantido */
-  --font-size-footnote: 8pt; /* 10.67px - mantido */
-  --font-size-data-label: 14pt; /* 18.67px - reduzido de 16pt */
-  --font-size-kpi: 48pt; /* 64px - reduzido significativamente de 100pt */
+  /* === TIPOGRAFIA === */
+  /* Família de Fontes */
+  --font-family-primary: 'Rawline', Verdana, sans-serif;
 
-  /* Espaçamento */
-  --spacing-xs: 5px;
-  --spacing-sm: 10px;
-  --spacing-md: 15px;
-  --spacing-lg: 20px;
+  /* Tamanhos de Fonte (do plano - em rem) */
+  --font-size-normal: 1rem;    /* ~16px */
+  --font-size-large: 1.4rem;   /* ~22.4px */
+  --font-size-xlarge: 3.5rem;  /* ~56px */
+
+  /* Tamanhos de Fonte (existentes - em pt) */
+  --font-size-main-title: 32pt;
+  --font-size-section-heading: 20pt;
+  --font-size-regular: 14pt;
+  --font-size-small: 12pt;
+  --font-size-footnote: 8pt;
+  --font-size-data-label: 14pt;
+  --font-size-kpi: 48pt;
+
+  /* === ESPAÇAMENTO === */
+  /* Espaçamento (do plano - em rem) */
+  --spacing-xs: 0.25rem;  /* ~4px */
+  --spacing-sm: 0.5rem;   /* ~8px */
+  --spacing-md: 1rem;     /* ~16px */
+  --spacing-lg: 1.5rem;   /* ~24px */
+
+  /* Espaçamento (existentes - em px) - Mantidos por enquanto */
   --spacing-xl: 30px;
 
-  /* Bordas e Sombras */
+  /* === BORDAS E SOMBRAS === */
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --box-shadow-default: 0 2px 5px rgba(0, 0, 0, 0.1);
   --box-shadow-elevated: 0 4px 10px rgba(0, 0, 0, 0.15);
 
-  /* Transições */
+  /* === TRANSIÇÕES === */
   --transition-default: all 0.3s ease;
 
-  /* Layout */
-  --sidebar-width: 280px;
+  /* === LAYOUT === */
+  --sidebar-width: 220px;
   --sidebar-width-collapsed: 60px;
   --header-height: 70px;
   --footer-height: 100px;
-  --dashboard-width: 1280px; /* Proporção 16:9 para 720px de altura */
+  --dashboard-width: 1280px;
 }
 
 /* Classes de utilidade para cores */

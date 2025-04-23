@@ -3,7 +3,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useNavigate } from 'react-router-dom';
 import './ObjectiveStatusChart.css';
 
-const ObjectiveStatusChart = ({ initiatives, objectives }) => {
+const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
+  // DEBUG: Print the first initiative object for inspection
+  console.log('First initiative:', initiatives && initiatives[0]);
+  // DEBUG: Print the objectives array for inspection
+  console.log('OBJECTIVES ARRAY:', objectives);
+
   const navigate = useNavigate();
 
   // Cores para o gráfico
@@ -11,6 +16,17 @@ const ObjectiveStatusChart = ({ initiatives, objectives }) => {
     'No Cronograma': 'var(--color-blue)',
     'Atrasada': 'var(--color-red)',
   };
+
+  // Build a map from objectiveId to the full objective name using the objectives array
+  const objectiveNameMap = {};
+  objectives.forEach(obj => {
+    if (obj.id && obj.name) {
+      objectiveNameMap[obj.id] = obj.name;
+    }
+  });
+
+  // DEBUG: Log the map to check its contents
+  console.log('DEBUG: objectiveNameMap:', objectiveNameMap);
 
   // Função para processar os dados
   const processData = () => {
@@ -21,14 +37,14 @@ const ObjectiveStatusChart = ({ initiatives, objectives }) => {
       const performance = initiative.performance;
       
       if (objectiveId) {
-        // Aqui vamos usar apenas o ID do objetivo para o nome no gráfico
-        // Mantendo apenas o número do objetivo para o eixo X
+        // Always use the OBJETIVO column value for the full name from the objectives array
+        const objectiveFullName = objectiveNameMap[objectiveId];
         
         if (!data[objectiveId]) {
           data[objectiveId] = {
             id: objectiveId,
             name: objectiveId, // Usando apenas o ID como nome para o eixo X
-            fullName: objectives.find(obj => obj.id === objectiveId)?.name || objectiveId, // Guardando o nome completo
+            fullName: objectiveFullName, // Always the OBJETIVO value
             'No Cronograma': 0,
             'Atrasada': 0
           };
@@ -42,7 +58,8 @@ const ObjectiveStatusChart = ({ initiatives, objectives }) => {
       }
     });
     
-    return Object.entries(data).map(([_, value]) => value);
+    // Return sorted by ID (numeric conversion needed if IDs are strings)
+    return Object.values(data).sort((a, b) => Number(a.id) - Number(b.id));
   };
 
   // Manipulador de clique para as barras
@@ -88,46 +105,29 @@ const ObjectiveStatusChart = ({ initiatives, objectives }) => {
       const noCronogramaPct = total > 0 ? Math.round((noCronograma / total) * 100) : 0;
       const atrasadaPct = total > 0 ? Math.round((atrasada / total) * 100) : 0;
       
-      // Obtém o nome completo do objetivo
-      const fullObjectiveName = payload[0]?.payload?.fullName || label;
-      // Formata o título como "ID - Nome completo"
-      const tooltipTitle = `${label} - ${fullObjectiveName}`;
+      // Get the full objective name directly from the payload's fullName property
+      // DEBUG: Add fallback to label (objective ID) if fullName is missing
+      const fullObjectiveName = payload[0]?.payload?.fullName || `(ID: ${label})`; // Fallback for debug
 
       return (
-        <div style={{
-          backgroundColor: 'white',
-          padding: '15px',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          fontSize: '14px',
-          minWidth: '200px'
-        }}>
-          <p style={{ 
-            fontWeight: 'bold', 
-            margin: '0 0 10px 0',
-            borderBottom: '1px solid #eee',
-            paddingBottom: '5px'
-          }}>{tooltipTitle}</p>
+        // Use CSS classes instead of inline styles
+        <div className="custom-chart-tooltip"> 
+          {/* Display only the full objective name as the title */}
+          <p className="tooltip-title">{fullObjectiveName}</p> 
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: 'var(--color-blue)' }}>No Cronograma:</span>
-            <span style={{ fontWeight: '500' }}>{noCronograma} ({noCronogramaPct}%)</span>
+          {/* Use CSS classes for items */}
+          <div className="tooltip-item">
+            <span style={{ color: performanceColors['No Cronograma'] }}>No Cronograma:</span>
+            <span className="tooltip-value">{noCronograma} ({noCronogramaPct}%)</span>
           </div>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
-            <span style={{ color: 'var(--color-red)' }}>Atrasada:</span>
-            <span style={{ fontWeight: '500' }}>{atrasada} ({atrasadaPct}%)</span>
+          <div className="tooltip-item">
+            <span style={{ color: performanceColors['Atrasada'] }}>Atrasada:</span>
+            <span className="tooltip-value">{atrasada} ({atrasadaPct}%)</span>
           </div>
           
-          <div style={{
-            marginTop: '10px', 
-            paddingTop: '5px', 
-            borderTop: '1px solid #eee',
-            fontWeight: 'bold',
-            display: 'flex',
-            justifyContent: 'space-between'
-          }}>
+          {/* Use CSS class for total */}
+          <div className="tooltip-total">
             <span>Total:</span>
             <span>{total} iniciativas</span>
           </div>

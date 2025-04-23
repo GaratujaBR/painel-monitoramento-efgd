@@ -29,7 +29,7 @@ const Header = ({ toggleSidebar }) => {
           ☰
         </button>
         <div className="titulo-container">
-          <h1>
+          <h1 className="titulo-bloco">
             <span className="linha-1">ESTRATÉGIA <span className="federal">FEDERAL</span> de</span>
             <span className="linha-2">GOVERNO DIGITAL</span>
           </h1>

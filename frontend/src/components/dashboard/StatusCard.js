@@ -1,5 +1,7 @@
 import React from 'react';
-import './StatusCard.css';
+import PropTypes from 'prop-types';
+import '../../shared/StatusCard.css';
+import './StatusCardColors.css';
 
 const StatusCard = ({ title, value, type, onClick }) => {
   return (

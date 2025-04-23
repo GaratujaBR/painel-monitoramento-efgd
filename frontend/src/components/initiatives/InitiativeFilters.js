@@ -98,7 +98,7 @@ const InitiativeFilters = () => {
   return (
     <div className="filters-container">
       <div className="filter-group">
-        <label htmlFor="priority-filter">Prioridade Externa:</label>
+        <label htmlFor="priority-filter">Prioridade Externa (MGI/CC):</label>
         <select
           id="priority-filter"
           value={filters.priority || ''}

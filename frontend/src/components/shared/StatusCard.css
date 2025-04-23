@@ -1,0 +1,76 @@
+/* Estilos para o componente compartilhado StatusCard */
+
+/* Base structure */
+.status-card {
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg) var(--spacing-md);
+  box-shadow: var(--box-shadow-default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100px;
+  
+  /* Base button styles */
+  border: none;
+  cursor: pointer;
+  width: 100%; /* Take full width of container */
+  min-width: 180px; /* Minimum width */
+  max-width: 220px; /* Maximum width */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* background-color will be defined by specific types */
+}
+
+/* Base title style */
+.status-card-info h3 {
+  font-size: var(--font-size-data-label);
+  margin: 0 0 var(--spacing-md) 0;
+  /* color will be defined by specific types or defaults */
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+/* Base value style */
+.status-card-info p {
+  font-size: var(--font-size-kpi);
+  font-weight: bold;
+  line-height: 1;
+  margin: 0;
+  /* color will be defined by specific types or defaults */
+}
+
+/* Hover/Active Effects */
+.status-card:hover {
+  box-shadow: var(--box-shadow-elevated);
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.status-card:active {
+  transform: translateY(0);
+  box-shadow: var(--box-shadow-default);
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .status-card {
+    padding: var(--spacing-md);
+    min-height: 80px;
+  }
+  
+  .status-card-info h3 {
+    font-size: calc(var(--font-size-data-label) * 0.9);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .status-card-info p {
+    font-size: calc(var(--font-size-kpi) * 0.8);
+  }
+}
+
+/* Hide icon area (if component structure includes it) */
+.status-card-icon {
+  display: none;
+}

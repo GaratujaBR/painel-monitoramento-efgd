@@ -50,7 +50,6 @@ router.get('/principles', async (req, res, next) => {
 // Get all objectives
 router.get('/objectives', async (req, res, next) => {
   try {
-    // Extract unique objectives from initiatives
     const initiatives = await dataService.getSpreadsheetData();
     const objectives = [...new Set(initiatives.map(i => i.objectiveId))]
       .filter(o => o)
@@ -81,7 +80,6 @@ router.get('/priority-performance', async (req, res, next) => {
     const performanceData = await dataService.getPriorityPerformanceData();
     res.json(performanceData);
   } catch (error) {
-    console.error("Erro na rota /priority-performance:", error);
     next(error);
   }
 });

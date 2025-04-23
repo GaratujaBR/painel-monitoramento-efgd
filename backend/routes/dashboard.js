@@ -18,74 +18,13 @@ if (!dataService.initialized) {
  */
 router.get('/', async (req, res, next) => {
   try {
-    console.log('Iniciando busca de dados do dashboard...');
-    console.log('Status de inicialização do serviço:', dataService.initialized ? 'Inicializado' : 'Não inicializado');
-    
     // Get initiatives data from Google Sheets
-    console.log('Buscando dados do Google Sheets...');
     
     const [initiatives, principles, objectives] = await Promise.all([
       dataService.getSpreadsheetData(),
       dataService.getPrinciples(),
       dataService.getObjectives()
     ]);
-    
-    console.log(`Dados carregados:
-    - Princípios: ${principles.length}
-    - Objetivos: ${objectives.length}
-    - Iniciativas: ${initiatives.length}`);
-    
-    // Log sample data for debugging
-    if (principles.length > 0) {
-      console.log('Amostra de princípios:', principles.slice(0, 2));
-    } else {
-      console.warn('Nenhum princípio encontrado!');
-    }
-    
-    if (objectives.length > 0) {
-      console.log('Amostra de objetivos:', objectives.slice(0, 2));
-    } else {
-      console.warn('Nenhum objetivo encontrado!');
-    }
-
-    if (initiatives.length > 0) {
-      console.log('Amostra de iniciativas:', initiatives.slice(0, 2));
-      
-      // Verificar quais iniciativas têm principleId e objectiveId
-      const withPrincipleId = initiatives.filter(i => i.principleId && i.principleId.trim() !== '').length;
-      const withObjectiveId = initiatives.filter(i => i.objectiveId && i.objectiveId.trim() !== '').length;
-      
-      console.log(`Backend - Iniciativas com principleId: ${withPrincipleId}/${initiatives.length} (${(withPrincipleId/initiatives.length*100).toFixed(1)}%)`);
-      console.log(`Backend - Iniciativas com objectiveId: ${withObjectiveId}/${initiatives.length} (${(withObjectiveId/initiatives.length*100).toFixed(1)}%)`);
-      
-      // Verificar distribuição de iniciativas por princípio
-      const principleDistribution = {};
-      initiatives.forEach(initiative => {
-        if (initiative.principleId && initiative.principleId.trim() !== '') {
-          principleDistribution[initiative.principleId] = (principleDistribution[initiative.principleId] || 0) + 1;
-        }
-      });
-      
-      if (Object.keys(principleDistribution).length > 0) {
-        console.log('Backend - Distribuição de iniciativas por princípio:', principleDistribution);
-      } else {
-        console.warn('Backend - Nenhuma iniciativa com principleId válido!');
-      }
-      
-      // Verificar distribuição de iniciativas por objetivo
-      const objectiveDistribution = {};
-      initiatives.forEach(initiative => {
-        if (initiative.objectiveId && initiative.objectiveId.trim() !== '') {
-          objectiveDistribution[initiative.objectiveId] = (objectiveDistribution[initiative.objectiveId] || 0) + 1;
-        }
-      });
-      
-      if (Object.keys(objectiveDistribution).length > 0) {
-        console.log('Backend - Distribuição de iniciativas por objetivo:', objectiveDistribution);
-      } else {
-        console.warn('Backend - Nenhuma iniciativa com objectiveId válido!');
-      }
-    }
     
     // Validate relationships
     const initiativesWithMissingPrinciple = initiatives.filter(i => !i.principleId).length;
@@ -132,23 +71,6 @@ router.get('/', async (req, res, next) => {
       return counts;
     }, {});
     
-    // Log status and performance counts for debugging
-    console.log('Status counts:', statusCounts);
-    console.log('Iniciativas CONCLUIDA:', statusCounts['CONCLUIDA'] || 0);
-    console.log('Iniciativas NO_CRONOGRAMA:', statusCounts['NO_CRONOGRAMA'] || 0);
-    console.log('Iniciativas ATRASADA:', statusCounts['ATRASADA'] || 0);
-    console.log('Iniciativas NAO_INICIADA:', statusCounts['NAO_INICIADA'] || 0);
-    
-    console.log('Performance counts:', performanceCounts);
-    console.log('Iniciativas NO_CRONOGRAMA (performance):', performanceCounts['NO_CRONOGRAMA'] || 0);
-    console.log('Iniciativas ATRASADA (performance):', performanceCounts['ATRASADA'] || 0);
-    
-    // Log a sample of initiatives with their status
-    console.log('Amostra de iniciativas com status:');
-    initiatives.slice(0, 5).forEach((initiative, index) => {
-      console.log(`Iniciativa ${index + 1}: "${initiative.name.substring(0, 30)}..." - Status: ${initiative.status}`);
-    });
-    
     // Calculate average progress
     const averageProgress = initiatives.length > 0 
       ? Math.round(initiatives.reduce((sum, i) => sum + i.progress, 0) / initiatives.length) 
@@ -164,12 +86,6 @@ router.get('/', async (req, res, next) => {
       return byYear;
     }, {});
     
-    console.log('Métricas calculadas:', {
-      totalInitiatives,
-      statusCountsTotal: Object.values(statusCounts).reduce((a, b) => a + b, 0),
-      averageProgress
-    });
-    
     // Return dashboard data
     res.json({
       initiatives,
@@ -178,7 +94,7 @@ router.get('/', async (req, res, next) => {
       metrics: {
         totalInitiatives,
         statusCounts,
-        performanceCounts, // Add performanceCounts to the response
+        performanceCounts, 
         averageProgress,
         initiativesByYear
       }

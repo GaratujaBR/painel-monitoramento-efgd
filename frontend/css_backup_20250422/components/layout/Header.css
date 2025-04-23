@@ -1,5 +1,4 @@
 /* Header Styles */
-/* @cleanup-phase4: Flexbox duplication? Consider using utility classes (.d-flex, .justify-content-between, .align-items-center) from index.css instead. */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -16,7 +15,6 @@
   align-items: center;
 }
 
-/* @cleanup-phase4: Redundant toggle styles? Check if both .sidebar-toggle and .sidebar-toggle-btn are needed. */
 .sidebar-toggle {
   display: flex;
   flex-direction: column;
@@ -38,7 +36,6 @@
   transition: all 0.3s ease;
 }
 
-/* @cleanup-phase4: Redundant toggle styles? Check if both .sidebar-toggle and .sidebar-toggle-btn are needed. */
 /* Botão de toggle da sidebar */
 .sidebar-toggle-btn {
   position: fixed;
@@ -108,7 +105,6 @@
   margin-top: 50px;  /* desloca o título para baixo */
 }
 
-/* @cleanup-phase4: Redundant title style? Check if .header-title is still used alongside the .titulo-container styles. */
 .header-title {
   font-size: 26px;
   color: #585C5D;

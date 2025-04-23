@@ -2016,7 +2016,6 @@ body {
   gap: 24px;
 }
 
-/* @cleanup-phase4 - REMOVE DUPLICATE MEDIA QUERY (Original is around line 1267) */
 @media (max-width: 900px) {
   .dashboard-cards {
     flex-direction: column;
