@@ -560,13 +560,14 @@ class GoogleSheetsService {
       const objectivesMap = new Map();
       
       initiatives.forEach(initiative => {
+        console.log('initiative:', initiative); // DEBUG: Mostra todos os campos da iniciativa
         if (initiative.objectiveId && initiative.objectiveId.trim() !== '') {
           // Extrair o ID do objetivo (assumindo formato "01 - Nome do Objetivo")
           const match = initiative.objectiveId.match(/^(\d+)\s*-\s*(.+)$/);
           
           if (match) {
             const id = match[1].trim(); // "01", "02", etc.
-            const name = initiative.objectiveId.trim(); // Nome completo com o numeral
+            const fullObjectiveText = initiative.objective || initiative.OBJETIVO || initiative.objectiveId.trim();
             
             // Determinar o principleId para este objetivo
             let principleId = '';
@@ -580,16 +581,22 @@ class GoogleSheetsService {
             }
             
             if (!objectivesMap.has(id)) {
-              objectivesMap.set(id, { id, name, principleId });
+              objectivesMap.set(id, { 
+                id, 
+                name: fullObjectiveText, // Usar o texto completo aqui!
+                principleId
+              });
             }
           } else {
             // Se não seguir o formato esperado, usar o valor completo como ID e nome
             const id = initiative.objectiveId.trim();
+            const fullObjectiveText = initiative.objective || initiative.OBJETIVO || id;
+            
             if (!objectivesMap.has(id)) {
               objectivesMap.set(id, { 
                 id, 
-                name: id, 
-                principleId: initiative.principleId || '' 
+                name: fullObjectiveText, // Usar o texto completo aqui também!
+                principleId: initiative.principleId || ''
               });
             }
           }
@@ -605,6 +612,7 @@ class GoogleSheetsService {
           return numA - numB;
         });
 
+      console.log('Objetivos enviados ao frontend:', objectives);
       console.log(`Encontrados ${objectives.length} objetivos a partir das iniciativas`);
       this.cache.set(cacheKey, objectives);
       return objectives;

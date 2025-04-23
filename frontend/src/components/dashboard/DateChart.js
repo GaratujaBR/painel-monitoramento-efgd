@@ -11,6 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { useInitiatives } from '../../context/InitiativesContext';
 import './Charts.css';
 
 // Cores padrão do painel
@@ -23,31 +24,6 @@ const years = [2024, 2025, 2026, 2027];
 
 // Função para processar os dados
 const processData = (initiatives = []) => {
-  // Log 1: Mostrar o array completo de iniciativas (limitado a 3)
-  console.log('[DateChart] Iniciativas recebidas (primeiras 3):', 
-    initiatives.slice(0, 3).map(i => ({...i})));
-
-  // Log 2: Mostrar todas as chaves disponíveis em todas as iniciativas
-  if (initiatives.length > 0) {
-    const allKeys = new Set();
-    initiatives.forEach(i => Object.keys(i).forEach(k => allKeys.add(k)));
-    console.log('[DateChart] Todas as chaves encontradas nas iniciativas:', [...allKeys]);
-  }
-
-  // Log 3: Contar quantas iniciativas têm os campos que procuramos
-  const countsWithFields = {
-    withPRAZO: initiatives.filter(i => i.PRAZO).length,
-    withPrazo: initiatives.filter(i => i.Prazo).length,
-    withprazo: initiatives.filter(i => i.prazo).length,
-    withPERFORMANCE: initiatives.filter(i => i.PERFORMANCE).length,
-    withPerformance: initiatives.filter(i => i.Performance).length,
-    withperformance: initiatives.filter(i => i.performance).length,
-    withcompletionYear: initiatives.filter(i => i.completionYear).length,
-    withperformance: initiatives.filter(i => i.performance).length,
-    total: initiatives.length
-  };
-  console.log('[DateChart] Contagem de campos nas iniciativas:', countsWithFields);
-
   // Inicializa estrutura por ano
   const data = years.map((year) => ({
     year: String(year),
@@ -55,40 +31,23 @@ const processData = (initiatives = []) => {
     'Atrasada': 0,
   }));
 
-  // Log 4: Detalhes de processamento para cada iniciativa
-  let counter = { included: 0, excluded: 0, reasons: { noYear: 0, yearOutOfRange: 0, noPerf: 0, unknownPerf: 0 } };
-  
   initiatives.forEach((initiative, idx) => {
     const year = initiative.completionYear || initiative.PRAZO;
     const perf = initiative.performance || initiative.PERFORMANCE;
     
     if (!year) {
-      counter.excluded++;
-      counter.reasons.noYear++;
-      if (idx < 5) console.log(`[DateChart] Iniciativa ${idx} excluída: sem ano`);
     } 
     else if (!years.includes(Number(year))) {
-      counter.excluded++;
-      counter.reasons.yearOutOfRange++;
-      if (idx < 5) console.log(`[DateChart] Iniciativa ${idx} excluída: ano ${year} fora do intervalo ${years}`);
     }
     else if (!perf) {
-      counter.excluded++;
-      counter.reasons.noPerf++;
-      if (idx < 5) console.log(`[DateChart] Iniciativa ${idx} excluída: sem performance`);
     }
     else if (perf.toUpperCase() !== 'NO CRONOGRAMA' && 
              perf.toUpperCase() !== 'NO_CRONOGRAMA' && 
              perf.toUpperCase() !== 'ON_SCHEDULE' &&
              perf.toUpperCase() !== 'ATRASADA' && 
              perf.toUpperCase() !== 'DELAYED') {
-      counter.excluded++;
-      counter.reasons.unknownPerf++;
-      if (idx < 5) console.log(`[DateChart] Iniciativa ${idx} excluída: performance '${perf}' não reconhecida`);
     }
     else {
-      counter.included++;
-      if (idx < 5) console.log(`[DateChart] Iniciativa ${idx} incluída: ano ${year}, performance ${perf}`);
       
       // Processamento normal
       if (perf.toUpperCase() === 'NO CRONOGRAMA' || 
@@ -102,9 +61,6 @@ const processData = (initiatives = []) => {
       }
     }
   });
-  
-  console.log('[DateChart] Resumo do processamento:', counter);
-  console.log('[DateChart] Dados finais do gráfico:', data);
 
   return data;
 };
@@ -141,6 +97,25 @@ const DateChart = ({ initiatives = [] }) => {
   const chartContainerRef = useRef(null);
   const hasData = chartData.some((d) => d['No Cronograma'] > 0 || d['Atrasada'] > 0);
 
+  const { applyFiltersAndNavigate } = useInitiatives();
+
+  // Handler de clique para as barras
+  const handleBarClick = (data, index) => {
+    // Obtém dados de forma segura
+    const year = data?.payload?.year;
+    const status = data?.tooltipPayload?.[0]?.dataKey; // Pega o status ('No Cronograma' ou 'Atrasada') do tooltipPayload
+    const value = data?.value; // Pega o valor numérico da barra clicada
+
+    // Verifica se a barra clicada tem valor > 0 e os dados necessários estão presentes
+    if (value > 0 && year && status) {
+      console.log(`[DateChart] Clicked bar: Year=${year}, Status=${status}, Value=${value}`);
+      // Aplica filtros e navega
+      applyFiltersAndNavigate({ PRAZO: Number(year), PERFORMANCE: status });
+    } else {
+       console.log(`[DateChart] Clicked bar with zero value or missing data: Year=${year}, Status=${status}, Value=${value}`);
+    }
+  };
+
   return (
     <div ref={chartContainerRef} className="chart-container" style={{ width: '100%', minHeight: 400, background: 'white', borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', padding: 24 }}>
       <ResponsiveContainer width="100%" height={400}>
@@ -152,8 +127,8 @@ const DateChart = ({ initiatives = [] }) => {
           <XAxis dataKey="year" label={{ value: 'Ano', position: 'insideBottom', offset: -5 }} />
           <YAxis allowDecimals={false} />
           <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey="No Cronograma" fill={performanceColors['No Cronograma']} radius={[6, 6, 0, 0]} />
-          <Bar dataKey="Atrasada" fill={performanceColors['Atrasada']} radius={[6, 6, 0, 0]} />
+          <Bar dataKey="No Cronograma" fill={performanceColors['No Cronograma']} radius={[6, 6, 0, 0]} onClick={handleBarClick} cursor="pointer" />
+          <Bar dataKey="Atrasada" fill={performanceColors['Atrasada']} radius={[6, 6, 0, 0]} onClick={handleBarClick} cursor="pointer" />
         </BarChart>
       </ResponsiveContainer>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 18, gap: 24, fontSize: 16, fontWeight: 500 }}>

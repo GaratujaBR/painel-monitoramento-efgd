@@ -281,7 +281,7 @@ const Dashboard = () => {
         <div className="status-cards-container">
           {/* Info Frame (will expand) */}
           <div className="info-frame">
-            <span>Este painel de monitoramento interno permite aos gestores acompanhar de perto a execução das iniciativas da <b>Estratégia Federal de Governo Digital (EFGD)</b>. Visualize facilmente o andamento das ações sob sua responsabilidade, identifique rapidamente iniciativas em dia ou atrasadas e avalie o status geral de execução.
+            <span>Este painel de monitoramento interno permite que os gestores acompanhem de perto a execução das iniciativas da <b>Estratégia Federal de Governo Digital (EFGD)</b>. Visualize facilmente o andamento das ações sob sua responsabilidade, identifique rapidamente iniciativas em dia ou atrasadas e avalie o status geral de execução.
 
 Utilize estas informações para prever problemas, realocar recursos e tomar decisões ágeis e bem informadas, garantindo eficiência na implementação das políticas públicas.</span>
           </div>

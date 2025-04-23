@@ -35,7 +35,8 @@ const InitiativeList = () => {
     error,
     fetchInitiatives,
     getFilteredInitiatives,
-    updateFilters
+    updateFilters,
+    resetFilters // Importa função de reset
     // Removido: compareValues: compareValuesFromContext 
   } = useInitiatives();
 
@@ -57,18 +58,21 @@ const InitiativeList = () => {
 
   // Efeito para buscar dados e aplicar filtros iniciais da navegação/URL
   useEffect(() => {
+    resetFilters(); // Limpa todos os filtros antes de aplicar os novos
     // Ler o status da URL primeiro
     const statusFromUrl = searchParams.get('status');
     console.log('[InitiativeList] Montado. Status da URL:', statusFromUrl, 'Location.state:', location.state);
 
     // Definir filtros iniciais
-    let initialFilters = {
-      principleId: '',
-      objectiveId: '',
-      areaId: '',
-      status: '', // Começa vazio
-      completionYear: ''
-    };
+    let initialFilters = location.state && location.state.initialFilters
+      ? { ...location.state.initialFilters }
+      : {
+          principleId: '',
+          objectiveId: '',
+          areaId: '',
+          status: '', // Começa vazio
+          completionYear: ''
+        };
 
     // Priorizar o status da URL se existir
     if (statusFromUrl) {
@@ -133,7 +137,7 @@ const InitiativeList = () => {
     console.log('[InitiativeList] Atualizando filtros no contexto:', initialFilters);
     updateFilters(initialFilters);
 
-  }, [location.state, searchParams, updateFilters]); // Adicionar searchParams às dependências
+  }, [location.state, searchParams, updateFilters, resetFilters]); // Adicionar searchParams às dependências
 
   // Função auxiliar para mapear status vindo do location.state (se necessário)
   // Ajuste conforme os valores que podem vir do state

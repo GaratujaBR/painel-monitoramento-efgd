@@ -74,9 +74,9 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
     let statusFilterValue;
 
     if (statusKey === 'No Cronograma') {
-      statusFilterValue = 'No Cronograma';
+      statusFilterValue = 'NO_CRONOGRAMA';
     } else if (statusKey === 'Atrasada') {
-      statusFilterValue = 'Atrasada';
+      statusFilterValue = 'ATRASADA';
     } else {
       console.error(`PrincipleChart: Status inválido recebido: ${statusKey}`);
       return;
@@ -85,7 +85,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
     if (principleId && statusFilterValue) {
       navigate('/initiatives', { 
         state: { 
-          filters: { 
+          initialFilters: { 
             principleId: principleId, 
             status: statusFilterValue 
           } 

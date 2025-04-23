@@ -47,13 +47,10 @@ router.get('/principles', async (req, res, next) => {
   }
 });
 
-// Get all objectives
+// Corrigir a rota para retornar objetivos completos
 router.get('/objectives', async (req, res, next) => {
   try {
-    const initiatives = await dataService.getSpreadsheetData();
-    const objectives = [...new Set(initiatives.map(i => i.objectiveId))]
-      .filter(o => o)
-      .map(o => ({ id: o, name: o }));
+    const objectives = await dataService.getObjectives();
     res.json(objectives);
   } catch (error) {
     next(error);

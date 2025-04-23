@@ -10,6 +10,7 @@
  * 3. A função getFilteredInitiatives que implementa a lógica de filtragem
  */
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { getApiUrl } from '../utils/apiUrl';
 
 // Log da URL da API para diagnóstico
@@ -51,6 +52,9 @@ export const InitiativesProvider = ({ children }) => {
     status: '',
     completionYear: ''
   });
+
+  // Hook de navegação
+  const navigate = useNavigate();
 
   // Função para buscar iniciativas da API
   const fetchInitiatives = useCallback(async () => {
@@ -183,6 +187,14 @@ export const InitiativesProvider = ({ children }) => {
     fetchAreas();
   }, [fetchInitiatives, fetchPrinciples, fetchObjectives, fetchAreas]);
 
+  // Função utilitária para normalizar status/performance
+  function normalizeStatus(str) {
+    return (str || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove acentos corretamente
+      .replace(/[^A-Z]/gi, '') // Remove tudo que não for letra
+      .toUpperCase();
+  }
+
   // Função para filtrar iniciativas
   const getFilteredInitiatives = useCallback(() => {
     console.log('[InitiativesContext] Filtering initiatives with filters:', filters);
@@ -212,14 +224,28 @@ export const InitiativesProvider = ({ children }) => {
       const matchesObjective = !filters.objectiveId || initiative.objectiveId === filters.objectiveId;
       const matchesArea = !filters.areaId || initiative.areaId === filters.areaId;
       
-      // Verifica se o valor do filtro corresponde ao status OU à performance
-      const matchesStatus = !filters.status || 
-                           initiative.status === filters.status || 
-                           (initiative.performance && 
-                            (initiative.performance.toUpperCase() === filters.status ||
-                             // Mapeamento adicional para lidar com diferentes formatos
-                             (filters.status === 'NO_CRONOGRAMA' && initiative.performance.toUpperCase().includes('CRONOGRAMA')) ||
-                             (filters.status === 'ATRASADA' && initiative.performance.toUpperCase().includes('ATRASA'))));
+      // Normalização robusta para status/performance
+      const normalizedFilterStatus = normalizeStatus(filters.status);
+      const normalizedIniStatus = normalizeStatus(initiative.status);
+      const normalizedIniPerf = normalizeStatus(initiative.performance);
+
+      // Log detalhado ANTES da comparação final, APENAS se houver filtro de status e o objectiveId bater
+      if (filters.status && (!filters.objectiveId || initiative.objectiveId === filters.objectiveId)) {
+        console.log(`[DEBUG] Filtering Initiative ID ${initiative.id || index} for Objective ${filters.objectiveId}:`);
+        console.log(`  Filter Status (raw): '${filters.status}'`);
+        console.log(`  Filter Status (norm): '${normalizedFilterStatus}'`);
+        console.log(`  Initiative Status (raw): '${initiative.status}'`);
+        console.log(`  Initiative Status (norm): '${normalizedIniStatus}'`);
+        console.log(`  Initiative Performance (raw): '${initiative.performance}'`);
+        console.log(`  Initiative Performance (norm): '${normalizedIniPerf}'`);
+        console.log(`  Status Match? ${normalizedIniStatus === normalizedFilterStatus}`);
+        console.log(`  Performance Match? ${normalizedIniPerf === normalizedFilterStatus}`);
+        console.log(`  Overall Match? ${normalizedIniStatus === normalizedFilterStatus || normalizedIniPerf === normalizedFilterStatus}`);
+      }
+
+      const matchesStatus = !filters.status ||
+        normalizedIniStatus === normalizedFilterStatus ||
+        normalizedIniPerf === normalizedFilterStatus;
       
       // Usando igualdade estrita (===) para o ano
       // Convertendo ambos para string para garantir a comparação correta, caso um seja número e outro string
@@ -235,6 +261,21 @@ export const InitiativesProvider = ({ children }) => {
       return finalMatch;
     });
   }, [initiatives, filters]);
+
+  // Filtros padrão para reset
+  const defaultFilters = {
+    priority: '',
+    principleId: '',
+    objectiveId: '',
+    areaId: '',
+    status: '',
+    completionYear: ''
+  };
+
+  // Função para resetar todos os filtros
+  const resetFilters = useCallback(() => {
+    setFilters({ ...defaultFilters });
+  }, []);
 
   // Função para obter anos únicos das iniciativas
   const getUniqueYears = useCallback(() => {
@@ -252,6 +293,25 @@ export const InitiativesProvider = ({ children }) => {
     });
   }, []);
 
+  // Função para aplicar filtros e navegar
+  const applyFiltersAndNavigate = useCallback((newFilters) => {
+    console.log('[InitiativesContext] applyFiltersAndNavigate called with:', newFilters);
+    // Mapeia as chaves recebidas dos gráficos para as chaves internas do filtro
+    const mappedFilters = {};
+    if (newFilters.PRAZO !== undefined) mappedFilters.completionYear = newFilters.PRAZO;
+    if (newFilters.PERFORMANCE !== undefined) mappedFilters.status = newFilters.PERFORMANCE;
+    // Inclui outros filtros que possam ter sido passados (ex: principleId, objectiveId)
+    Object.keys(newFilters).forEach(key => {
+      if (key !== 'PRAZO' && key !== 'PERFORMANCE') {
+        mappedFilters[key] = newFilters[key];
+      }
+    });
+
+    updateFilters(mappedFilters); // Atualiza o estado dos filtros
+    // Navega para a página de iniciativas, passando os filtros no estado
+    navigate('/initiatives', { state: { initialFilters: mappedFilters } });
+  }, [navigate, updateFilters]); // Adiciona dependências
+
   const value = {
     initiatives,
     principles,
@@ -263,7 +323,9 @@ export const InitiativesProvider = ({ children }) => {
     fetchInitiatives,
     getFilteredInitiatives,
     updateFilters,
-    getUniqueYears
+    getUniqueYears,
+    applyFiltersAndNavigate,
+    resetFilters // Exporta a função de reset
   };
 
   return (
