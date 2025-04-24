@@ -135,7 +135,7 @@ const DateChart = ({ initiatives = [] }) => {
           <Bar dataKey="Atrasada" fill={performanceColors['Atrasada']} radius={[6, 6, 0, 0]} onClick={handleBarClick} cursor="pointer" />
         </BarChart>
       </ResponsiveContainer>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 18, gap: 24, fontSize: 16, fontWeight: 500 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 18, gap: 24, fontSize: 18, fontWeight: 500 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ width: 20, height: 20, backgroundColor: performanceColors['No Cronograma'], marginRight: 8, borderRadius: 3 }}></div>
           <span>No Cronograma</span>

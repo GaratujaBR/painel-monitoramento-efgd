@@ -29,7 +29,6 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  border-bottom: 1px solid var(--color-light-gray);
   background-color: #4c6bbd;
   margin: 0;
   box-sizing: border-box;
@@ -204,7 +203,6 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  border-bottom: 1px solid var(--color-light-gray);
   background-color: #4c6bbd; /* Atualizando para corresponder à cor da sidebar */
   margin: 0;
   box-sizing: border-box; /* Garante que padding não afete largura */
@@ -482,7 +480,7 @@
   .sidebar-toggle {
     display: block;
     position: absolute;
-    right: 15px;
+    right: 25px;
     top: 15px;
     width: 20px;
     height: 20px;

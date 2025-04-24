@@ -16,34 +16,14 @@
   align-items: center;
 }
 
-/* @cleanup-phase4: Redundant toggle styles? Check if both .sidebar-toggle and .sidebar-toggle-btn are needed. */
-.sidebar-toggle {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-right: 20px;
-}
 
-.sidebar-toggle span {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background-color: #585C5D;
-  transition: all 0.3s ease;
-}
 
 /* @cleanup-phase4: Redundant toggle styles? Check if both .sidebar-toggle and .sidebar-toggle-btn are needed. */
 /* Botão de toggle da sidebar */
 .sidebar-toggle-btn {
   position: fixed;
   top: 24px;
-  left: 24px;
+  left: 12px;
   z-index: 2001;
   background-color: #20358f;
   color: white;
