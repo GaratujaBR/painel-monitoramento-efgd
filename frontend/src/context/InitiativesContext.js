@@ -195,6 +195,17 @@ export const InitiativesProvider = ({ children }) => {
       .toUpperCase();
   }
 
+  // Função utilitária para normalizar performance/status
+  function normalizePerformance(val) {
+    if (!val) return '';
+    let v = val.normalize('NFD').replace(/[^\w\s]/g, '').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '_').toUpperCase();
+    if (v === 'NO_CRONOGRAMA' || v === 'ON_SCHEDULE') return 'NO_CRONOGRAMA';
+    if (v === 'ATRASADA' || v === 'DELAYED') return 'ATRASADA';
+    if (v === 'EM_EXECUCAO' || v === 'IN_EXECUTION') return 'EM_EXECUCAO';
+    if (v === 'CONCLUIDA' || v === 'COMPLETED') return 'CONCLUIDA';
+    return v;
+  }
+
   // Função para filtrar iniciativas
   const getFilteredInitiatives = useCallback(() => {
     console.log('[InitiativesContext] Filtering initiatives with filters:', filters);
@@ -214,15 +225,10 @@ export const InitiativesProvider = ({ children }) => {
       const priorityValue = initiative.priorityExternal;
       const matchesPriority = !filters.priority || (priorityValue && priorityValue.trim().toUpperCase() === filters.priority.toUpperCase());
       
-      // Log detalhado da comparação de prioridade para as primeiras 5 iniciativas
-      if (index < 5) {
-        console.log(`[InitiativesContext] Initiative ${initiative.id || index}: Priority Data='${priorityValue}', Filter='${filters.priority}', Match=${matchesPriority}`);
-      }
-
-      // Usando igualdade estrita (===) para comparações mais seguras
-      const matchesPrinciple = !filters.principleId || initiative.principleId === filters.principleId;
-      const matchesObjective = !filters.objectiveId || initiative.objectiveId === filters.objectiveId;
-      const matchesArea = !filters.areaId || initiative.areaId === filters.areaId;
+      // Comparação de princípio, objetivo e área sempre como string
+      const matchesPrinciple = !filters.principleId || String(initiative.principleId) === String(filters.principleId);
+      const matchesObjective = !filters.objectiveId || String(initiative.objectiveId) === String(filters.objectiveId);
+      const matchesArea = !filters.areaId || String(initiative.areaId) === String(filters.areaId);
       
       // Normalização robusta para status/performance
       const normalizedFilterStatus = normalizeStatus(filters.status);
@@ -230,7 +236,7 @@ export const InitiativesProvider = ({ children }) => {
       const normalizedIniPerf = normalizeStatus(initiative.performance);
 
       // Log detalhado ANTES da comparação final, APENAS se houver filtro de status e o objectiveId bater
-      if (filters.status && (!filters.objectiveId || initiative.objectiveId === filters.objectiveId)) {
+      if (filters.status && (!filters.objectiveId || String(initiative.objectiveId) === String(filters.objectiveId))) {
         console.log(`[DEBUG] Filtering Initiative ID ${initiative.id || index} for Objective ${filters.objectiveId}:`);
         console.log(`  Filter Status (raw): '${filters.status}'`);
         console.log(`  Filter Status (norm): '${normalizedFilterStatus}'`);
@@ -299,7 +305,7 @@ export const InitiativesProvider = ({ children }) => {
     // Mapeia as chaves recebidas dos gráficos para as chaves internas do filtro
     const mappedFilters = {};
     if (newFilters.PRAZO !== undefined) mappedFilters.completionYear = newFilters.PRAZO;
-    if (newFilters.PERFORMANCE !== undefined) mappedFilters.status = newFilters.PERFORMANCE;
+    if (newFilters.PERFORMANCE !== undefined) mappedFilters.status = normalizePerformance(newFilters.PERFORMANCE);
     // Inclui outros filtros que possam ter sido passados (ex: principleId, objectiveId)
     Object.keys(newFilters).forEach(key => {
       if (key !== 'PRAZO' && key !== 'PERFORMANCE') {

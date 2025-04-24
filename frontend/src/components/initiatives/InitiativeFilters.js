@@ -33,11 +33,11 @@ const InitiativeFilters = () => {
 
   // Effect to read state from navigation (for chart clicks)
   useEffect(() => {
-    // Check if we have state from navigation (from chart clicks)
+    // Check if we have state from navigation (for chart clicks)
     if (location.state && location.state.filters) {
       console.log('[InitiativeFilters] Received filters from navigation state:', location.state.filters);
       
-      const { principleId, objectiveId, status, priority } = location.state.filters;
+      const { principleId, objectiveId, status, priority, performance, completionYear, areaId } = location.state.filters;
       const newFilters = {};
       
       // Apply priority filter if provided
@@ -57,22 +57,33 @@ const InitiativeFilters = () => {
         console.log('[InitiativeFilters] Setting objectiveId filter to:', objectiveId);
         newFilters.objectiveId = objectiveId;
       }
-      
-      // Apply status filter if provided - map from display value to internal value
-      if (status) {
-        let internalStatusValue = '';
-        if (status === 'No Cronograma' || status === 'NO_CRONOGRAMA') {
-          internalStatusValue = 'NO_CRONOGRAMA';
-        } else if (status === 'Atrasada' || status === 'ATRASADA') {
-          internalStatusValue = 'ATRASADA';
-        }
-        
-        if (internalStatusValue) {
-          console.log('[InitiativeFilters] Setting status filter to:', internalStatusValue);
-          newFilters.status = internalStatusValue;
-        }
+
+      // Apply areaId filter if provided
+      if (areaId) {
+        newFilters.areaId = areaId;
       }
-      
+
+      // Apply completionYear filter if provided
+      if (completionYear) {
+        newFilters.completionYear = completionYear;
+      }
+
+      // --- NOVO BLOCO: Normalizar performance/status vindos do gráfico ou navegação ---
+      let incomingPerf = performance || status;
+      if (incomingPerf) {
+        let normalizedPerf = incomingPerf
+          .normalize('NFD').replace(/[^\w\s]/g, '').replace(/[\u0300-\u036f]/g, '') // Remove acentos e caracteres especiais
+          .replace(/\s+/g, '_') // Espaço para underscore
+          .toUpperCase();
+        // Mapear variações conhecidas
+        if (normalizedPerf === 'NO_CRONOGRAMA' || normalizedPerf === 'ON_SCHEDULE') normalizedPerf = 'NO_CRONOGRAMA';
+        if (normalizedPerf === 'ATRASADA' || normalizedPerf === 'DELAYED') normalizedPerf = 'ATRASADA';
+        if (normalizedPerf === 'EM_EXECUCAO' || normalizedPerf === 'IN_EXECUTION') normalizedPerf = 'EM_EXECUCAO';
+        if (normalizedPerf === 'CONCLUIDA' || normalizedPerf === 'COMPLETED') normalizedPerf = 'CONCLUIDA';
+        newFilters.status = normalizedPerf;
+      }
+      // --- FIM NOVO BLOCO ---
+
       // Only update if we have new filters and they're different from current
       if (Object.keys(newFilters).length > 0) {
         // Check if any filter value is different from current
@@ -83,7 +94,6 @@ const InitiativeFilters = () => {
         if (needsUpdate) {
           console.log('[InitiativeFilters] Updating filters from navigation state');
           updateFilters(newFilters);
-          
           // Clear the location state to prevent reapplying filters on refresh
           window.history.replaceState({}, document.title);
         }
