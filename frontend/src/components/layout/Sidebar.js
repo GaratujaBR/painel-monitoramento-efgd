@@ -17,7 +17,7 @@ const Sidebar = ({ isOpen }) => {
         ) : (
           null // Ícone removido quando a barra lateral está contraída
         )}
-        <h3 className="sidebar-title">Monitoramento<br/>EFGD</h3>
+        <h3 className="sidebar-title">Monitoramento<br/>Interno<br/>EFGD</h3>
       </div>
       
       <nav className="sidebar-nav">

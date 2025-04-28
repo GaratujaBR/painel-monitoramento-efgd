@@ -22,7 +22,7 @@
 
 .dashboard-main {
   flex: 1;
-  padding: 20px;
+  padding: 15px 10px 10px 10px ;
   background-color: #FFFFFF;
   overflow-y: auto;
 }
@@ -50,7 +50,7 @@
   .dashboard-content.sidebar-open,
   .dashboard-content.sidebar-closed {
     margin-left: 0;
-    margin-bottom: 50px; /* Espaço para o sidebar colapsado na parte inferior */
+    margin-bottom: 30px; /* Espaço para o sidebar colapsado na parte inferior */
   }
   
   .dashboard-main {
@@ -64,6 +64,7 @@
   .sidebar-toggle-btn {
     display: none;
   }
+
 
   /* Optional: Adjust header padding if needed when button is removed */
   /* .dashboard-header .header-left {

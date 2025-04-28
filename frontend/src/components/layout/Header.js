@@ -26,14 +26,17 @@ const Header = ({ toggleSidebar }) => {
         <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
           ☰
         </button>
+      </div>
+      <div className="header-center">
         <div className="titulo-container">
           <h1 className="titulo-bloco">
-            <span className="linha-1">ESTRATÉGIA <span className="federal">FEDERAL</span> de</span>
-            <span className="linha-2">GOVERNO DIGITAL</span>
+            ESTRATÉGIA <span className="federal">FEDERAL</span> de <span className="gov-digital">GOVERNO DIGITAL</span>
           </h1>
         </div>
+        <div className="header-date mobile-header-date">
+          <span className="header-date-label"><b>Última atualização:</b></span> {formatDate()}
+        </div>
       </div>
-      
       <div className="header-right">
         <div className="header-date">
           <span className="header-date-label"><b>Última atualização:</b></span> {formatDate()}

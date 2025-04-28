@@ -19,6 +19,7 @@ import './InitiativeList.cards.css'; // Importar CSS de cards responsivos
 import { Tooltip } from 'react-tooltip'; // Importar Tooltip
 import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
 import LoadingIcon from '../../assets/icons/data.png'; // Importar o ícone de loading
+import todoListIcon from '../../images/to-do-list.png'; // Importar o ícone de lista de tarefas
 import { getApiUrl } from '../../utils/apiUrl';
 
 /**
@@ -399,6 +400,12 @@ const InitiativeList = () => {
 
   return (
     <div className="initiatives-container">
+      <div className="initiatives-intro">
+        <img src={todoListIcon} alt="Iniciativas" className="initiatives-img-icon" />
+        <div className="initiatives-header-text-content">
+          <h1 className="initiatives-header-title">Iniciativas</h1>
+        </div>
+      </div>
       <InitiativeFilters />
       <div className="table-container">
         <div className="refresh-button-container">

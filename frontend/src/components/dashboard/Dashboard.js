@@ -272,7 +272,7 @@ const Dashboard = () => {
       <div className="dashboard-intro">
         <img src={computerIcon} alt="Dashboard Icon" className="header-icon" />
         <div className="header-text-content">
-          <h1 className="header-title">Painel de Monitoramento</h1>
+          <h1 className="header-title">Painel Geral</h1>
         </div>
       </div>
 

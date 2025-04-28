@@ -36,7 +36,7 @@
 }
 
 .status-card.in-execution {
-  background-color: var(--color-blue);
+  background-color: var(--color-blue-dark);
 }
 
 .status-card.in-execution .status-card-title,
