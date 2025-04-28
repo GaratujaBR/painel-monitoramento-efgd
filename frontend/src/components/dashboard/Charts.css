@@ -341,9 +341,12 @@
 
 .recharts-wrapper,
 .recharts-responsive-container {
-  width: 700px;
-  height: 500px;
+  width: 100% !important;
+  max-width: 700px;
+  height: 400px;
+  min-height: 250px;
   overflow: visible !important;
+  margin: 0 auto;
 }
 
 /* Melhorar a legibilidade dos textos nos gráficos */
@@ -405,6 +408,12 @@
   .timeline-initiative-name {
     width: 120px;
     font-size: var(--font-size-footnote);
+  }
+
+  .recharts-wrapper,
+  .recharts-responsive-container {
+    height: 260px;
+    max-width: 100%;
   }
   
   .timeline-marker-date {
@@ -468,7 +477,15 @@
     width: 120px;
     height: 120px;
   }
-  
+
+  .recharts-wrapper,
+  .recharts-responsive-container {
+    height: 180px !important; /* ou remova height para usar só aspect */
+    min-height: unset;
+    max-width: 100%;
+  }
+
+
   .donut-total {
     font-size: calc(var(--font-size-data-label) * 1.2);
   }
@@ -532,4 +549,47 @@
     padding: 0.4rem 0.8rem;
     font-size: calc(var(--font-size-small) - 1px);
   }
+}
+
+/* Remove default focus outline from Recharts pie sectors */
+.recharts-pie-sector:focus,
+.recharts-pie-sector:focus-visible,
+.recharts-sector:focus,         /* General sector, just in case */
+.recharts-sector:focus-visible {
+  outline: none; /* Remove the browser's default focus outline */
+}
+
+/* If the above doesn't work, try targeting the path element directly (more specific) */
+/*
+.recharts-pie-sector path:focus,
+.recharts-pie-sector path:focus-visible {
+  outline: none;
+}
+*/
+
+/* Status Cards Container */
+.status-cards-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.info-frame {
+  flex: 2 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.status-card.total {
+  flex: 1 1 220px;
+  max-width: 300px;
+  min-width: 180px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

@@ -59,6 +59,18 @@
   }
 }
 
+/* Hide the sidebar toggle button on smaller screens */
+@media (max-width: 768px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+
+  /* Optional: Adjust header padding if needed when button is removed */
+  /* .dashboard-header .header-left {
+    padding-left: 15px; /* Example adjustment */
+  /* } */
+}
+
 /* Ajustes para telas muito pequenas */
 @media (max-width: 480px) {
   .dashboard-main {

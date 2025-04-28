@@ -34,10 +34,10 @@ const InitiativeFilters = () => {
   // Effect to read state from navigation (for chart clicks)
   useEffect(() => {
     // Check if we have state from navigation (for chart clicks)
-    if (location.state && location.state.filters) {
-      console.log('[InitiativeFilters] Received filters from navigation state:', location.state.filters);
+    if (location.state && location.state.initialFilters) {
+      console.log('[InitiativeFilters] Received filters from navigation state:', location.state.initialFilters);
       
-      const { principleId, objectiveId, status, priority, performance, completionYear, areaId } = location.state.filters;
+      const { principleId, objectiveId, status, priority, performance, completionYear, areaId } = location.state.initialFilters;
       const newFilters = {};
       
       // Apply priority filter if provided
@@ -98,6 +98,9 @@ const InitiativeFilters = () => {
           window.history.replaceState({}, document.title);
         }
       }
+    } else {
+      // Optional: Log if no navigation state filters were found
+      // console.log('[InitiativeFilters] No initialFilters found in navigation state.');
     }
   }, [location.state, updateFilters, filters]); // Add dependencies
 

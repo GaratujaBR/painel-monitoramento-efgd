@@ -278,17 +278,16 @@ const Dashboard = () => {
 
       <div className="dashboard-content">
         {/* Restore the top container for Total Initiatives and Info Frame */}
-        <div className="status-cards-container">
+        <div className="status-cards-container flex-container">
           {/* Info Frame (will expand) */}
-          <div className="info-frame">
+          <div className="info-frame flex-item">
             <span>Este painel de monitoramento interno permite que os gestores acompanhem de perto a execução das iniciativas da <b>Estratégia Federal de Governo Digital (EFGD)</b>. Visualize facilmente o andamento das ações sob sua responsabilidade, identifique rapidamente iniciativas em dia ou atrasadas e avalie o status geral de execução.
 
 Utilize estas informações para prever problemas, realocar recursos e tomar decisões ágeis e bem informadas, garantindo eficiência na implementação das políticas públicas.</span>
           </div>
-          
           {/* Total Initiatives Card (styled as square button) */}
           <div 
-            className="status-card total" 
+            className="status-card total flex-item" 
             onClick={() => navigate('/initiatives')} 
           >
             <h3 className="status-card-title">Total de Iniciativas</h3>

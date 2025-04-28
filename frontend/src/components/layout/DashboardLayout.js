@@ -4,36 +4,23 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import Footer from './Footer';
 import './DashboardLayout.css';
-import { useAuth } from '../../context/AuthContext';
 
 const DashboardLayout = () => {
-  const { currentUser } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Verifica a largura da tela ao montar o componente
   useEffect(() => {
     const checkScreenWidth = () => {
       const isMobile = window.innerWidth <= 768;
-      setSidebarOpen(!isMobile); // Fecha a sidebar em telas móveis
+      setSidebarOpen(!isMobile);
     };
-
-    // Verifica inicialmente
     checkScreenWidth();
-
-    // Adiciona listener para redimensionamento
     window.addEventListener('resize', checkScreenWidth);
-
-    // Cleanup
     return () => window.removeEventListener('resize', checkScreenWidth);
   }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
-  if (!currentUser) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="dashboard-layout">

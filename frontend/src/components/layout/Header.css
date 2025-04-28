@@ -108,6 +108,11 @@
   text-transform: capitalize;
 }
 
+.header-date-label {
+  font-weight: 500; /* ou 600 para um pouco mais forte */
+  margin-right: 4px;
+}
+
 .header-actions {
   display: flex;
   align-items: center;

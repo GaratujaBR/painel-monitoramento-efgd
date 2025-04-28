@@ -57,13 +57,13 @@ const PriorityPerformanceChart = () => {
   };
 
   const handleSliceClick = (data) => {
-    if (data && data.payload && data.payload.priorityValue) {
-      const priority = data.payload.priorityValue;
-      console.log(`Filtering by Priority: ${priority}`); // Debug log
-      // Use applyFiltersAndNavigate with the correct filter key 'priority'
-      applyFiltersAndNavigate({ priority: priority }); 
+    if (data && data.payload && data.payload.name) {
+      const statusValue = data.payload.name;
+      console.log(`Filtrando por Prioridade Externa: SIM e Status: ${statusValue}`);
+      // Corrigido: usar a chave 'priority' conforme definido no context
+      applyFiltersAndNavigate({ priority: 'SIM', status: statusValue }); 
     } else {
-      console.warn('PriorityPerformanceChart: Clicked slice data missing priorityValue', data);
+      console.warn('PriorityPerformanceChart: Clicked slice data missing name', data);
     }
   };
 
@@ -104,7 +104,7 @@ const PriorityPerformanceChart = () => {
         ref={chartWrapperRef}
         style={{ height: '420px' }}
       >
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" aspect={1}>
           <PieChart>
             <Pie
               data={performanceData}

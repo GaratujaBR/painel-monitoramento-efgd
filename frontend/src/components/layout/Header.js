@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { FaBell } from 'react-icons/fa';
-import NotificationBadge from '../notifications/NotificationBadge';
 import './Header.css';
 
 const Header = ({ toggleSidebar }) => {
@@ -38,20 +36,7 @@ const Header = ({ toggleSidebar }) => {
       
       <div className="header-right">
         <div className="header-date">
-          {formatDate()}
-        </div>
-        
-        <div className="header-actions">
-          <NotificationBadge />
-          
-          <div className="user-dropdown">
-            <button className="user-button">
-              <div className="user-avatar">
-                {currentUser?.name?.charAt(0) || 'U'}
-              </div>
-              <span className="user-name">{currentUser?.name}</span>
-            </button>
-          </div>
+          <span className="header-date-label"><b>Última atualização:</b></span> {formatDate()}
         </div>
       </div>
     </header>
