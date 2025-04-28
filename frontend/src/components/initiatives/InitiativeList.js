@@ -15,6 +15,7 @@ import { useInitiatives } from '../../context/InitiativesContext';
 import { FaSort, FaSortUp, FaSortDown, FaSync } from 'react-icons/fa';
 import InitiativeFilters from './InitiativeFilters';
 import './Initiatives.css';
+import './InitiativeList.cards.css'; // Importar CSS de cards responsivos
 import { Tooltip } from 'react-tooltip'; // Importar Tooltip
 import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
 import LoadingIcon from '../../assets/icons/data.png'; // Importar o ícone de loading
@@ -48,6 +49,18 @@ const InitiativeList = () => {
 
   // Estado para controle de atualização
   const [refreshing, setRefreshing] = useState(false);
+
+  // Estado para cards expandidos (mobile)
+  const [expandedIds, setExpandedIds] = useState([]);
+  const toggleExpand = (id) => {
+    setExpandedIds((prev) =>
+      prev.includes(id) ? prev.filter((eid) => eid !== id) : [...prev, id]
+    );
+  };
+
+  // Utilitário para truncar texto
+  const truncate = (text, len = 60) =>
+    text && text.length > len ? text.slice(0, len) + '...' : text;
 
   // Utilitário para obter a URL da API considerando ambiente
   // const getApiUrl = () =>
@@ -381,6 +394,9 @@ const InitiativeList = () => {
   );
   if (error) return <div className="error">Erro ao carregar iniciativas: {error}</div>;
 
+  // Responsividade: cards para mobile, tabela para desktop
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 900;
+
   return (
     <div className="initiatives-container">
       <InitiativeFilters />
@@ -395,53 +411,82 @@ const InitiativeList = () => {
             Atualizar
           </button>
         </div>
-        <table className="initiatives-table">
-          <thead>
-            <tr>
-              <th onClick={() => requestSort('name')} className="sortable-header">
-                Iniciativa {getSortIcon('name')}
-              </th>
-              {/* Coluna Princípio Removida */}
-              {/* Coluna Objetivo Removida */}
-              <th onClick={() => requestSort('areaId')} className="sortable-header">
-                Área {getSortIcon('areaId')}
-              </th>
-              <th onClick={() => requestSort('completionYear')} className="sortable-header">
-                Ano Prazo para Conclusão {getSortIcon('completionYear')}
-              </th>
-              <th onClick={() => requestSort('status')} className="sortable-header">
-                Status {getSortIcon('status')}
-              </th>
-              <th onClick={() => requestSort('performance')} className="sortable-header">
-                Performance {getSortIcon('performance')}
-              </th>
-              <th onClick={() => requestSort('observations')} className="sortable-header">
-                Observação {getSortIcon('observations')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedInitiatives.map(initiative => (
-              <tr key={initiative.id}>
-                <td className="text-left">{initiative.name}</td>
-                {/* Célula Princípio Removida */}
-                {/* Célula Objetivo Removida */}
-                <td className="text-left">{getAreaName(initiative.areaId)}</td>
-                <td className="text-center">{initiative.completionYear}</td>
-                <td className="text-center">
-                  <StatusBadge status={initiative.status} />
-                </td>
-                <td className="text-center">
-                  {/* Passar a initiative completa para o PerformanceBadge */}
-                  <PerformanceBadge performance={initiative.performance} initiative={initiative} />
-                </td>
-                <td className="text-left">
-                  {initiative.observations || '-'}
-                </td>
+        {isMobile ? (
+          <div className="initiative-cards-list">
+            {sortedInitiatives.map((item) => {
+              const expanded = expandedIds.includes(item.id);
+              return (
+                <div key={item.id} className={`initiative-card${expanded ? ' expanded' : ''}`}>
+                  <div className="initiative-title">
+                    <strong>Iniciativa:</strong>{' '}
+                    {expanded ? item.name : truncate(item.name, 60)}
+                  </div>
+                  <div className="initiative-observacao">
+                    <strong>Observação:</strong>{' '}
+                    {expanded ? (item.observations || '-') : truncate(item.observations || '-', 40)}
+                  </div>
+                  <div style={{marginTop: '0.5em'}}>
+                    <strong>Área:</strong> {getAreaName(item.areaId)}<br/>
+                    <strong>Ano:</strong> {item.completionYear || '-'}<br/>
+                    <strong>Status:</strong> <StatusBadge status={item.status} /><br/>
+                    <strong>Performance:</strong> <PerformanceBadge performance={item.performance} initiative={item} />
+                  </div>
+                  <button className="expand-btn" onClick={() => toggleExpand(item.id)}>
+                    {expanded ? 'Ver menos' : 'Ver mais'}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <table className="initiatives-table">
+            <thead>
+              <tr>
+                <th onClick={() => requestSort('name')} className="sortable-header">
+                  Iniciativa {getSortIcon('name')}
+                </th>
+                {/* Coluna Princípio Removida */}
+                {/* Coluna Objetivo Removida */}
+                <th onClick={() => requestSort('areaId')} className="sortable-header">
+                  Área {getSortIcon('areaId')}
+                </th>
+                <th onClick={() => requestSort('completionYear')} className="sortable-header">
+                  Ano Prazo para Conclusão {getSortIcon('completionYear')}
+                </th>
+                <th onClick={() => requestSort('status')} className="sortable-header">
+                  Status {getSortIcon('status')}
+                </th>
+                <th onClick={() => requestSort('performance')} className="sortable-header">
+                  Performance {getSortIcon('performance')}
+                </th>
+                <th onClick={() => requestSort('observations')} className="sortable-header">
+                  Observação {getSortIcon('observations')}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {sortedInitiatives.map(initiative => (
+                <tr key={initiative.id}>
+                  <td className="text-left">{initiative.name}</td>
+                  {/* Célula Princípio Removida */}
+                  {/* Célula Objetivo Removida */}
+                  <td className="text-left">{getAreaName(initiative.areaId)}</td>
+                  <td className="text-center">{initiative.completionYear}</td>
+                  <td className="text-center">
+                    <StatusBadge status={initiative.status} />
+                  </td>
+                  <td className="text-center">
+                    {/* Passar a initiative completa para o PerformanceBadge */}
+                    <PerformanceBadge performance={initiative.performance} initiative={initiative} />
+                  </td>
+                  <td className="text-left">
+                    {initiative.observations || '-'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       {/* Adicionar o componente Tooltip aqui */}
       <Tooltip id="performance-tooltip" place="top" effect="solid" />

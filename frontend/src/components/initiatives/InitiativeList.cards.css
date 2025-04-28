@@ -1,0 +1,52 @@
+/* Estilos para cards responsivos de iniciativas */
+@media (max-width: 900px) {
+  .initiatives-table {
+    display: none;
+  }
+  .initiative-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin: 1em 0;
+  }
+  .initiative-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px #0001;
+    padding: 1em;
+    transition: box-shadow 0.2s;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+  }
+  .initiative-title,
+  .initiative-observacao {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0.5em;
+  }
+  .initiative-card.expanded .initiative-title,
+  .initiative-card.expanded .initiative-observacao {
+    white-space: normal;
+    overflow: visible;
+  }
+  .expand-btn {
+    background: #183EFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4em 1em;
+    cursor: pointer;
+    margin-top: 0.5em;
+    font-size: 14px;
+  }
+  .expand-btn:hover {
+    background: #005cb9;
+  }
+}
+
+@media (min-width: 901px) {
+  .initiative-cards-list {
+    display: none;
+  }
+}
