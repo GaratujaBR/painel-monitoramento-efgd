@@ -20,6 +20,9 @@ import { Tooltip } from 'react-tooltip'; // Importar Tooltip
 import 'react-tooltip/dist/react-tooltip.css'; // Importar CSS da tooltip
 import LoadingIcon from '../../assets/icons/data.png'; // Importar o ícone de loading
 import todoListIcon from '../../images/to-do-list.png'; // Importar o ícone de lista de tarefas
+import desktopIcon from '../../images/desktop.png';
+import cursorOverIcon from '../../images/cursor_over.png';
+import mobileClickIcon from '../../images/mobile_click.png';
 import { getApiUrl } from '../../utils/apiUrl';
 
 /**
@@ -407,6 +410,22 @@ const InitiativeList = () => {
         </div>
       </div>
       <InitiativeFilters />
+      <div className="initiative-filters-row">
+        {/* ...filtros existentes... */}
+        <div className="performance-hint-desktop">
+          <img src={desktopIcon} alt="Desktop" className="performance-hint-icon" />
+          <img src={cursorOverIcon} alt="Cursor" className="performance-hint-icon" />
+          <span className="performance-hint-text">
+            Mova o cursor por cima das <span className="performance-hint-tag">tags</span> de <span className="performance-hint-performance">PERFORMANCE</span> para informações sobre as metas
+          </span>
+        </div>
+        <div className="performance-hint-mobile">
+          <img src={mobileClickIcon} alt="Clique" className="performance-hint-icon" />
+          <span className="performance-hint-text">
+            Clique nas <span className="performance-hint-tag">tags</span> de <span className="performance-hint-performance">PERFORMANCE</span> para informações sobre as metas
+          </span>
+        </div>
+      </div>
       <div className="table-container">
         <div className="refresh-button-container">
           <button 
