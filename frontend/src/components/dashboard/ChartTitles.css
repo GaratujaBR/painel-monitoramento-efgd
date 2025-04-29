@@ -8,3 +8,10 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-black, black) !important; /* Define a cor do texto como preta e força aplicação */
 }
+
+/* Responsividade: diminuir o tamanho do título em telas pequenas */
+@media (max-width: 500px) {
+  .dashboard-card h2.chart-title {
+    font-size: 1.2em !important; /* Ajuste conforme preferir */
+  }
+}

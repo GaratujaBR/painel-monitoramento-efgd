@@ -205,7 +205,8 @@
   /* Show mobile date on mobile */
   .mobile-header-date {
     display: block;
-    margin-top: 30px;
+    margin-top: 15px;
+    margin-bottom: 10px;
     font-size: 1rem;
     color: #555;
     text-align: center;
@@ -231,12 +232,13 @@
 
 @media (max-width: 600px) {
   .titulo-bloco {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     line-height: 1.1;
+    margin-top: 30px;
   }
   .titulo-bloco .federal,
   .titulo-bloco .gov-digital,
   .titulo-bloco .estrategia {
-    font-size: 1em;
+    font-size: 1.2em;
   }
 }

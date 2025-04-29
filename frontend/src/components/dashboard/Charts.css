@@ -593,3 +593,15 @@
   justify-content: center;
   align-items: center;
 }
+
+@media (max-width: 480px) {
+  .status-card.total, .status-card.total-flex-item, .dashboard-total-initiatives-btn {
+    width: 70% !important;
+    max-width: 300px !important;
+    max-height: 150px !important;
+    min-width: unset !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    height: auto !important;        
+  }
+}

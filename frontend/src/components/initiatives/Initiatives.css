@@ -701,3 +701,12 @@
   text-transform: uppercase;
   white-space: nowrap;
 }
+
+@media (max-width: 450px) {
+  .initiatives-intro {
+    padding: 0.7em 0.4em;
+  }
+  .initiatives-intro .initiatives-header-text-content .initiatives-header-title {
+    font-size: 1.2em !important;
+  }
+}
