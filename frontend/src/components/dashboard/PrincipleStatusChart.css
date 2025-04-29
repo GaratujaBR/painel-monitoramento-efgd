@@ -5,7 +5,6 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding-top: 40px; 
 }
 
 .custom-chart-tooltip {
@@ -51,7 +50,7 @@
   gap: 15px;
   font-size: 18px;
   font-weight: 500;
-  padding-bottom: 20px;
+  padding-bottom: 0;
 }
 
 .legend-item {

@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { getApiUrl } from '../../utils/apiUrl';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useInitiatives } from '../../context/InitiativesContext'; // Import useInitiatives
+import './PriorityPerformanceChart.css';
 
 const PriorityPerformanceChart = () => {
   const [performanceData, setPerformanceData] = useState(null);
@@ -47,7 +48,7 @@ const PriorityPerformanceChart = () => {
   }, []);
 
   const innerRadius = 60;
-  const outerRadius = 120;
+  const outerRadius = 90;
 
   const COLORS = {
     'No Cronograma': 'var(--color-blue)',
@@ -102,9 +103,8 @@ const PriorityPerformanceChart = () => {
       <div
         className="chart-wrapper"
         ref={chartWrapperRef}
-        style={{ height: '420px' }}
       >
-        <ResponsiveContainer width="100%" aspect={1}>
+        <ResponsiveContainer width="100%" height={700} minWidth={400}>
           <PieChart>
             <Pie
               data={performanceData}
@@ -116,8 +116,8 @@ const PriorityPerformanceChart = () => {
               dataKey="value"
               nameKey="name"
               label={({ name, value }) => `${Math.round((value / total) * 100)}%`}
-              onClick={handleSliceClick} // Keep the onClick handler
-              style={{ cursor: 'pointer' }} // Keep the pointer cursor
+              onClick={handleSliceClick}
+              style={{ cursor: 'pointer' }}
             >
               {performanceData.map((entry, index) => (
                 <Cell

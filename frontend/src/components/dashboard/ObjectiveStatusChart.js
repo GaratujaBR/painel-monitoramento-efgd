@@ -145,7 +145,7 @@ const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
         minWidth: '0',
         width: '100%'
       }}>
-      <ResponsiveContainer width="100%" height={500}>
+      <ResponsiveContainer width="100%" height={500} minWidth={400}>
         <BarChart
           data={chartData}
           margin={{
@@ -201,38 +201,18 @@ const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
             cursor="pointer"
           />
         </BarChart>
-        
-        {/* Legenda externa personalizada */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          marginTop: '10px', // Diminuir espaço entre gráfico e legenda
-          gap: '15px',
-          fontSize: baseFontSize + 1,
-          fontWeight: '500'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ 
-              width: '20px', 
-              height: '20px', 
-              backgroundColor: performanceColors['No Cronograma'],
-              marginRight: '10px',
-              borderRadius: '3px'
-            }}></div>
-            <span>No Cronograma</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ 
-              width: '20px', 
-              height: '20px', 
-              backgroundColor: performanceColors['Atrasada'],
-              marginRight: '10px',
-              borderRadius: '3px'
-            }}></div>
-            <span>Atrasada</span>
-          </div>
-        </div>
       </ResponsiveContainer>
+      {/* Legenda personalizada fora do ResponsiveContainer */}
+      <div className="custom-chart-legend">
+        <div className="legend-item">
+          <div className="legend-color-box" style={{ backgroundColor: performanceColors['No Cronograma'] }}></div>
+          <span>No Cronograma</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-color-box" style={{ backgroundColor: performanceColors['Atrasada'] }}></div>
+          <span>Atrasada</span>
+        </div>
+      </div>
     </div>
   );
 };

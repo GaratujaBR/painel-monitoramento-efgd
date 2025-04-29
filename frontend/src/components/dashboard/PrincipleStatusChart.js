@@ -256,7 +256,6 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      
       {/* Legenda externa personalizada */}
       <div className="custom-chart-legend">
         <div className="legend-item">
