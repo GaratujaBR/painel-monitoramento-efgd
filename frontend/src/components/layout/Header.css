@@ -205,10 +205,10 @@
   /* Show mobile date on mobile */
   .mobile-header-date {
     display: block;
-    margin-top: 6px;
+    margin-top: 30px;
     font-size: 1rem;
     color: #555;
-    text-align: left;
+    text-align: center;
   }
   .header-right {
     display: none;
@@ -225,6 +225,7 @@
   .titulo-bloco {
     font-size: 2.1rem;
     line-height: 1.1;
+    margin-top: 30px;
   }
 }
 

@@ -5,7 +5,7 @@
   left: 0;
   height: 100vh;
   width: 220px;
-  background-color: #4c6bbd;
+  background-color: #235f87;
   border-right: 1px solid var(--color-light-gray);
   font-family: Verdana, sans-serif;
   display: flex;
@@ -29,7 +29,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #4c6bbd;
+  background-color: #235f87;
   margin: 0;
   box-sizing: border-box;
 }
@@ -222,7 +222,7 @@
   left: 0;
   height: 100vh;
   width: var(--sidebar-width);
-  background-color: #4c6bbd; /* Mudando para azul mais escuro para forçar atualização */
+  background-color: #235f87; /* Mudando para azul mais escuro para forçar atualização */
   border-right: 1px solid var(--color-light-gray);
   font-family: Verdana, sans-serif;
   display: flex;

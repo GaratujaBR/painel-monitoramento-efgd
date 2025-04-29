@@ -416,7 +416,7 @@ const InitiativeList = () => {
           <img src={desktopIcon} alt="Desktop" className="performance-hint-icon" />
           <img src={cursorOverIcon} alt="Cursor" className="performance-hint-icon" />
           <span className="performance-hint-text">
-            Mova o cursor por cima das <span className="performance-hint-tag">tags</span> de <span className="performance-hint-performance">PERFORMANCE</span> para informações sobre as metas
+            Posicione o cursor acima das <span className="performance-hint-tag">tags</span> de <span className="performance-hint-performance">PERFORMANCE</span> para informações sobre as metas
           </span>
         </div>
         <div className="performance-hint-mobile">
