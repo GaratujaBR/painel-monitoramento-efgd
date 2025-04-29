@@ -149,9 +149,9 @@ const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
         <BarChart
           data={chartData}
           margin={{
-            top: 60, // Diminuir margem superior
-            right: 60,
-            left: 60,
+            top: 30, // Diminuir margem superior
+            right: 30,
+            left: 30,
             bottom: 20 // Diminuir margem inferior
           }}
         >

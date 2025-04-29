@@ -641,6 +641,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 8px;
+  padding-left: 0 !important;  /* ou um valor bem pequeno */
 }
 
 /* Container para as informações numéricas */
@@ -3386,6 +3387,7 @@ body {
   .dashboard-card {
     padding: 8px;
     margin: 8px 0;
+    min-height: 380px;
   }
 
   .dashboard-card-title,

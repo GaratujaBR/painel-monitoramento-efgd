@@ -12,5 +12,6 @@
 @media (max-width: 500px) {
   .dashboard-card h2.chart-title {
     font-size: 1em !important; /* Ajuste conforme preferir */
+    margin-bottom: 2.4em !important;
   }
 }
