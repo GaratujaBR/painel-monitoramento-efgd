@@ -282,6 +282,11 @@ const InitiativeList = () => {
         break;
     }
 
+    // Adiciona log de clique para debug
+    const handleClick = (e) => {
+      console.log('PerformanceBadge clicado!', e);
+    };
+
     return (
       <span 
         className={className}
@@ -289,6 +294,7 @@ const InitiativeList = () => {
         aria-label={`Performance: ${displayText}`}
         data-tooltip-id="performance-tooltip"
         data-tooltip-html={tooltipContent}
+        onClick={handleClick}
       >
         {displayText}
       </span>
@@ -515,7 +521,7 @@ const InitiativeList = () => {
         )}
       </div>
       {/* Adicionar o componente Tooltip aqui */}
-      <Tooltip id="performance-tooltip" place="top" effect="solid" />
+      <Tooltip id="performance-tooltip" place="top" effect="solid" event="click" openOnClick={true} />
     </div>
   );
 };
