@@ -256,7 +256,7 @@
 .sidebar-logo {
   width: 180px; 
   height: auto;
-  margin: 0 auto 0; /* Centraliza horizontalmente */
+  margin: 0 auto -25px auto; /* Centraliza horizontalmente */
   object-fit: contain;
   display: block;
 }
@@ -264,7 +264,7 @@
 .sidebar-title {
   color: #ffcf00;
   font-family: Verdana, sans-serif;
-  font-size: 1.3rem;  /* Aumentando o tamanho da fonte */
+  font-size: 1.1rem;  /* Aumentando o tamanho da fonte */
   font-weight: 600;
   margin: 0 10px 0 0;
   line-height: 1.2;
