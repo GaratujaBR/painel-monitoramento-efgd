@@ -25,11 +25,29 @@ import cursorOverIcon from '../../images/cursor_over.png';
 import mobileClickIcon from '../../images/mobile_click.png';
 import { getApiUrl } from '../../utils/apiUrl';
 
+// Hook para detectar se é mobile/tela pequena
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < breakpoint);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 /**
  * Componente de listagem de iniciativas
  * Implementa a visualização padronizada das iniciativas seguindo diretrizes EFGD
  */
 const InitiativeList = () => {
+  // Detecta se é mobile (hook deve ser chamado antes de qualquer return!)
+  const isMobile = useIsMobile();
+
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const {
@@ -405,7 +423,6 @@ const InitiativeList = () => {
   if (error) return <div className="error">Erro ao carregar iniciativas: {error}</div>;
 
   // Responsividade: cards para mobile, tabela para desktop
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 900;
 
   return (
     <div className="initiatives-container">
@@ -521,7 +538,7 @@ const InitiativeList = () => {
         )}
       </div>
       {/* Adicionar o componente Tooltip aqui */}
-      <Tooltip id="performance-tooltip" place="top" effect="solid" event="click" openOnClick={true} />
+      <Tooltip id="performance-tooltip" place="top" effect="solid" trigger={isMobile ? 'click' : 'hover'} />
     </div>
   );
 };
