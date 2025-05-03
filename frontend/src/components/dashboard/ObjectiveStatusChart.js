@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import './ObjectiveStatusChart.css';
@@ -95,43 +95,52 @@ const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
   };
 
   // Componente para o tooltip customizado
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const noCronograma = payload.find(p => p.dataKey === 'No Cronograma')?.value || 0;
-      const atrasada = payload.find(p => p.dataKey === 'Atrasada')?.value || 0;
-      const total = noCronograma + atrasada;
+  const CustomTooltip = memo(({ active, payload, label, objectivesMap }) => { 
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
-      const noCronogramaPct = total > 0 ? Math.round((noCronograma / total) * 100) : 0;
-      const atrasadaPct = total > 0 ? Math.round((atrasada / total) * 100) : 0;
+    useEffect(() => {
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth <= 768);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-      // Exibe apenas o texto completo do objetivo (fullName) vindo do payload
-      const fullName = payload[0]?.payload?.fullName;
-      // DEBUG: Log the fullName being used in the tooltip
-      // console.log('Tooltip - FullName:', fullName);
+    const style = isSmallScreen ? { maxWidth: '40vw' } : {};
 
-      return (
-        <div className="custom-chart-tooltip">
-          <div className="tooltip-title">
-            {/* Display ONLY the full name. No fallbacks here. */}
-            <span>{fullName}</span> 
-          </div>
-          <div className="tooltip-item">
-            <span style={{ color: performanceColors['No Cronograma'] }}>No Cronograma:</span>
-            <span className="tooltip-value">{noCronograma} ({noCronogramaPct}%)</span>
-          </div>
-          <div className="tooltip-item">
-            <span style={{ color: performanceColors['Atrasada'] }}>Atrasada:</span>
-            <span className="tooltip-value">{atrasada} ({atrasadaPct}%)</span>
-          </div>
-          <div className="tooltip-total">
-            <span>Total:</span>
-            <span>{total} iniciativas</span>
-          </div>
-        </div>
-      );
+    if (!active || !payload || !payload.length) {
+      return null;
     }
-    return null;
-  };
+
+    const objectiveId = label;
+    const objectiveFullName = objectivesMap[objectiveId] || `Objetivo ${objectiveId}`;
+    const noCronograma = payload.find(p => p.dataKey === 'No Cronograma')?.value || 0;
+    const atrasada = payload.find(p => p.dataKey === 'Atrasada')?.value || 0;
+    const total = noCronograma + atrasada;
+    const noCronogramaPct = total > 0 ? ((noCronograma / total) * 100).toFixed(1) : 0;
+    const atrasadaPct = total > 0 ? ((atrasada / total) * 100).toFixed(1) : 0;
+
+    return (
+      <div 
+        className="custom-chart-tooltip" 
+        style={style} 
+      >
+        <div className="tooltip-title">{objectiveFullName}</div>
+        <div className="tooltip-item">
+          <span style={{ color: performanceColors['No Cronograma'] }}>No Cronograma:</span>
+          <span className="tooltip-value">{noCronograma} ({noCronogramaPct}%)</span>
+        </div>
+        <div className="tooltip-item">
+          <span style={{ color: performanceColors['Atrasada'] }}>Atrasada:</span>
+          <span className="tooltip-value">{atrasada} ({atrasadaPct}%)</span>
+        </div>
+        <div className="tooltip-total">
+          <span>Total:</span>
+          <span>{total} iniciativas</span>
+        </div>
+      </div>
+    );
+  });
 
   const chartData = processData();
 
@@ -173,14 +182,8 @@ const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
             }}
           />
           <Tooltip 
-            content={<CustomTooltip />} 
+            content={<CustomTooltip objectivesMap={objectiveNameMap} />} 
             cursor={{ fill: 'rgba(0, 0, 0, 0.1)' }}
-            wrapperStyle={{ 
-              maxWidth: 350,
-              whiteSpace: 'normal',
-              zIndex: 10000,
-              pointerEvents: 'auto'
-            }}
           /> 
           <Bar 
             barSize={20} 

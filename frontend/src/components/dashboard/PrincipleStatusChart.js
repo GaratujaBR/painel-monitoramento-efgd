@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
   BarChart,
   Bar,
@@ -123,34 +123,47 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
   };
 
   // Componente para o tooltip customizado
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = memo(({ active, payload, label }) => {
+    // Adiciona detecção de tela pequena
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth <= 768);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Define o estilo condicional APENAS para maxWidth
+    const style = isSmallScreen ? { maxWidth: '40vw' } : {};
+
     if (active && payload && payload.length) {
-      // Encontra os valores para cada status no payload
+      // Acessa o nome completo diretamente do payload
+      const fullName = payload[0]?.payload?.fullName || `Princípio ${label}`;
       const noCronograma = payload.find(p => p.dataKey === 'No Cronograma')?.value || 0;
       const atrasada = payload.find(p => p.dataKey === 'Atrasada')?.value || 0;
       const total = noCronograma + atrasada;
-      
-      // Calcula as porcentagens
+
       const noCronogramaPct = total > 0 ? Math.round((noCronograma / total) * 100) : 0;
       const atrasadaPct = total > 0 ? Math.round((atrasada / total) * 100) : 0;
-      
-      // Obtém o nome completo do princípio
-      const fullPrincipleName = payload[0]?.payload?.fullName || label;
 
       return (
-        <div className="custom-chart-tooltip">
-          <p className="tooltip-title">{fullPrincipleName}</p>
-          
+        <div 
+          className="custom-chart-tooltip" // Usa a classe CSS existente
+          style={style} // Aplica o maxWidth condicional
+        >
+          <div className="tooltip-title">
+            <span>{fullName}</span> 
+          </div>
           <div className="tooltip-item">
             <span style={{ color: performanceColors['No Cronograma'] }}>No Cronograma:</span>
             <span className="tooltip-value">{noCronograma} ({noCronogramaPct}%)</span>
           </div>
-          
           <div className="tooltip-item">
             <span style={{ color: performanceColors['Atrasada'] }}>Atrasada:</span>
             <span className="tooltip-value">{atrasada} ({atrasadaPct}%)</span>
           </div>
-          
           <div className="tooltip-total">
             <span>Total:</span>
             <span>{total} iniciativas</span>
@@ -159,7 +172,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
       );
     }
     return null;
-  };
+  });
 
   const chartData = processData();
   

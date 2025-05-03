@@ -71,7 +71,7 @@
 
 .titulo-bloco .estrategia {
   color: #333;
-  font-weight: 900; /* semi negrito */
+  font-weight: 800; /* semi negrito */
 }
 
 .titulo-bloco .gov-digital {
@@ -82,15 +82,6 @@
   background-repeat: no-repeat;
   display: inline-block;
   padding: 0 2px;
-}
-
-/* @cleanup-phase4: Redundant title style? Check if .header-title is still used alongside the .titulo-container styles. */
-.header-title {
-  font-size: 26px;
-  color: #585C5D;
-  margin: 0;
-  font-weight: normal;
-  font-family: 'Rawline', sans-serif;
 }
 
 .header-right {

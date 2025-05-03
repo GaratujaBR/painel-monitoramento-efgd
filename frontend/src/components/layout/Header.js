@@ -30,7 +30,7 @@ const Header = ({ toggleSidebar }) => {
       <div className="header-center">
         <div className="titulo-container">
           <h1 className="titulo-bloco">
-            ESTRATÉGIA <span className="federal">FEDERAL</span> de <span className="gov-digital">GOVERNO DIGITAL</span>
+            <span className="estrategia">ESTRATÉGIA</span> <span className="federal">FEDERAL</span> de <span className="gov-digital">GOVERNO DIGITAL</span>
           </h1>
         </div>
         <div className="header-date mobile-header-date">
