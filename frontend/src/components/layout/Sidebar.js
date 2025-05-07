@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import monitorImage from '../../images/monitor-novo.png';
+import monitorImage from '../../assets/images/monitor-novo.png';
 import { FaChartBar, FaClipboardList, FaDesktop } from 'react-icons/fa';
 import './Sidebar.css';
 
