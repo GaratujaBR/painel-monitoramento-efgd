@@ -159,8 +159,8 @@ const ObjectiveStatusChart = ({ initiatives = [], objectives = [] }) => {
           data={chartData}
           margin={{
             top: 30, // Diminuir margem superior
-            right: 30,
-            left: 30,
+            right: 10,
+            left: 10,
             bottom: 20 // Diminuir margem inferior
           }}
         >
