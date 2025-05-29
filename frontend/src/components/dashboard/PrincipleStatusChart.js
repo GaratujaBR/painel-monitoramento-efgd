@@ -197,7 +197,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
             top: 20,
             right: 50, // Aumentar margem direita para valores/labels das barras
             left: 50, // Aumentar margem esquerda para nomes longos dos princípios
-            bottom: 20
+            bottom: 0
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />

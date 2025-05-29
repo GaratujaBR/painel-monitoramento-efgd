@@ -264,12 +264,12 @@ const InitiativeList = () => {
   const PerformanceBadge = ({ performance, initiative }) => {
     if (!performance) return <span className="performance-badge">-</span>;
     
-    // Usando os nomes exatos dos campos que vêm do backend
-    const metaValue = initiative?.meta2024 || 'N/D';
-    const executadoValue = initiative?.executado2024 || 'N/D';
+    // Usando os novos campos de 2025 Q1 com fallback para os antigos
+    const metaValue = initiative?.meta2025Q1 || initiative?.meta2024 || 'N/D';
+    const executadoValue = initiative?.executado2025Q1 || initiative?.executado2024 || 'N/D';
 
     // Construir o tooltip com todas as informações
-    let tooltipContent = `Meta 2024: ${metaValue}<br />Executado 2024: ${executadoValue}`;
+    let tooltipContent = `META 1° QUAD 2025: ${metaValue}<br />Executado 1° QUAD 2025: ${executadoValue}`;
     if (initiative?.performanceObs) {
       tooltipContent += `<br /><br />Observação: ${initiative.performanceObs}`;
     }
@@ -433,6 +433,15 @@ const InitiativeList = () => {
         </div>
       </div>
       <InitiativeFilters />
+
+      {/* Displaying the count of initiatives */}
+      <div className="initiative-count-container" style={{ textAlign: 'right', margin: '10px 0', paddingRight: '20px' }}>
+        <p style={{ fontSize: '0.9em', color: '#555', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <img src={todoListIcon} alt="Ícone de lista" style={{ width: '18px', height: '18px', marginRight: '6px', opacity: 0.7 }} />
+          Exibindo: <strong style={{ marginLeft: '4px', marginRight: '4px' }}>{sortedInitiatives.length}</strong> iniciativa(s)
+        </p>
+      </div>
+
       <div className="initiative-filters-row">
         {/* ...filtros existentes... */}
         <div className="performance-hint-desktop">

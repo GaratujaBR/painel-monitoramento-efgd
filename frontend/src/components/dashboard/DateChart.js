@@ -119,6 +119,7 @@ const DateChart = ({ initiatives = [] }) => {
     <div className="chart-container" style={{
       width: '100%',
       minHeight: 400,
+      minWidth: 600,
       background: 'white',
       padding: 24,
     }}>
@@ -137,11 +138,11 @@ const DateChart = ({ initiatives = [] }) => {
       </ResponsiveContainer>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 18, gap: 24, fontSize: 18, fontWeight: 500 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: 20, height: 20, backgroundColor: performanceColors['No Cronograma'], marginRight: 8, borderRadius: 3 }}></div>
+          <div style={{ width: 15, height: 15, backgroundColor: performanceColors['No Cronograma'], marginRight: 8, borderRadius: 3 }}></div>
           <span>No Cronograma</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: 20, height: 20, backgroundColor: performanceColors['Atrasada'], marginRight: 8, borderRadius: 3 }}></div>
+          <div style={{ width: 15, height: 15, backgroundColor: performanceColors['Atrasada'], marginRight: 8, borderRadius: 3 }}></div>
           <span>Atrasada</span>
         </div>
       </div>

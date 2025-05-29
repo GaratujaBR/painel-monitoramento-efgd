@@ -14,77 +14,8 @@ import PrincipleStatusChart from './PrincipleStatusChart';
 import ObjectiveStatusChart from './ObjectiveStatusChart';
 import DateChart from './DateChart'; // IMPORTAÇÃO ATUALIZADA DO NOVO GRÁFICO
 import PriorityPerformanceChart from './PriorityPerformanceChart';
-
-
-// Componente para o gráfico de donut de Performance
-const PerformanceDonutChart = ({ onSchedule, delayed }) => {
-  const total = onSchedule + delayed;
-  const onSchedulePercentage = total > 0 ? Math.round((onSchedule / total) * 100) : 0;
-  const delayedPercentage = total > 0 ? Math.round((delayed / total) * 100) : 0;
-  
-  return (
-    <div className="donut-chart">
-      <svg viewBox="0 0 36 36" className="circular-chart">
-        <path 
-          className="circle-bg"
-          d="M18 5
-          a 13 13 0 0 1 0 26
-          a 13 13 0 0 1 0 -26"
-        />
-        <path 
-          className="circle performance-ontime"
-          strokeDasharray={`${onSchedulePercentage}, 100`}
-          d="M18 5
-          a 13 13 0 0 1 0 26
-          a 13 13 0 0 1 0 -26"
-        />
-        <path 
-          className="circle performance-delayed"
-          strokeDasharray={`${delayedPercentage}, 100`}
-          strokeDashoffset={`-${onSchedulePercentage}`}
-          d="M18 5
-          a 13 13 0 0 1 0 26
-          a 13 13 0 0 1 0 -26"
-        />
-      </svg>
-    </div>
-  );
-};
-
-// Componente para o gráfico de donut de Execução
-const ExecutionDonutChart = ({ completed, inExecution }) => {
-  const total = completed + inExecution;
-  const completedPercentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-  const inExecutionPercentage = total > 0 ? Math.round((inExecution / total) * 100) : 0;
-  
-  return (
-    <div className="donut-chart">
-      <svg viewBox="0 0 36 36" className="circular-chart">
-        <path 
-          className="circle-bg"
-          d="M18 5
-          a 13 13 0 0 1 0 26
-          a 13 13 0 0 1 0 -26"
-        />
-        <path 
-          className="circle execution-completed"
-          strokeDasharray={`${completedPercentage}, 100`}
-          d="M18 5
-          a 13 13 0 0 1 0 26
-          a 13 13 0 0 1 0 -26"
-        />
-        <path 
-          className="circle execution-inprogress"
-          strokeDasharray={`${inExecutionPercentage}, 100`}
-          strokeDashoffset={`-${completedPercentage}`}
-          d="M18 5
-          a 13 13 0 0 1 0 26
-          a 13 13 0 0 1 0 -26"
-        />
-      </svg>
-    </div>
-  );
-};
+import ExecutionStatusChart from './ExecutionStatusChart'; // Added import
+import PerformanceStatusChart from './PerformanceStatusChart'; // Importa o novo gráfico de performance
 
 const Dashboard = () => {
   const { 
@@ -193,6 +124,8 @@ const Dashboard = () => {
   const safeObjectives = Array.isArray(objectives) ? objectives : [];
   const safeInitiatives = Array.isArray(initiatives) ? initiatives : [];
 
+
+
   if (loading || initiativesLoading) {
     return (
       <div className="dashboard-loading">
@@ -206,17 +139,19 @@ const Dashboard = () => {
     return <div className="dashboard-error">Erro: {error}</div>;
   }
   
-  // Use metrics from dashboard data if available, otherwise calculate them
-  const metrics = dashboardData?.metrics || {};
-  const totalInitiatives = metrics.totalInitiatives || safeInitiatives.length;
-  const statusCounts = metrics.statusCounts || safeInitiatives.reduce((counts, initiative) => {
+  // Use metrics from dashboard data if available for some items, but always calculate counts from safeInitiatives
+  const metrics = dashboardData?.metrics || {}; 
+  const totalInitiatives = metrics.totalInitiatives !== undefined ? metrics.totalInitiatives : safeInitiatives.length;
+  
+  // Always calculate statusCounts from safeInitiatives
+  const statusCounts = safeInitiatives.reduce((counts, initiative) => {
     const status = initiative.status || 'NAO_INICIADA';
     counts[status] = (counts[status] || 0) + 1;
     return counts;
   }, {});
   
-  // Get performance counts from metrics or calculate them
-  const performanceCounts = metrics.performanceCounts || safeInitiatives.reduce((counts, initiative) => {
+  // Always calculate performanceCounts from safeInitiatives
+  const performanceCounts = safeInitiatives.reduce((counts, initiative) => {
     // Simple performance normalization for client-side fallback
     let performance = 'DESCONHECIDO';
     if (initiative.performance) {
@@ -231,21 +166,23 @@ const Dashboard = () => {
     return counts;
   }, {});
 
-  // Status counts for Status de Execução chart
+
+  // Status counts for Status de Execução chart cards
   const completedInitiatives = statusCounts['CONCLUIDA'] || 0;
-  const inProgressInitiatives = totalInitiatives - completedInitiatives;
-  const inExecutionInitiatives = inProgressInitiatives;
+  const inProgressInitiatives = totalInitiatives - completedInitiatives; // This is used for the card
+  const inExecutionInitiatives = inProgressInitiatives; // Consistent name for the card
   
-  // Performance counts for Performance EFGD chart
+  // Performance counts for Performance EFGD chart (donut) and cards
   const onScheduleInitiatives = performanceCounts['NO_CRONOGRAMA'] || 0;
   const delayedInitiatives = performanceCounts['ATRASADA'] || 0;
+
   
-  // Calculate percentages
-  const completedPercentage = Math.round((completedInitiatives / totalInitiatives) * 100) || 0;
+  // Calculate percentages for cards
+  const completedPercentage = totalInitiatives > 0 ? Math.round((completedInitiatives / totalInitiatives) * 100) : 0;
   // eslint-disable-next-line no-unused-vars
   const inProgressPercentage = 100 - completedPercentage;
   
-  // Get initiatives by year
+  // Get initiatives by year - can still use metrics if available
   // eslint-disable-next-line no-unused-vars
   const initiativesByYear = metrics.initiativesByYear || safeInitiatives.reduce((byYear, initiative) => {
     const year = initiative.completionYear || 'Não definido';
@@ -303,21 +240,9 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
             <div className="card-content">
               <div className="chart-section">
                 <div className="chart-container">
-                  <PerformanceDonutChart 
-                    onSchedule={onScheduleInitiatives} 
-                    delayed={delayedInitiatives} 
-                  />
+                  <PerformanceStatusChart onSchedule={onScheduleInitiatives} delayed={delayedInitiatives} />
                 </div>
-                <div className="chart-legend">
-                  <div className="legend-item">
-                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-blue)' }}></span>
-                    No Cronograma
-                  </div>
-                  <div className="legend-item">
-                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-red)' }}></span>
-                    Em Atraso
-                  </div>
-                </div>
+
               </div>
               {/* Container for the two performance status cards */}
               <div className="performance-status-cards">
@@ -364,23 +289,11 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
                    <span className="status-card-value">{inExecutionInitiatives}</span>
                  </div>
               </div>
-              <div className="chart-section">
-                <div className="chart-container">
-                  <ExecutionDonutChart 
-                    completed={completedInitiatives} 
-                    inExecution={inExecutionInitiatives} 
-                  />
+              <div className="chart-section"> {/* Kept for layout consistency */}
+                <div className="chart-container"> {/* Kept for layout consistency */}
+                  <ExecutionStatusChart initiatives={safeInitiatives} />
                 </div>
-                <div className="chart-legend">
-                  <div className="legend-item">
-                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-green)' }}></span>
-                    Concluídas
-                  </div>
-                  <div className="legend-item">
-                    <span className="legend-color-box" style={{ backgroundColor: 'var(--color-blue-dark)' }}></span>
-                    Em Execução
-                  </div>
-                </div>
+                {/* Legend is now handled by ExecutionStatusChart itself, manual legend removed */}
               </div>
             </div>
           </div>

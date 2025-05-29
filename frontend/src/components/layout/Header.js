@@ -1,11 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 const Header = ({ toggleSidebar }) => {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
   
   // Format current date according to Brazilian format
   const formatDate = () => {

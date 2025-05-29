@@ -183,8 +183,10 @@ class GoogleSheetsService {
         responsiblePerson: '',
         lastUpdate: '',
         observations: '',
-        meta2024: '',
-        executado2024: '',
+        meta2025Q1: '',
+        meta2024: '', // Keep for backward compatibility
+        executado2025Q1: '',
+        executado2024: '', // Keep for backward compatibility
         priorityExternal: ''
       };
       
@@ -222,6 +224,11 @@ class GoogleSheetsService {
         if (!header) return;
         const headerLower = header.toString().toLowerCase().trim();
         const value = row[index];
+        
+        // Log all headers for debugging
+        if (row === values[1]) { // Log only once for the first data row
+          console.log('All headers from sheet:', headers.map(h => h ? h.toString() : 'null').join(' | '));
+        }
         
         if (!value) return;
         
@@ -272,12 +279,46 @@ class GoogleSheetsService {
               initiative.observations = value;
               break;
               
-            case header === 'META 2024':
-              initiative.meta2024 = value;
+            // Explicitly check for META 1° QUAD 2025 with various patterns
+            case header === 'META 1° QUAD 2025' || 
+                 header === 'META 1º QUAD 2025' || 
+                 (headerLower.includes('meta') && headerLower.includes('quad') && headerLower.includes('2025')):
+              initiative.meta2025Q1 = value;
+              console.log(`[DEBUG] Matched META 2025 Q1: Header="${header}", Value="${value}" for Initiative ID: ${initiative.id || 'NEW'}`);
+              // Also set meta2024 for backward compatibility if it's not already set by a more specific 2024 column
+              if (!initiative.meta2024) {
+                initiative.meta2024 = value; 
+              }
               break;
               
-            case header === 'Executado 2024':
-              initiative.executado2024 = value;
+            // Old META 2024 - lower priority
+            case header === 'META 2024' || headerLower === 'meta 2024':
+              // Only set if 2025 Q1 data was not found for this field
+              if (!initiative.meta2025Q1) {
+                initiative.meta2024 = value;
+                console.log(`[DEBUG] Using META 2024 fallback: Value="${value}" for Initiative ID: ${initiative.id || 'NEW'}`);
+              }
+              break;
+              
+            // Explicitly check for Executado 1° QUAD 2025 with various patterns
+            case header === 'Executado 1° QUAD 2025' || 
+                 header === 'Executado 1º QUAD 2025' || 
+                 (headerLower.includes('executado') && headerLower.includes('quad') && headerLower.includes('2025')):
+              initiative.executado2025Q1 = value;
+              console.log(`[DEBUG] Matched Executado 2025 Q1: Header="${header}", Value="${value}" for Initiative ID: ${initiative.id || 'NEW'}`);
+              // Also set executado2024 for backward compatibility if it's not already set by a more specific 2024 column
+              if (!initiative.executado2024) {
+                 initiative.executado2024 = value;
+              }
+              break;
+              
+            // Old Executado 2024 - lower priority  
+            case header === 'Executado 2024' || headerLower === 'executado 2024':
+              // Only set if 2025 Q1 data was not found for this field
+              if (!initiative.executado2025Q1) {
+                initiative.executado2024 = value;
+                console.log(`[DEBUG] Using Executado 2024 fallback: Value="${value}" for Initiative ID: ${initiative.id || 'NEW'}`);
+              }
               break;
               
             case priorityExternalIndex === index:

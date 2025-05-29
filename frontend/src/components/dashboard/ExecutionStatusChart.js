@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 import './Charts.css';
 
 /**
@@ -10,6 +11,9 @@ const ExecutionStatusChart = ({ initiatives }) => {
   console.log("ExecutionStatusChart - Montando componente");
   console.log("ExecutionStatusChart - initiatives recebidas:", initiatives);
 
+  // Hook para navegação
+  const navigate = useNavigate();
+  
   // Refs para o container do gráfico
   const chartContainerRef = useRef(null);
   // Estado para armazenar as dimensões do container
@@ -52,10 +56,16 @@ const ExecutionStatusChart = ({ initiatives }) => {
     'CONCLUIDA': '#00b505', // Green
   };
 
-  // Map status to readable names
+  // Map status to readable names and URLs
   const executionNames = {
     'EM_EXECUCAO': 'Em Execução',
     'CONCLUIDA': 'Concluídas',
+  };
+  
+  // Map status to URLs
+  const executionLinks = {
+    'EM_EXECUCAO': '/initiatives?status=inExecution',
+    'CONCLUIDA': '/initiatives?status=completed',
   };
 
   // Calculate total for percentages
@@ -72,7 +82,9 @@ const ExecutionStatusChart = ({ initiatives }) => {
       value: count,
       status: status,
       // Keep percentage calculation for the tooltip
-      percentage: total > 0 ? Math.round((count / total) * 100) : 0
+      percentage: total > 0 ? Math.round((count / total) * 100) : 0,
+      // Add link for navigation
+      link: executionLinks[status] || '/initiatives'
     }));
 
   console.log("ExecutionStatusChart - chartData:", chartData);
@@ -152,10 +164,10 @@ const ExecutionStatusChart = ({ initiatives }) => {
         className="recharts-container" 
         style={{ 
           width: '100%', 
-          height: '300px',
-          minHeight: '300px',
+          height: '400px',
+          minHeight: '400px',
           position: 'relative',
-          border: '1px solid rgba(0,0,0,0.1)',
+          border: 'none',
           overflow: 'visible'
         }}
       >
@@ -169,8 +181,8 @@ const ExecutionStatusChart = ({ initiatives }) => {
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={100}
+                innerRadius={70}
+                outerRadius={120}
                 paddingAngle={2}
                 dataKey="value"
               >
@@ -178,6 +190,8 @@ const ExecutionStatusChart = ({ initiatives }) => {
                   <Cell
                     key={`cell-${index}`}
                     fill={executionColors[entry.status] || '#999999'}
+                    onClick={() => navigate(entry.link)}
+                    style={{ cursor: 'pointer' }}
                   />
                 ))}
               </Pie>
@@ -187,6 +201,8 @@ const ExecutionStatusChart = ({ initiatives }) => {
                 verticalAlign="bottom"
                 align="center"
                 wrapperStyle={{ paddingTop: '10px' }}
+                iconType="square" // Adiciona ícones quadrados
+                formatter={(value) => <span style={{ color: 'black' }}>{value}</span>} // Texto da legenda em preto
               />
             </PieChart>
           </ResponsiveContainer>
