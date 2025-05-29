@@ -118,8 +118,7 @@ const DateChart = ({ initiatives = [] }) => {
   return (
     <div className="chart-container" style={{
       width: '100%',
-      minHeight: 400,
-      minWidth: 600,
+      minHeight: 300,
       background: 'white',
       padding: 24,
     }}>

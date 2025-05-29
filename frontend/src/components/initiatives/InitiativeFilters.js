@@ -29,6 +29,15 @@ const InitiativeFilters = () => {
     getUniqueYears
   } = useInitiatives();
 
+  const principleNameMap = {
+    '1': 'I - Governo Centrado no Cidadão e Inclusivo',
+    '2': 'II - Governo Integrado e Colaborativo',
+    '3': 'III - Governo Inteligente e Inovador',
+    '4': 'IV - Governo Confiável e Seguro',
+    '5': 'V - Governo Transparente, Aberto e Participativo',
+    '6': 'VI - Governo Eficiente e Sustentável',
+  };
+
   const years = getUniqueYears();
 
   // Effect to read state from navigation (for chart clicks)
@@ -135,7 +144,7 @@ const InitiativeFilters = () => {
           <option value="">Todos</option>
           {principles.map(principle => (
             <option key={principle.id} value={principle.id}>
-              {principle.name}
+              {principleNameMap[String(principle.id)] || principle.name}
             </option>
           ))}
         </select>

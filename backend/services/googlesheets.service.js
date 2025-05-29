@@ -225,8 +225,8 @@ class GoogleSheetsService {
         const headerLower = header.toString().toLowerCase().trim();
         const value = row[index];
         
-        // Log all headers for debugging
-        if (row === values[1]) { // Log only once for the first data row
+        // Debug logging can be enabled via environment variable
+        if (process.env.NODE_ENV === 'development' && row === values[1]) {
           console.log('All headers from sheet:', headers.map(h => h ? h.toString() : 'null').join(' | '));
         }
         
@@ -283,14 +283,12 @@ class GoogleSheetsService {
             case header === 'META 1° QUAD 2025' || 
                  header === 'META 1º QUAD 2025' || 
                  (headerLower.includes('meta') && headerLower.includes('quad') && headerLower.includes('2025')):
+case matchesHeaderPattern(header, meta2025Patterns):
               initiative.meta2025Q1 = value;
-              console.log(`[DEBUG] Matched META 2025 Q1: Header="${header}", Value="${value}" for Initiative ID: ${initiative.id || 'NEW'}`);
-              // Also set meta2024 for backward compatibility if it's not already set by a more specific 2024 column
-              if (!initiative.meta2024) {
-                initiative.meta2024 = value; 
-              }
+             if (process.env.NODE_ENV === 'development') {
+               console.log(`[DEBUG] Matched META 2025 Q1: Header="${header}", Value="${value}"`);
+             }
               break;
-              
             // Old META 2024 - lower priority
             case header === 'META 2024' || headerLower === 'meta 2024':
               // Only set if 2025 Q1 data was not found for this field

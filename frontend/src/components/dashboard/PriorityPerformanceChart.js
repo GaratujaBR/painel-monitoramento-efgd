@@ -104,14 +104,14 @@ const PriorityPerformanceChart = () => {
         className="chart-wrapper"
         ref={chartWrapperRef}
       >
-        <ResponsiveContainer width="100%" height={900} minWidth={400}>
+        <ResponsiveContainer width="100%" height={700} minWidth={400}>
           <PieChart>
             <Pie
               data={performanceData}
               cx="50%"
               cy="50%"
-              innerRadius={70} // Adiciona innerRadius para efeito de donut
-              outerRadius={120}
+              innerRadius={60} // Adiciona innerRadius para efeito de donut
+              outerRadius={100}
               paddingAngle={1}
               dataKey="value"
               nameKey="name"

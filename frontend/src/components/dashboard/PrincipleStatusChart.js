@@ -29,6 +29,54 @@ const toRoman = (num) => {
   return roman;
 };
 
+// Static map for principle names
+const principleNameMapGlobal = {
+  '1': 'I - Governo Centrado no Cidadão e Inclusivo',
+  '2': 'II - Governo Integrado e Colaborativo',
+  '3': 'III - Governo Inteligente e Inovador',
+  '4': 'IV - Governo Confiável e Seguro',
+  '5': 'V - Governo Transparente, Aberto e Participativo',
+  '6': 'VI - Governo Eficiente e Sustentável',
+};
+
+// Custom Y-Axis Tick Component
+const CustomYAxisTick = (props) => {
+  const { x, y, payload } = props;
+  const value = payload.value; // Full principle name
+
+  let line1 = value;
+  let line2 = '';
+
+  const parts = value.split(' - ');
+  if (parts.length > 1) {
+    const prefix = parts[0] + ' - ';
+    const restOfText = parts.slice(1).join(' - ');
+    const wordsInRest = restOfText.split(' ');
+    
+    // Aim for prefix + 2 words on line 1, rest on line 2
+    if (wordsInRest.length > 2) { 
+      line1 = prefix + wordsInRest.slice(0, 2).join(' ');
+      line2 = wordsInRest.slice(2).join(' ');
+    } else {
+      // If 2 or fewer words after prefix, keep them with prefix on line 1
+      line1 = prefix + restOfText; 
+    }
+  } else {
+    // If no ' - ' found, or if it's just the prefix, value remains on one line
+    // Potentially add more sophisticated splitting for values without ' - '
+  }
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      {/* Adjust dy for vertical centering: if two lines, shift up slightly; if one, center it. */}
+      <text x={0} y={0} dy={line2 ? -2 : 4} textAnchor="end" fill="#666" fontSize={11}>
+        <tspan x={0} dy="0em">{line1}</tspan>
+        {line2 && <tspan x={0} dy="1.2em">{line2}</tspan>}
+      </text>
+    </g>
+  );
+};
+
 const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
   const navigate = useNavigate();
 
@@ -38,47 +86,34 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
     'Atrasada': 'var(--color-red)',
   };
 
-  // Build a map from principleId to human-readable name using initiatives
-  const principleNameMap = {};
-  initiatives.forEach(initiative => {
-    if (initiative.principleId && initiative.principle) {
-      principleNameMap[initiative.principleId] = initiative.principle;
-    }
-  });
+
 
   // Função para processar os dados
   const processData = () => {
     const data = {};
 
     initiatives.forEach(initiative => {
-      const principleId = initiative.principleId; // Pode ser string ou número
+      const principleId = String(initiative.principleId); // Ensure string for map lookup
       const performance = initiative.performance;
 
       if (principleId) {
-        // Garantir que temos um ID numérico para a propriedade 'id' e ordenação
-        const numericPrincipleId = parseInt(principleId, 10); 
-        
-        // Validar se a conversão foi bem-sucedida (evitar NaN)
+        const numericPrincipleId = parseInt(principleId, 10);
         if (isNaN(numericPrincipleId)) {
             console.warn(`PrincipleStatusChart: Invalid principleId found: ${principleId}`);
-            return; // Pular esta iniciativa se o ID não for um número válido
+            return;
         }
 
-        // Use o principleId original (string ou número) como chave para o mapa e para buscar o nome
-        const principleName = principleNameMap[principleId] || `Princípio ${principleId}`;
+        // Use the global map for consistent and full names
+        const displayName = principleNameMapGlobal[principleId] || `Princípio ${principleId}`;
 
-        if (!data[principleId]) { // Usar chave original
-          data[principleId] = { // Usar chave original
-            id: numericPrincipleId, // << CORREÇÃO: Usar o ID numérico aqui
-            // Use ID para o axis label para potentially shorter text
-            name: `P${principleId}`, // Usar ID original para o nome curto (P1, P2...)
-            fullName: principleName, // Use o nome completo para o tooltip
+        if (!data[principleId]) {
+          data[principleId] = {
+            id: numericPrincipleId,
+            displayName: displayName, // Use this for Y-axis
             'No Cronograma': 0,
             'Atrasada': 0
           };
         }
-
-        // Usar chave original para atualizar contadores
         if (performance === 'No Cronograma') {
           data[principleId]['No Cronograma']++;
         } else if (performance === 'Atrasada') {
@@ -87,7 +122,6 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
       }
     });
 
-    // A ordenação agora funcionará corretamente pois a.id e b.id são números
     return Object.values(data).sort((a, b) => a.id - b.id);
   };
 
@@ -140,7 +174,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
 
     if (active && payload && payload.length) {
       // Acessa o nome completo diretamente do payload
-      const fullName = payload[0]?.payload?.fullName || `Princípio ${label}`;
+      const fullName = payload[0]?.payload?.displayName || `Princípio ${label}`;
       const noCronograma = payload.find(p => p.dataKey === 'No Cronograma')?.value || 0;
       const atrasada = payload.find(p => p.dataKey === 'Atrasada')?.value || 0;
       const total = noCronograma + atrasada;
@@ -195,8 +229,8 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
           data={chartData}
           margin={{
             top: 20,
-            right: 50, // Aumentar margem direita para valores/labels das barras
-            left: 50, // Aumentar margem esquerda para nomes longos dos princípios
+            right: 30, // Reduced right margin
+            left: 20,  // Significantly reduced left margin
             bottom: 0
           }}
         >
@@ -213,18 +247,10 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
           {/* Eixo Y agora são as categorias (IDs dos princípios formatados como romanos) */}
           <YAxis 
             type="category" 
-            dataKey="id" // Alterado de "fullName" para "id"
-            width={50} // Pode precisar de ajuste dependendo da largura dos numerais
+            dataKey="displayName" // Changed to displayName
+            width={120} // Reduced YAxis width
             interval={0} // Mostrar todos os labels
-            tickFormatter={toRoman} // Adicionado formatador para numerais romanos
-            tick={{ 
-              fontSize: baseFontSize, 
-              fill: '#222',
-              // Optional: Add text wrapping if names are too long
-              // width: 150, 
-              // textAnchor: 'end',
-              // dx: -5 // Adjust position slightly
-            }} 
+            tick={<CustomYAxisTick />} // Use custom tick component
           />
           <Tooltip 
             content={<CustomTooltip />} 
