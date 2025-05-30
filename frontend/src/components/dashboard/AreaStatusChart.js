@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import InitiativesContext from '../../context/InitiativesContext';
@@ -7,6 +7,21 @@ import './DashboardCharts.css'; // Assuming common styles for dashboard charts
 const AreaStatusChart = () => {
   const navigate = useNavigate();
   const { initiatives } = useContext(InitiativesContext);
+
+  const [yAxisTickFontSize, setYAxisTickFontSize] = useState(window.innerWidth <= 500 ? 13 : 16);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setYAxisTickFontSize(window.innerWidth <= 500 ? 13 : 16);
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty array ensures that effect is only run on mount and unmount
 
   const chartData = useMemo(() => {
     if (!initiatives || initiatives.length === 0) {
@@ -103,7 +118,7 @@ const AreaStatusChart = () => {
             type="category" 
             width={100} // Adjust width for YAxis labels (area names)
             interval={0} // Show all labels
-            tick={{ fontSize: 12 }} // Reduced font size for Y-axis ticks
+            tick={{ fontSize: yAxisTickFontSize }} // Dynamically set font size for Y-axis ticks
           />
           <Tooltip formatter={(value, name, props) => [`${value} (${props.payload.total > 0 ? ((value / props.payload.total) * 100).toFixed(1) : '0.0'}%)`, name]} />
           {/* <Legend wrapperStyle={{ color: '#000000' }} iconSize={15} /> */}

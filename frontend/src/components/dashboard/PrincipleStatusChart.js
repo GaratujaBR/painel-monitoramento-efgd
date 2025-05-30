@@ -41,7 +41,7 @@ const principleNameMapGlobal = {
 
 // Custom Y-Axis Tick Component
 const CustomYAxisTick = (props) => {
-  const { x, y, payload } = props;
+  const { x, y, payload, fontSize } = props; // Added fontSize to props
   const value = payload.value; // Full principle name
 
   let line1 = value;
@@ -69,7 +69,7 @@ const CustomYAxisTick = (props) => {
   return (
     <g transform={`translate(${x},${y})`}>
       {/* Adjust dy for vertical centering: if two lines, shift up slightly; if one, center it. */}
-      <text x={0} y={0} dy={line2 ? -2 : 4} textAnchor="end" fill="#666" fontSize={10}>
+      <text x={0} y={0} dy={line2 ? -2 : 4} textAnchor="end" fill="#666" fontSize={fontSize}>
         <tspan x={0} dy="0em">{line1}</tspan>
         {line2 && <tspan x={0} dy="1.2em">{line2}</tspan>}
       </text>
@@ -79,6 +79,27 @@ const CustomYAxisTick = (props) => {
 
 const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
   const navigate = useNavigate();
+
+  // State for responsive Y-axis tick font size
+  const [dynamicTickFontSize, setDynamicTickFontSize] = useState(
+    window.innerWidth <= 500 ? 12 : 14
+  );
+  const [dynamicLeftMargin, setDynamicLeftMargin] = useState(
+    window.innerWidth <= 500 ? 45 : 75
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      setDynamicTickFontSize(screenWidth <= 500 ? 12 : 14);
+      setDynamicLeftMargin(screenWidth <= 500 ? 45 : 75);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call on mount to set initial size
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Cores para o gráfico
   const performanceColors = {
@@ -230,7 +251,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
           margin={{
             top: 20,
             right: 30, // Reduced right margin
-            left: 20,  // Significantly reduced left margin
+            left: dynamicLeftMargin,  // Dynamically set left margin
             bottom: 0
           }}
         >
@@ -250,7 +271,7 @@ const PrincipleStatusChart = ({ initiatives = [], principles = [] }) => {
             dataKey="displayName" // Changed to displayName
             width={120} // Reduced YAxis width
             interval={0} // Mostrar todos os labels
-            tick={<CustomYAxisTick />} // Use custom tick component
+            tick={<CustomYAxisTick fontSize={dynamicTickFontSize} />} // Use custom tick component with dynamic font size
           />
           <Tooltip 
             content={<CustomTooltip />} 
