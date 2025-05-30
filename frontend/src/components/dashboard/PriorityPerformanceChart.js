@@ -39,7 +39,7 @@ const PriorityPerformanceChart = () => {
         setPerformanceData(chartData);
         setLoading(false);
       } catch (err) {
-        console.error('Erro ao buscar dados de performance:', err);
+        console.error('Erro ao buscar dados de performance:', err); 
         setError('Erro ao carregar dados de performance das iniciativas prioritárias');
         setLoading(false);
       }
@@ -47,8 +47,7 @@ const PriorityPerformanceChart = () => {
     fetchData();
   }, []);
 
-  const innerRadius = 60;
-  const outerRadius = 90;
+
 
   const COLORS = {
     'No Cronograma': 'var(--color-blue)',

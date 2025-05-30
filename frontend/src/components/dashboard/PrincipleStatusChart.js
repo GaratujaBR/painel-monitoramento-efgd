@@ -69,7 +69,7 @@ const CustomYAxisTick = (props) => {
   return (
     <g transform={`translate(${x},${y})`}>
       {/* Adjust dy for vertical centering: if two lines, shift up slightly; if one, center it. */}
-      <text x={0} y={0} dy={line2 ? -2 : 4} textAnchor="end" fill="#666" fontSize={11}>
+      <text x={0} y={0} dy={line2 ? -2 : 4} textAnchor="end" fill="#666" fontSize={10}>
         <tspan x={0} dy="0em">{line1}</tspan>
         {line2 && <tspan x={0} dy="1.2em">{line2}</tspan>}
       </text>

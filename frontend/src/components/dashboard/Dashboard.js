@@ -7,7 +7,6 @@ import './Dashboard.css';
 import './DashboardCharts.css'; // Import the new CSS file for chart layout
 import './StatusCardColors.css';
 import './ChartTitles.css'; // Importando o novo arquivo CSS para títulos
-import './ChartTitles.css';
 import computerIcon from '../../images/computer.png';
 import dataIcon from '../../assets/icons/data.png';
 import PrincipleStatusChart from './PrincipleStatusChart';
@@ -16,6 +15,7 @@ import DateChart from './DateChart'; // IMPORTAÇÃO ATUALIZADA DO NOVO GRÁFICO
 import PriorityPerformanceChart from './PriorityPerformanceChart';
 import ExecutionStatusChart from './ExecutionStatusChart'; // Added import
 import PerformanceStatusChart from './PerformanceStatusChart'; // Importa o novo gráfico de performance
+import AreaStatusChart from './AreaStatusChart'; // Adiciona a importação do novo gráfico por Área
 
 const Dashboard = () => {
   const { 
@@ -328,6 +328,12 @@ Utilize estas informações para prever problemas, realocar recursos e tomar dec
           </div>
           <div className="dashboard-card priority-performance-card">
             <PriorityPerformanceChart />
+          </div>
+        </div>
+        <div className="dashboard-charts-row">
+          <div className="dashboard-card area-status-chart-card"> 
+            <h2 className="chart-title">Performance por Área</h2>
+            <AreaStatusChart /> 
           </div>
         </div>
       </div>

@@ -138,6 +138,7 @@ class GoogleSheetsService {
    * @returns {Array} - Dados formatados para o frontend
    */
   transformSpreadsheetData(values) {
+    console.log('[DEBUG] !!! ENTRANDO EM transformSpreadsheetData !!!');
     if (!Array.isArray(values) || values.length < 2) {
       throw new Error('Formato inválido da planilha. Verifique se a estrutura está correta.');
     }
@@ -161,6 +162,7 @@ class GoogleSheetsService {
     const performanceIndex = findColumnIndex(['performance', 'desempenho']);
     const principleIndex = findColumnIndex(['princípio', 'principio', 'princípios', 'principios', 'princ']);
     const priorityExternalIndex = findColumnIndex(['priori. externa (mgi/cc)', 'prioridade externa', 'prioritaria']);
+  console.log(`[DEBUG transformSpreadsheetData] priorityExternalIndex: ${priorityExternalIndex}, Header: ${headers[priorityExternalIndex]}`);
     const princPioIndex = headers.findIndex(header => 
       header && header.toString().toUpperCase().includes('PRINC') && header.toString().includes('(')
     );
@@ -283,7 +285,7 @@ class GoogleSheetsService {
             case header === 'META 1° QUAD 2025' || 
                  header === 'META 1º QUAD 2025' || 
                  (headerLower.includes('meta') && headerLower.includes('quad') && headerLower.includes('2025')):
-case matchesHeaderPattern(header, meta2025Patterns):
+
               initiative.meta2025Q1 = value;
              if (process.env.NODE_ENV === 'development') {
                console.log(`[DEBUG] Matched META 2025 Q1: Header="${header}", Value="${value}"`);
@@ -320,7 +322,9 @@ case matchesHeaderPattern(header, meta2025Patterns):
               break;
               
             case priorityExternalIndex === index:
-              initiative.priorityExternal = value ? value.toString().trim().toUpperCase() : '';
+              const originalValue = value ? value.toString().trim() : '';
+              initiative.priorityExternal = originalValue.toUpperCase();
+              console.log(`[DEBUG transformSpreadsheetData] Row ${rowIndex} - Coluna: '${header}', Valor Lido: '${originalValue}', Convertido para Upper: '${initiative.priorityExternal}'`);
               break;
           }
         } catch (error) {
@@ -672,14 +676,16 @@ case matchesHeaderPattern(header, meta2025Patterns):
 
     try {
       const cacheKey = 'priority_performance_data';
-      const cached = this.cache.get(cacheKey);
-      if (cached) {
-        return cached;
-      }
+      // const cached = this.cache.get(cacheKey); // Cache de leitura desabilitado temporariamente
+      // if (cached) { // Cache de leitura desabilitado temporariamente
+      //   return cached; // Cache de leitura desabilitado temporariamente
+      // }
 
       const initiatives = await this.getSpreadsheetData(); // Usa os dados já transformados
       
-      const priorityInitiatives = initiatives.filter(init => init.priorityExternal === 'SIM');
+      const priorityInitiatives = initiatives.filter(init => 
+      init.priorityExternal && init.priorityExternal.toUpperCase() === 'SIM'
+    );
       
       const performanceCounts = priorityInitiatives.reduce((acc, init) => {
         const performanceStatus = init.performance || 'Não Definido'; // Tratar casos sem performance
@@ -688,7 +694,7 @@ case matchesHeaderPattern(header, meta2025Patterns):
       }, {});
 
       console.log(`[INFO] Dados de performance prioritária agregados:`, performanceCounts);
-      this.cache.set(cacheKey, performanceCounts);
+      // this.cache.set(cacheKey, performanceCounts); // Cache de escrita desabilitado temporariamente
       return performanceCounts;
 
     } catch (error) {
