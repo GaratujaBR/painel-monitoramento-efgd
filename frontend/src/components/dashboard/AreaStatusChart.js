@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import InitiativesContext from '../../context/InitiativesContext';
 import './DashboardCharts.css'; // Assuming common styles for dashboard charts
@@ -92,7 +92,7 @@ const AreaStatusChart = () => {
           data={chartData}
           layout="vertical"
           margin={{
-            top: 20, right: 30, left: 120, bottom: 20, // Increased left margin for area names
+            top: 20, right: 30, left: 60, bottom: 20, // Reduced left margin
           }}
           onClick={handleBarClick}
         >
@@ -103,13 +103,43 @@ const AreaStatusChart = () => {
             type="category" 
             width={100} // Adjust width for YAxis labels (area names)
             interval={0} // Show all labels
+            tick={{ fontSize: 12 }} // Reduced font size for Y-axis ticks
           />
           <Tooltip formatter={(value, name, props) => [`${value} (${props.payload.total > 0 ? ((value / props.payload.total) * 100).toFixed(1) : '0.0'}%)`, name]} />
-          <Legend wrapperStyle={{ color: '#000000' }} iconSize={15} />
+          {/* <Legend wrapperStyle={{ color: '#000000' }} iconSize={15} /> */}
           <Bar dataKey="Atrasada" stackId="a" fill="#ff0000" name="Atrasada" barSize={24} radius={[4, 4, 0, 0]} onClick={(data) => handleBarClick(data, 'Atrasada')} />
           <Bar dataKey="NoCronograma" stackId="a" fill="#183EFF" name="No Cronograma" barSize={24} radius={[4, 4, 0, 0]} onClick={(data) => handleBarClick(data, 'No Cronograma')} />
         </BarChart>
       </ResponsiveContainer>
+      {/* Custom HTML Legend */}
+      <div className="chart-legend" style={{ marginTop: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+        <div className="legend-item" style={{ display: 'flex', alignItems: 'center' }}>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '15px',
+              height: '15px',
+              backgroundColor: '#ff0000', // Red for Atrasada
+              marginRight: '8px',
+              borderRadius: '2px'
+            }}
+          />
+          <span style={{ color: '#000000', fontSize: '18px' }}>Atrasada</span>
+        </div>
+        <div className="legend-item" style={{ display: 'flex', alignItems: 'center' }}>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '15px',
+              height: '15px',
+              backgroundColor: '#183EFF', // Blue for No Cronograma
+              marginRight: '8px',
+              borderRadius: '2px'
+            }}
+          />
+          <span style={{ color: '#000000', fontSize: '18px' }}>No Cronograma</span>
+        </div>
+      </div>
     </div>
   );
 };

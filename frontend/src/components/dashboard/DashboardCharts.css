@@ -6,7 +6,7 @@
   gap: var(--spacing-lg); /* Add gap between charts */
   align-items: stretch; /* Ensure cards stretch to the same height if needed */
   width: 100%; /* Ensure the row takes full width */
-  margin-bottom: var(--spacing-lg); /* Add some bottom margin */
+  margin-bottom: var(--spacing-md); /* Add some bottom margin */
 }
 
 /* Make the cards within this specific row share the space */
