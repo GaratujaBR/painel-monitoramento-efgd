@@ -91,103 +91,85 @@ const InitiativeList = () => {
   //     ? 'https://painel-monitoramento-efgd.onrender.com'
   //     : '');
 
+  // Função auxiliar para mapear status vindo do location.state ou URL
+  // Deve ser definida antes do useEffect que a utiliza como dependência
+  const mapStateStatusToInternal = useCallback((stateStatus) => {
+    if (!stateStatus) return '';
+    const upperStatus = String(stateStatus).toUpperCase();
+    // Mapear variações comuns de status para os valores internos esperados
+    switch (upperStatus) {
+      case 'ATRASADA':
+      case 'DELAYED': // comum em parâmetros de URL
+        return 'ATRASADA';
+      case 'CONCLUIDA':
+      case 'CONCLUÍDA':
+      case 'COMPLETED':
+        return 'CONCLUIDA';
+      case 'EM_EXECUCAO':
+      case 'EM EXECUÇÃO':
+      case 'INEXECUTION':
+        return 'EM_EXECUCAO';
+      case 'NO_CRONOGRAMA':
+      case 'NO CRONOGRAMA':
+      case 'ONTIME':
+        return 'NO_CRONOGRAMA';
+      default:
+        console.warn(`[InitiativeList] Status não mapeado em mapStateStatusToInternal: ${stateStatus}`);
+        return ''; // Retorna vazio para status não reconhecidos
+    }
+  }, []); // useCallback para evitar recriações desnecessárias se não depender de props/state do componente
+
   // Efeito para buscar dados e aplicar filtros iniciais da navegação/URL
   useEffect(() => {
     resetFilters(); // Limpa todos os filtros antes de aplicar os novos
-    // Ler o status da URL primeiro
+
+    const areaIdFromUrl = searchParams.get('areaId');
     const statusFromUrl = searchParams.get('status');
-    console.log('[InitiativeList] Montado. Status da URL:', statusFromUrl, 'Location.state:', location.state);
 
-    // Definir filtros iniciais
-    let initialFilters = location.state && location.state.initialFilters
-      ? { ...location.state.initialFilters }
-      : {
-          principleId: '',
-          objectiveId: '',
-          areaId: '',
-          status: '', // Começa vazio
-          completionYear: ''
-        };
+    console.log('[InitiativeList] Montado. areaId da URL:', areaIdFromUrl, 'Status da URL:', statusFromUrl, 'Location.state:', location.state);
 
-    // Priorizar o status da URL se existir
+    // Começa com filtros padrão, que podem ser complementados pelo location.state
+    let filtersToApply = {
+      principleId: '',
+      objectiveId: '',
+      areaId: '',
+      status: '',
+      searchTerm: '',
+      ...(location.state && location.state.initialFilters ? location.state.initialFilters : {}),
+    };
+    console.log('[InitiativeList] Filtros base (padrão + location.state):', JSON.stringify(filtersToApply));
+
+    // Filtros da URL (areaId e status) têm prioridade
+    if (areaIdFromUrl) {
+      filtersToApply.areaId = areaIdFromUrl; 
+      console.log('[InitiativeList] areaId da URL aplicado:', areaIdFromUrl);
+    }
+
     if (statusFromUrl) {
-      let internalStatusValue = '';
-      const decodedStatus = decodeURIComponent(statusFromUrl).toLowerCase();
-
-      // Mapear valor da URL para valor interno
-      switch (decodedStatus) {
-        case 'delayed':
-        case 'atrasada': // Adicionar variações se necessário
-          internalStatusValue = 'ATRASADA';
-          break;
-        case 'completed':
-        case 'concluida':
-          internalStatusValue = 'CONCLUIDA';
-          break;
-        case 'inexecution':
-        case 'em execucao': // Usar lowercase para comparação
-        case 'em execução':
-          internalStatusValue = 'EM_EXECUCAO';
-          break;
-        case 'ontime':
-        case 'no cronograma':
-          internalStatusValue = 'NO_CRONOGRAMA';
-          break;
-        default:
-          console.warn(`[InitiativeList] Status da URL não reconhecido: ${decodedStatus}`);
-          break;
-      }
-
-      if (internalStatusValue) {
-        console.log(`[InitiativeList] Aplicando status da URL '${statusFromUrl}' como status interno '${internalStatusValue}'`);
-        initialFilters.status = internalStatusValue;
-      } else {
-        console.log(`[InitiativeList] Status da URL '${statusFromUrl}' não mapeado, ignorando.`);
-      }
+      filtersToApply.status = mapStateStatusToInternal(statusFromUrl);
+      console.log('[InitiativeList] Status da URL aplicado (mapeado):', filtersToApply.status);
     }
-    // Aplicar filtros do location.state SE HOUVEREM e não houver status da URL
-    // (ou decidir como combinar/priorizar se ambos pudessem ocorrer)
-    else if (location.state?.filters) {
-      console.log('[InitiativeList] Aplicando filtros da navegação (state):', location.state.filters);
-      // Normalizar os valores recebidos do state
-      initialFilters = {
-        ...initialFilters, // Mantém o status vazio se não veio do state
-        principleId: String(location.state.filters.principleId || ''),
-        objectiveId: String(location.state.filters.objectiveId || ''),
-        areaId: String(location.state.filters.areaId || ''),
-        // Mapear também o status vindo do state, se necessário
-        status: mapStateStatusToInternal(location.state.filters.status), // Usar uma função de mapeamento se necessário
-        completionYear: String(location.state.filters.completionYear || '')
-      };
+    // O bloco de código else if (location.state?.filters) abaixo já lida com filtros do state.
+    // Se areaIdFromUrl ou statusFromUrl não vierem, os valores de location.state.initialFilters (se existirem)
+    // ou os padrões vazios já estarão em filtersToApply.
+    // Se vierem da URL, eles sobrescrevem os de location.state ou os padrões.
 
-      // Limpar o state da navegação
-      window.history.replaceState({}, document.title);
-    } else {
-      console.log('[InitiativeList] Sem filtros na navegação ou URL, garantindo reset.');
-      // Garantir que os filtros estejam limpos se nada veio da URL ou state
-      // (initialFilters já está resetado neste ponto)
+    // Se não vieram filtros da URL, mas vieram do location.state, eles já foram aplicados 
+    // na inicialização de filtersToApply. Se vieram da URL, eles já sobrescreveram.
+    // A lógica original de `else if (location.state?.filters)` para aplicar filtros do state
+    // se tornou redundante aqui porque `filtersToApply` já considera `location.state.initialFilters`
+    // e os parâmetros da URL têm prioridade.
+    // A limpeza do state da navegação ainda pode ser útil se `location.state.initialFilters` foi usado.
+    if (location.state && location.state.initialFilters) {
+        console.log('[InitiativeList] Filtros do location.state foram considerados. Limpando location.state.');
+        window.history.replaceState({}, document.title);
     }
+    
+    console.log('[InitiativeList] Filtros finais a serem aplicados:', JSON.stringify(filtersToApply));
+    updateFilters(filtersToApply);
+    fetchInitiatives(); // Adicionado para buscar iniciativas após aplicar filtros
 
-    // Atualizar os filtros no contexto
-    console.log('[InitiativeList] Atualizando filtros no contexto:', initialFilters);
-    updateFilters(initialFilters);
-
-  }, [location.state, searchParams, updateFilters, resetFilters]); // Adicionar searchParams às dependências
-
-  // Função auxiliar para mapear status vindo do location.state (se necessário)
-  // Ajuste conforme os valores que podem vir do state
-  const mapStateStatusToInternal = (stateStatus) => {
-    if (!stateStatus) return '';
-    const upperStatus = String(stateStatus).toUpperCase();
-    switch (upperStatus) {
-      case 'ATRASADA': return 'ATRASADA';
-      case 'CONCLUIDA': return 'CONCLUIDA';
-      case 'EM_EXECUCAO': return 'EM_EXECUCAO';
-      case 'NO_CRONOGRAMA': return 'NO_CRONOGRAMA';
-      // Adicione outros mapeamentos se os valores do state forem diferentes
-      default: return ''; 
-    }
-  };
+  }, [location.state, searchParams, fetchInitiatives, updateFilters, resetFilters, mapStateStatusToInternal]);
 
   // Função para atualizar os dados
   const handleRefresh = async () => {

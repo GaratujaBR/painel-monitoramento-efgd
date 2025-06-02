@@ -60,29 +60,18 @@ const AreaStatusChart = () => {
     return processedData;
   }, [initiatives]);
 
-  const handleBarClick = (data) => {
-    if (data && data.activePayload && data.activePayload.length > 0) {
-      const payload = data.activePayload[0].payload;
-      const barNameKey = data.activePayload[0].dataKey; // 'Atrasada' or 'NoCronograma'
+  // Modificado para aceitar o payload da área e o nome do status diretamente
+  const handleBarClick = (areaPayload, statusName) => {
+    console.log('[AreaStatusChart] handleBarClick chamado com:', areaPayload, statusName);
+    if (areaPayload && statusName) {
+      const areaIdForFilter = areaPayload.name; // 'name' em areaPayload é o areaId
 
-      const areaIdForFilter = payload.name; // 'name' holds the areaId
-      let statusFilter = '';
-
-      if (barNameKey === 'Atrasada') {
-        statusFilter = 'Atrasada';
-      } else if (barNameKey === 'NoCronograma') {
-        statusFilter = 'No Cronograma';
-      }
-
-      if (areaIdForFilter && areaIdForFilter !== 'N/A' && statusFilter) {
-        navigate('/initiatives', {
-          state: {
-            initialFilters: {
-              areaId: areaIdForFilter,
-              status: statusFilter,
-            },
-          },
-        });
+      // Verifica se areaIdForFilter é válido e não 'N/A'
+      if (areaIdForFilter && areaIdForFilter !== 'N/A') {
+        console.log(`[AreaStatusChart] Navegando para: /initiatives?areaId=${areaIdForFilter}&status=${statusName}`);
+        navigate(`/initiatives?areaId=${encodeURIComponent(areaIdForFilter)}&status=${encodeURIComponent(statusName)}`);
+      } else {
+        console.log('[AreaStatusChart] Condição para navegação não atendida. areaIdForFilter:', areaIdForFilter, 'statusName:', statusName);
       }
     }
   };
@@ -109,7 +98,7 @@ const AreaStatusChart = () => {
           margin={{
             top: 20, right: 30, left: 60, bottom: 20, // Reduced left margin
           }}
-          onClick={handleBarClick}
+          // onClick={handleBarClick} // Removido daqui
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="number" allowDecimals={false} />
@@ -122,8 +111,32 @@ const AreaStatusChart = () => {
           />
           <Tooltip formatter={(value, name, props) => [`${value} (${props.payload.total > 0 ? ((value / props.payload.total) * 100).toFixed(1) : '0.0'}%)`, name]} />
           {/* <Legend wrapperStyle={{ color: '#000000' }} iconSize={15} /> */}
-          <Bar dataKey="Atrasada" stackId="a" fill="#ff0000" name="Atrasada" barSize={24} radius={[4, 4, 0, 0]} onClick={(data) => handleBarClick(data, 'Atrasada')} />
-          <Bar dataKey="NoCronograma" stackId="a" fill="#183EFF" name="No Cronograma" barSize={24} radius={[4, 4, 0, 0]} onClick={(data) => handleBarClick(data, 'No Cronograma')} />
+          <Bar 
+            dataKey="Atrasada" 
+            stackId="a" 
+            fill="#ff0000" 
+            name="Atrasada" 
+            barSize={24} 
+            radius={[4, 4, 0, 0]} 
+            style={{ cursor: 'pointer' }} // Adicionado cursor pointer
+            onClick={(data) => {
+              console.log('[AreaStatusChart] Bar Atrasada clicada, data:', data);
+              handleBarClick(data.payload, 'Atrasada');
+            }} 
+          />
+          <Bar 
+            dataKey="NoCronograma" 
+            stackId="a" 
+            fill="#183EFF" 
+            name="No Cronograma" 
+            barSize={24} 
+            radius={[4, 4, 0, 0]} 
+            style={{ cursor: 'pointer' }} // Adicionado cursor pointer
+            onClick={(data) => {
+              console.log('[AreaStatusChart] Bar NoCronograma clicada, data:', data);
+              handleBarClick(data.payload, 'No Cronograma');
+            }} 
+          />
         </BarChart>
       </ResponsiveContainer>
       {/* Custom HTML Legend */}
