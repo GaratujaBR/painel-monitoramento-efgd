@@ -60,6 +60,58 @@ const AreaStatusChart = () => {
     return processedData;
   }, [initiatives]);
 
+  // Colors for the tooltip statuses
+  const statusColors = {
+    'Atrasada': '#ff0000', // Red
+    'No Cronograma': '#183EFF', // Blue
+    // Add other statuses if they appear in this chart's data
+  };
+
+  // Custom Tooltip Component
+  const CustomTooltip = ({ active, payload, label }) => {
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth <= 768);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const style = isSmallScreen ? { maxWidth: '45vw', fontSize: '11px' } : { fontSize: '12px' };
+
+    if (active && payload && payload.length) {
+      const areaData = payload[0].payload; // Full data for the hovered bar segment's area
+      const totalInitiativesInArea = areaData.total;
+
+      return (
+        <div className="custom-chart-tooltip" style={style}>
+          <div className="tooltip-title">{label}</div>
+          {payload.map((entry, index) => {
+            // entry.name is 'Atrasada' or 'NoCronograma' (dataKey)
+            // entry.value is the count for that status
+            const statusDisplayName = entry.name === 'NoCronograma' ? 'No Cronograma' : entry.name;
+            const percentage = totalInitiativesInArea > 0 
+              ? Math.round((entry.value / totalInitiativesInArea) * 100)
+              : 0;
+            return (
+              <div className="tooltip-item" key={`item-${index}`}>
+                <span style={{ color: statusColors[statusDisplayName] || '#666' }}>{statusDisplayName}:</span>
+                <span className="tooltip-value">{entry.value} ({percentage}%)</span>
+              </div>
+            );
+          })}
+          <div className="tooltip-total">
+            <span>Total:</span>
+            <span>{totalInitiativesInArea} iniciativas</span>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   // Modificado para aceitar o payload da área e o nome do status diretamente
   const handleBarClick = (areaPayload, statusName) => {
     console.log('[AreaStatusChart] handleBarClick chamado com:', areaPayload, statusName);
@@ -109,7 +161,7 @@ const AreaStatusChart = () => {
             interval={0} // Show all labels
             tick={{ fontSize: yAxisTickFontSize }} // Dynamically set font size for Y-axis ticks
           />
-          <Tooltip formatter={(value, name, props) => [`${value} (${props.payload.total > 0 ? ((value / props.payload.total) * 100).toFixed(1) : '0.0'}%)`, name]} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
           {/* <Legend wrapperStyle={{ color: '#000000' }} iconSize={15} /> */}
           <Bar 
             dataKey="Atrasada" 

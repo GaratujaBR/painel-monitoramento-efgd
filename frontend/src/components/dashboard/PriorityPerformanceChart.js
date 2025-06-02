@@ -17,9 +17,10 @@ const PriorityPerformanceChart = () => {
 
   useEffect(() => {
     if (chartWrapperRef.current) {
+      // eslint-disable-next-line no-unused-vars
       const rect = chartWrapperRef.current.getBoundingClientRect();
     }
-  }, []); // Only run on mount
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,13 +48,52 @@ const PriorityPerformanceChart = () => {
     fetchData();
   }, []);
 
-
-
   const COLORS = {
     'No Cronograma': 'var(--color-blue)',
     'Atrasada': 'var(--color-red)',
-    'Não Definido': 'var(--color-blue)',
-    'Concluída': 'var(--color-blue)'
+    'Não Definido': 'var(--color-medium-gray)', // Changed for better distinction
+    'Concluída': 'var(--color-green)' // Standardized color
+  };
+
+  // Calculate total for percentages, memoized for performance
+  const total = useMemo(() => {
+    if (!performanceData) return 0;
+    return performanceData.reduce((sum, item) => sum + item.value, 0);
+  }, [performanceData]);
+
+  // Custom Tooltip Component
+  const CustomTooltip = ({ active, payload }) => {
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth <= 768);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const style = isSmallScreen ? { maxWidth: '45vw', fontSize: '11px' } : { fontSize: '12px' }; // Adjusted for pie chart context
+
+    if (active && payload && payload.length) {
+      const data = payload[0].payload; // Data for the hovered slice
+      const statusName = data.name;
+      const statusValue = data.value;
+      const percentage = total > 0 ? Math.round((statusValue / total) * 100) : 0;
+
+      return (
+        <div className="custom-chart-tooltip" style={style}>
+          <div className="tooltip-title">
+            <span style={{ color: COLORS[statusName] || '#666' }}>{statusName}</span>
+          </div>
+          <div className="tooltip-item">
+            <span>Iniciativas:</span>
+            <span className="tooltip-value">{statusValue} ({percentage}%)</span>
+          </div>
+        </div>
+      );
+    }
+    return null;
   };
 
   const handleSliceClick = (data) => {
@@ -94,7 +134,7 @@ const PriorityPerformanceChart = () => {
     );
   }
 
-  const total = performanceData.reduce((sum, item) => sum + item.value, 0);
+
 
   return (
     <div className="chart-container">
@@ -125,7 +165,7 @@ const PriorityPerformanceChart = () => {
                 />
               ))}
             </Pie>
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
           </PieChart>
         </ResponsiveContainer>
       </div>
