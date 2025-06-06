@@ -26,7 +26,9 @@ function App() {
               <Route 
                 path="/" 
                 element={
-                  <DashboardLayout />
+                  <Autenticador>
+                    <DashboardLayout />
+                  </Autenticador>
                 }
               >
                 {/* Dashboard routes */}
