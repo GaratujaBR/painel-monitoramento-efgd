@@ -4,6 +4,34 @@ import { useNavigate } from 'react-router-dom';
 import InitiativesContext from '../../context/InitiativesContext';
 import './DashboardCharts.css'; // Assuming common styles for dashboard charts
 
+// Componente customizado para tornar o label do eixo Y clicável
+const ClickableYAxisTick = (props) => {
+  const { x, y, payload, fontSize = 16 } = props;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    const areaId = payload.value;
+    if (areaId && areaId !== 'N/A') {
+      navigate(`/initiatives?areaId=${encodeURIComponent(areaId)}`);
+    }
+  };
+
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={4}
+      textAnchor="end"
+      fill="#1a73e8"
+      style={{ cursor: 'pointer', fontWeight: 600, textDecoration: 'underline', fontSize }}
+      onClick={handleClick}
+      className="yaxis-area-label"
+    >
+      {payload.value}
+    </text>
+  );
+};
+
 const AreaStatusChart = () => {
   const navigate = useNavigate();
   const { initiatives } = useContext(InitiativesContext);
@@ -159,7 +187,7 @@ const AreaStatusChart = () => {
             type="category" 
             width={100} // Adjust width for YAxis labels (area names)
             interval={0} // Show all labels
-            tick={{ fontSize: yAxisTickFontSize }} // Dynamically set font size for Y-axis ticks
+            tick={<ClickableYAxisTick fontSize={yAxisTickFontSize} />} // Custom clickable tick
           />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
           {/* <Legend wrapperStyle={{ color: '#000000' }} iconSize={15} /> */}
